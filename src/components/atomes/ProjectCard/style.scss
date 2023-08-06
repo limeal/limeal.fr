@@ -1,0 +1,94 @@
+.project-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 345px;
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: "Satoshi";
+    font-style: normal;
+    line-height: normal;
+    font-size: 16px;
+  }
+
+  > img {
+    width: 345px;
+    height: 297px; 
+    object-fit: cover;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    > div {
+      display: flex;
+      flex-direction: column;
+      margin-top: 24px;
+      > span {
+        color: var(--lime, #fbd52b);
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      > h2 {
+        margin-top: 8px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 900;
+      }
+    }
+
+    > svg {
+        color: white;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+    }
+  }
+
+  > p {
+    margin-top: 16px;
+    color: #fff;
+    font-weight: 300;
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .project-card {
+    max-width: 588px;
+
+    > img {
+      width: 588px;
+      height: 400px;
+    }
+
+    > div {
+      > div {
+        margin-top: 24px;
+  
+        > h2 {
+          margin-top: 8px;
+          font-size: 20px;
+        }
+      }
+  
+      > svg {
+          width: 44px;
+          height: 44px;
+      }
+    }
+
+    > p {
+      margin-top: 16px;
+    }
+  }
+}

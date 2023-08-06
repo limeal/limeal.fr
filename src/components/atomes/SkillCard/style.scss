@@ -1,0 +1,45 @@
+@import "@sass/main";
+
+.skill-card {
+  border-radius: 12px;
+  background: #1d1c1f;
+  padding: 12px;
+  width: 300px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  > span {
+    color: #fff;
+    font-family: "Satoshi";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 19.2px */
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 50px;
+    background: #29282C; 
+
+    > svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    > span {
+      margin-left: 4px;
+      color: #fff;
+      font-family: "Satoshi";
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 100%; /* 16px */
+    }
+  }
+}

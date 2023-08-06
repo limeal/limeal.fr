@@ -1,0 +1,184 @@
+[
+    {
+        "id": "lang--french",
+        "en": "French",
+        "fr": "Français",
+        "es": "Francés",
+        "kr": "프랑스 국민"
+    },
+    {
+        "id": "lang--english",
+        "en": "English",
+        "fr": "Anglais",
+        "es": "Inglés",
+        "kr": "영어"
+    },
+    {
+        "id": "lang--spanish",
+        "en": "Spanish",
+        "fr": "Espagnol",
+        "es": "Español",
+        "kr": "스페인 국민"
+    },
+    {
+        "id": "lang--korean",
+        "en": "Korean",
+        "fr": "Coréen",
+        "es": "Coreano",
+        "kr": "한국어"
+    },
+    {
+        "id": "tabs--about-me",
+        "en": "About",
+        "fr": "À propos",
+        "es": "Sobre mí",
+        "kr": "내 소개"
+    },
+    {
+        "id": "tabs--skills",
+        "en": "Skills",
+        "fr": "Compétences",
+        "es": "Habilidades",
+        "kr": "기술"
+    },
+    {
+        "id": "tabs--portfolio",
+        "en": "Portfolio",
+        "fr": "Portfolio",
+        "es": "Portafolio",
+        "kr": "포트폴리오"
+    },
+    {
+        "id": "tabs--testimonial",
+        "en": "Testimonial",
+        "fr": "Témoignage",
+        "es": "Testimonial",
+        "kr": "증언"
+    },
+    {
+        "id": "tabs--contact-me",
+        "en": "Contact Me",
+        "fr": "Contactez-Moi",
+        "es": "Contáctame",
+        "kr": "연락처"
+    },
+    {
+        "id": "hero--job",
+        "en": "Junior Developer",
+        "fr": "Développeur Junior",
+        "es": "Desarrollador Junior",
+        "kr": "주니어 개발자"
+    },
+    {
+        "id": "hero--satisfied--title",
+        "en": "Satisfied Clients",
+        "fr": "Clients satisfaits",
+        "es": "Clientes satisfechos",
+        "kr": "만족한 고객"
+    },
+    {
+        "id": "hero--satisfied--content",
+        "en": "Many clients are satisfied and happy with the results I provide.",
+        "fr": "De nombreux clients sont satisfaits et heureux des résultats que je fournis.",
+        "es": "Muchos clientes están satisfechos y felices con los resultados que brindo.",
+        "kr": "많은 고객이 제가 제공하는 결과에 만족하고 행복합니다."
+    },
+    {
+        "id": "hero--image--description",
+        "en": "I have a passion for coding and technology, and I'm eager to learn and grow in the field of software development. I enjoy working on various projects, experimenting with new technologies, and collaborating with others to create innovative solutions.",
+        "fr": "J'ai une passion pour la programmation et la technologie, et je suis désireux d'apprendre et de grandir dans le domaine du développement de logiciels. J'aime travailler sur divers projets, expérimenter de nouvelles technologies et collaborer avec d'autres pour créer des solutions innovantes.",
+        "es": "Tengo pasión por la codificación y la tecnología, y estoy ansioso por aprender y crecer en el campo del desarrollo de software. Disfruto trabajando en varios proyectos, experimentando con nuevas tecnologías y colaborando con otros para crear soluciones innovadoras.",
+        "kr": "저는 코딩과 기술에 대한 열정이 있고 소프트웨어 개발 분야에서 배우고 성장하기를 간절히 원합니다. 저는 다양한 프로젝트에 참여하고, 새로운 기술을 실험하고, 다른 사람들과 협력하여 혁신적인 솔루션을 만드는 것을 즐깁니다"
+    },
+    {
+        "id": "hero--image--quote",
+        "en": "This man is beautiful",
+        "fr": "Cet homme est beau",
+        "es": "Este hombre es hermoso",
+        "kr": "이 남자는 아름답습니다"
+    },
+    {
+        "id": "skills--title",
+        "en": "Mastered Skills",
+        "fr": "Compétences maîtrisées",
+        "es": "Habilidades dominadas",
+        "kr": "숙달 된 기술"
+    },
+    {
+        "id": "skills--description",
+        "en": "From the fundamentals to the most intricate concepts, I have honed my skills through countless hours of practice and real-world projects.",
+        "fr": "Des fondamentaux aux concepts les plus complexes, j'ai affiné mes compétences grâce à d'innombrables heures de pratique et de projets réels.",
+        "es": "Desde los fundamentos hasta los conceptos más intrincados, he perfeccionado mis habilidades a través de innumerables horas de práctica y proyectos del mundo real.",
+        "kr": "기본 원리부터 가장 복잡한 개념까지, 저는 끊임없는 연습과 실제 프로젝트를 통해 기술을 숙달했습니다."
+    },
+    {
+        "id": "portfolio--title",
+        "en": "Portfolio",
+        "fr": "Portfolio",
+        "es": "Portafolio",
+        "kr": "포트폴리오"
+    },
+    {
+        "id": "portfolio--description",
+        "en": "Each project reflects the trust and collaboration with my clients, where we worked hand in hand to achieve remarkable results.",
+        "fr": "Chaque projet reflète la confiance et la collaboration avec mes clients, où nous avons travaillé main dans la main pour obtenir des résultats remarquables.",
+        "es": "Cada proyecto refleja la confianza y la colaboración con mis clientes, donde trabajamos codo a codo para lograr resultados notables.",
+        "kr": "각 프로젝트는 고객과의 신뢰와 협력을 반영합니다. 우리는 손에 손을 잡고 놀라운 결과를 얻기 위해 함께 일했습니다."
+    },
+    {
+        "id": "portfolio--error",
+        "en": "No projects in this category. Try another !",
+        "fr": "Aucun projet dans cette catégorie. Essayez une autre !",
+        "es": "No hay proyectos en esta categoría. ¡Prueba otro !",
+        "kr": "이 카테고리에 프로젝트가 없습니다. 다른 것을 시도하십시오!"
+    },
+    {
+        "id": "contact-me--title",
+        "en": "Let's work together",
+        "fr": "Travaillons ensemble",
+        "es": "Trabajemos juntos",
+        "kr": "함께 일해요"
+    },
+    {
+        "id": "contact-me--description",
+        "en": "Let us help you become even greater at what you do. Fill out the following form and we will get back to you in the next 24 hours",
+        "fr": "Laissez-nous vous aider à devenir encore plus grand dans ce que vous faites. Remplissez le formulaire suivant et nous vous répondrons dans les 24 heures",
+        "es": "Permítanos ayudarlo a ser aún mejor en lo que hace. Complete el siguiente formulario y nos pondremos en contacto con usted en las próximas 24 horas",
+        "kr": "당신이하는 일에 더욱 더 훌륭해지도록 도와 드리겠습니다. 다음 양식을 작성하시면 24 시간 이내에 연락 드리겠습니다"
+    },
+    {
+        "id": "contact-me--q1",
+        "en": "What's your name ?",
+        "fr": "Quel est votre nom ?",
+        "es": "¿Cuál es tu nombre?",
+        "kr": "이름이 뭐니?"
+    },
+    {
+        "id": "contact-me--q2",
+        "en": "What's your email address?",
+        "fr": "Quelle est votre adresse e-mail ?",
+        "es": "¿Cuál es tu dirección de correo electrónico?",
+        "kr": "이메일 주소가 뭐니?"
+    },
+    {
+        "id": "contact-me--q3",
+        "en": "What's service are you looking for ?",
+        "fr": "Quel service recherchez-vous ?",
+        "es": "¿Qué servicio estás buscando?",
+        "kr": "무슨 서비스를 찾고 있니?"
+    },
+    {
+        "id": "contact-me--q4",
+        "en": "Tell us about your project",
+        "fr": "Parlez-nous de votre projet",
+        "es": "Cuéntanos sobre tu proyecto",
+        "kr": "프로젝트에 대해 말해봐"
+    },
+    {
+        "id": "contact-me--button",
+        "en": "Send message",
+        "fr": "Envoyer le message",
+        "es": "Enviar mensaje",
+        "kr": "메시지 보내기"
+    }
+]

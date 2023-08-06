@@ -1,0 +1,108 @@
+{
+    "langages": [
+        {
+            "name": "C",
+            "stars": 5
+        },
+        {
+            "name": "C++",
+            "stars": 4
+        },
+        {
+            "name": "Golang",
+            "stars": 4
+        },
+        {
+            "name": "HTML & CSS",
+            "stars": 4.5
+        },
+        {
+            "name": "Javascript / Typescript",
+            "stars": 4.5
+        },
+        {
+            "name": "Ruby",
+            "stars": 3
+        },
+        {
+            "name": "Java",
+            "stars": 4
+        },
+        {
+            "name": "Dart",
+            "stars": 3
+        },
+        {
+            "name": "PHP",
+            "stars": 3
+        },
+        {
+            "name": "Python",
+            "stars": 3
+        }
+    ],
+    "databases": [
+        {
+            "name": "MySQL",
+            "stars": 4
+        },
+        {
+            "name": "PostgreSQL",
+            "stars": 4
+        },
+        {
+            "name": "MongoDB",
+            "stars": 3
+        },
+        {
+            "name": "Redis",
+            "stars": 3
+        }
+    ],
+    "frameworks": [
+        {
+            "name": "React",
+            "stars": 4
+        },
+        {
+            "name": "Vue",
+            "stars": 4
+        },
+        {
+            "name": "Flutter",
+            "stars": 3
+        },
+        {
+            "name": "Express",
+            "stars": 3
+        }
+    ],
+    "cms": [
+        {
+            "name": "Wordpress",
+            "stars": 3
+        },
+        {
+            "name": "Drupal",
+            "stars": 3
+        },
+        {
+            "name": "Prestashop",
+            "stars": 3
+        },
+        {
+            "name": "Strapi",
+            "stars": 3
+        }
+    ],
+    "apis": [
+        {
+            "name": "REST",
+            "stars": 4
+        },
+        {
+            "name": "GraphQL",
+            "stars": 3
+        }
+    ]
+}
