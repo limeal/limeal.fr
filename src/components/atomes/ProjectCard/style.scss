@@ -14,14 +14,6 @@
     font-size: 16px;
   }
 
-  > img {
-    width: 345px;
-    height: 297px; 
-    object-fit: cover;
-    border-radius: 12px;
-    cursor: pointer;
-  }
-
   > div {
     display: flex;
     flex-direction: row;
@@ -65,11 +57,6 @@
 @media screen and (min-width: 768px) {
   .project-card {
     max-width: 588px;
-
-    > img {
-      width: 588px;
-      height: 400px;
-    }
 
     > div {
       > div {

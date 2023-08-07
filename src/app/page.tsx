@@ -5,11 +5,10 @@ import Navigation from "@/components/atomes/Navigation";
 import { useState } from "react";
 import Skills from "@/components/molecules/Skills";
 import Portfolio from "@/components/molecules/Portfolio";
-import Testimonial from "@/components/molecules/Testimonial";
 import ContactMe from "@/components/molecules/ContactMe";
 import Credits from "@/components/atomes/Credits";
 
-export default () => {
+const Page = () => {
 
   const [lang, setLang] = useState('en');
 
@@ -22,7 +21,6 @@ export default () => {
         <Hero lang={lang} />
         <Skills lang={lang} />
         <Portfolio lang={lang} />
-        {/* <Testimonial lang={lang} /> */}
         <ContactMe lang={lang} /> 
       </main>
       <footer>
@@ -31,3 +29,5 @@ export default () => {
     </>
   );
 }
+
+export default Page;

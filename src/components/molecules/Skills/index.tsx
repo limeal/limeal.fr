@@ -6,14 +6,24 @@ import './style.scss'
 import data from './data.json'
 import SkillCard from '@/components/atomes/SkillCard';
 import getTranslation from '@/utils/lang';
-import ProjectList from '@/components/atomes/ProjectList';
+import Image from 'next/image';
 
-export default ({
+const Skills = ({
     lang
 }: {
     lang: string;
 }) => {
     const [category, setCategory] = useState<string>('');
+    const [width, setWidth] = useState(0);
+
+    const updateDimension = () => setWidth(window.innerWidth);
+
+    useEffect(() => {
+      updateDimension();
+      window.addEventListener("resize", updateDimension);
+
+      return () => window.removeEventListener("resize", updateDimension);
+    }, []);
 
     useEffect(() => {
         setCategory(Object.keys(data)[0]);
@@ -44,7 +54,14 @@ export default ({
                     {/* <ProjectList category={'web'} /> */}
                 </div>
             </div>
-            <img src='/assets/images/ribbon.svg' alt='ribbon' />
+            <Image src='/assets/images/ribbon.svg' alt='ribbon' width={0} height={0} sizes='100vw' style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'contain',
+                marginTop: '100px'
+            }} />
         </section>
     )
 }
+
+export default Skills;

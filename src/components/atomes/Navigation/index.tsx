@@ -8,13 +8,14 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import "./style.scss";
 import Tabs from "../Tabs";
 import getTranslation from "@/utils/lang";
+import Image from "next/image";
 
 interface NavigationProps {
   lang: string;
   setLang: (language: string) => void;
 }
 
-export default ({ lang, setLang }: NavigationProps) => {
+const Navigation = ({ lang, setLang }: NavigationProps) => {
   const [width, setWidth] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -53,7 +54,7 @@ export default ({ lang, setLang }: NavigationProps) => {
         )}
 
         <div className="navbar__logo">
-          <img src="/assets/images/logo.png" alt="logo" />
+          <Image src="/assets/images/logo.png" alt="logo" width={width < 728 ? 28 : 44} height={width < 728 ? 28 : 44} />
           <h1>Limeal.</h1>
         </div>
       </div>
@@ -88,9 +89,11 @@ export default ({ lang, setLang }: NavigationProps) => {
         </div>
         <a href="#contact-me">
           {getTranslation(lang, "tabs--contact-me")}
-          <img src="/assets/images/icons/arrow_link.svg" alt="link-arrow" />
+          <Image src="/assets/images/icons/arrow_link.svg" alt="link-arrow" width={width < 728 ? 24 : 32} height={width < 728 ? 24 : 32} />
         </a>
       </div>
     </nav>
   );
 };
+
+export default Navigation;

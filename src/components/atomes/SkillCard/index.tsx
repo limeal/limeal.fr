@@ -2,7 +2,7 @@ import { AiFillStar } from 'react-icons/ai';
 
 import './style.scss';
 
-export default ({
+const SkillCard = ({
     name,
     star
 }: {
@@ -19,3 +19,5 @@ export default ({
         </div>
     )
 }
+
+export default SkillCard;

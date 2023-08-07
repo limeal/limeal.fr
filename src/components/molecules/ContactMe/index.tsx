@@ -1,37 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillGithub } from "react-icons/ai";
 import { BsDiscord } from "react-icons/bs";
 
 import "./style.scss";
 import getTranslation from "@/utils/lang";
+import Image from "next/image";
 
-export default ({ lang }: { lang: string }) => {
+const ContactMe = ({ lang }: { lang: string }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [document, setDocument] = useState<File | null>(null);
   const [type, setType] = useState("web");
 
+  const [width, setWidth] = useState(0);
+
+  const updateDimension = () => setWidth(window.innerWidth);
+
+  useEffect(() => {
+    updateDimension();
+    window.addEventListener("resize", updateDimension);
+
+    return () => window.removeEventListener("resize", updateDimension);
+  }, []);
+
   const onFormSubmit = async (e: any) => {
     e.preventDefault();
 
-    console.log('Sending email...');
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Type:', type);
-    console.log('Document:', document);
+    if (!document) return;
 
-    await fetch('/api', {
+    const documentPath = (window.URL || window.webkitURL).createObjectURL(document);
+
+    await fetch('/api/send-mail', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: email,
+        to: email,
         name,
         service: type,
-        document
+        documentPath,
+        documentName: document?.name.split('.')[0]
       })
     });
   };
@@ -79,11 +90,17 @@ export default ({ lang }: { lang: string }) => {
             </label>
             <input type="file" accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" required onChange={(e) => setDocument(e.target.files ? e.target.files[0] : null)}/>
           </div>
-          <button type="submit">{getTranslation(lang, 'contact-me--button')}<img src="/assets/images/icons/arrow_link.svg" alt="link-arrow" /></button>
+          <button type="submit">
+            {getTranslation(lang, 'contact-me--button')}
+            <Image src="/assets/images/icons/arrow_link.svg" alt="link-arrow" width={width < 1280 ? 20 : 24} height={width < 1280 ? 20 : 24} />
+          </button>
         </form>
       </div>
       <div className="right">
-        <img src="/assets/images/intouch.png" alt="contact-me-image" />
+        {width >= 1280 && <Image src="/assets/images/intouch.png" alt="contact-me-image" width={196} height={200} style={{
+          display: 'block',
+          marginLeft: '40px'
+        }}/>}
         <ul>
           <li>
             <a href="https://github.com/limeal" target="_blank">
@@ -100,3 +117,5 @@ export default ({ lang }: { lang: string }) => {
     </section>
   );
 };
+
+export default ContactMe;

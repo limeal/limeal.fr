@@ -83,10 +83,6 @@
       align-items: center;
       margin-left: 2px;
 
-      img {
-        width: 28px;
-      }
-
       h1 {
         color: var(--white, #fff);
         font-size: 20px;
@@ -139,7 +135,8 @@
           color: white;
           padding-left: 8px;
         }
-      }navbar__mobile
+      }
+      
       svg {
         margin-right: 14px;
       }
@@ -181,9 +178,6 @@
 
       .navbar__logo {
         margin-left: 14px;
-        img {
-          width: 44px;
-        }
 
         h1 {
           font-size: 24px;
@@ -205,10 +199,6 @@
 
       a {
         padding: 20px 20px 20px 24px;
-
-        img {
-          width: 32px;
-        }
       }
     }
   }

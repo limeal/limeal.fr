@@ -1,6 +1,6 @@
 import './style.scss';
 
-export default () => {
+const Credits = () => {
     return (
         <div className="credits">
             <p>Develop by: Limeal</p>
@@ -8,3 +8,5 @@ export default () => {
         </div>
     )
 }
+
+export default Credits;

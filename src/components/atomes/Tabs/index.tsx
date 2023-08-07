@@ -11,7 +11,7 @@ interface TabsProps {
   onClick?: (e: any) => void;
 }
 
-export default ({ lang, additionals, onClick }: TabsProps) => {
+const Tabs = ({ lang, additionals, onClick }: TabsProps) => {
   return (
     <ul>
       <li>
@@ -48,3 +48,5 @@ export default ({ lang, additionals, onClick }: TabsProps) => {
     </ul>
   );
 };
+
+export default Tabs;

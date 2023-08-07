@@ -25,7 +25,7 @@ const ProjectsList = ({ projects }: { projects: Project[] }) => {
   );
 };
 
-export default ({ lang }: { lang: string }) => {
+const Portfolio = ({ lang }: { lang: string }) => {
   const [category, setCategory] = useState<string>("all");
   const [categories, setCategories] = useState<string[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -79,3 +79,5 @@ export default ({ lang }: { lang: string }) => {
     </section>
   );
 };
+
+export default Portfolio;

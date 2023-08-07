@@ -25,12 +25,7 @@ const getProjects = async (category: string) => {
         });
 
         if (category !== "all") {
-            projects = projects.filter((doc: Project) => {
-                console.log("Project Category: " + doc.category + "r");
-                console.log("Category: " + category + "r")
-                console.log("Cond: " + doc.category === category);
-                return doc.category === category
-            })
+            projects = projects.filter((doc: Project) => doc.category === category)
         }
 
         return { categories, projects };

@@ -8,6 +8,8 @@ type EmailPayload = {
     filename: string
     path: string
   }[];
+  bcc?: string | string[];
+  ccs?: string | string[];
 }
 
 // Replace with your SMTP credentials
@@ -21,13 +23,13 @@ const smtpOptions = {
   },
 }
 
-export const sendEmail = async (from: string, data: EmailPayload) => {
+export const sendEmail = async (data: EmailPayload) => {
   const transporter = nodemailer.createTransport({
     ...smtpOptions,
   })
 
   return await transporter.sendMail({
-    from,
+    from: process.env.SMTP_EMAIL_SENDER,
     ...data,
   })
 }

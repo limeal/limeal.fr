@@ -1,15 +1,18 @@
 import Tabs from "@/components/atomes/Tabs";
 import "./style.scss";
 import getTranslation from "@/utils/lang";
+import Image from "next/image";
 
-export default ({ lang }: { lang?: string }) => {
+const Hero = ({ lang }: { lang?: string }) => {
   return (
     <section className="hero" id="about-me">
       <div>
-        <img
+        <Image
           className="hero__pattern"
           src="/assets/images/pattern.svg"
           alt="hero"
+          width={0}
+          height={0}
         />
         <div className="hero__content">
           <div className="hero__content__left">
@@ -30,17 +33,25 @@ export default ({ lang }: { lang?: string }) => {
                           left: `${index * 30}px`,
                         }}
                       >
-                        <img
+                        <Image
+                          className="hero__content__left__reviews--image"
                           src={`/assets/images/testimonials/${index + 1}.png`}
                           alt={`fc-${index + 1}`}
+                          width={0}
+                          height={0}
+                          sizes="100vw"
                         />
                       </li>
                     ))}
                 </ul>
                 <div>
-                  <img
+                  <Image
+                    className="hero__content__left__reviews--image"
                     src="/assets/images/icons/little_star_border.svg"
                     alt="quote"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
                   />
                   <div>
                     <span>200+</span>
@@ -65,14 +76,16 @@ export default ({ lang }: { lang?: string }) => {
           </div>
           <div className="hero__content__right">
             <div>
-              <img src="/assets/images/businessmann.png" alt="hero-image" />
-              <img
+              <Image sizes="100vw" className="hero__content__right__man" src="/assets/images/businessmann.png" alt="hero-image" width={0} height={0} />
+              <Image
+                sizes="100vw"
                 className="hero__content__right__head"
                 src="/assets/images/logo.png"
                 alt="head"
+                width={0} height={0}
               />
               <div>
-                <img src="/assets/images/icons/arrow_spiral.svg" alt="quote" />
+                <Image sizes="100vw" style={{width: "100%", height: "100%" }} src="/assets/images/icons/arrow_spiral.svg" alt="quote" width={0} height={0} />
                 <span>
                   {getTranslation(lang || "en", "hero--image--quote")}
                 </span>
@@ -89,9 +102,13 @@ export default ({ lang }: { lang?: string }) => {
             <li
               key={index}
             >
-              <img
+              <Image
+                sizes="100vw"
                 src={`/assets/images/logos/${index + 1}.png`}
                 alt={`fc-${index + 1}`}
+                width={0}
+                height={0}
+                style={{width: "100%", height: "100%" }}
               />
             </li>
           ))}
@@ -99,3 +116,5 @@ export default ({ lang }: { lang?: string }) => {
     </section>
   );
 };
+
+export default Hero;
