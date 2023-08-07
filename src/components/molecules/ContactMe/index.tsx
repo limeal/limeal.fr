@@ -22,7 +22,7 @@ export default ({ lang }: { lang: string }) => {
     console.log('Type:', type);
     console.log('Document:', document);
 
-    /* await fetch('/api', {
+    await fetch('/api', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -33,7 +33,7 @@ export default ({ lang }: { lang: string }) => {
         service: type,
         document
       })
-    }); */
+    });
   };
 
   return (
@@ -63,21 +63,21 @@ export default ({ lang }: { lang: string }) => {
               <span>03</span>{getTranslation(lang, 'contact-me--q3')}
             </label>
             <select onChange={(e) => setType(e.target.value)} value={type}>
-              <option value="web">Web Development</option>
-              <option value="mobile">Mobile Development</option>
-              <option value="software">Software Development</option>
-              <option value="game">Game Development</option>
-              <option value="minecraft">
+              <option value="Web Development">Web Development</option>
+              <option value="Mobile Development">Mobile Development</option>
+              <option value="Software Development">Software Development</option>
+              <option value="Game Development">Game Development</option>
+              <option value="Minecraft Addons">
                 Minecraft Development (Plugins, Mods, etc...)
               </option>
-              <option value="other">Other</option>
+              <option value="Other">Other</option>
             </select>
           </div>
           <div>
             <label>
               <span>04</span>{getTranslation(lang, 'contact-me--q4')}
             </label>
-            <input type="file" accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" required value={document?.name} onChange={(e) => setDocument(e.target.files ? e.target.files[0] : null)}/>
+            <input type="file" accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" required onChange={(e) => setDocument(e.target.files ? e.target.files[0] : null)}/>
           </div>
           <button type="submit">{getTranslation(lang, 'contact-me--button')}<img src="/assets/images/icons/arrow_link.svg" alt="link-arrow" /></button>
         </form>

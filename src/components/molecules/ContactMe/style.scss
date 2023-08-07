@@ -214,7 +214,7 @@
           align-items: center;
           gap: 10px;
           border-radius: 50px;
-          width: 202px;
+          width: 50%;
           background: var(--lime, #fbd52b);
 
           color: var(--black, #111013);
@@ -234,7 +234,7 @@
     .right {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
 
       > img {
         display: block;

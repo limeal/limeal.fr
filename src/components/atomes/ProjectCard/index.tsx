@@ -3,27 +3,27 @@ import { RiExternalLinkLine } from 'react-icons/ri';
 import "./style.scss";
 
 interface ProjectCardProps {
+  name: string;
   thumbnail: string;
-  title: string;
   description: string;
-  year: number;
-  link: string;
+  date: string;
+  href: string;
 }
 
 export default ({
+  name,
   thumbnail,
-  title,
   description,
-  year,
-  link,
+  date,
+  href,
 }: ProjectCardProps) => {
   return (
-    <div className="project-card" onClick={() => window.open(link, "_blank")}>
-      <img src={thumbnail} alt={title} />
+    <div className="project-card" onClick={() => window.open(href, "_blank")}>
+      <img src={thumbnail} alt={name} />
       <div>
         <div>
-          <span>{year}</span>
-          <h2>{title}</h2>
+          <span>{date}</span>
+          <h2>{name}</h2>
         </div>
         <RiExternalLinkLine />
       </div>

@@ -23,13 +23,13 @@ export async function POST(request: Request) {
             service,
         })),
         to: process.env.SMTP_EMAIL_RECEIVER || "",
-        subject: `Website (${service}) - ${name}`,
+        subject: `Website (${service}) - ${name}`,/* 
         attachments: [
             {
-                filename: document.split("/").pop() || "default." + document.split(".").pop(),
+                filename: document.name.split("/").pop() || "default." + document.name.split(".").pop(),
                 path: document,
             }
-        ]
+        ] */
     })
 
     return NextResponse.json({ message: "Hello World (POST)" });

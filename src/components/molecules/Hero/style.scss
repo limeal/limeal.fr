@@ -150,8 +150,8 @@
       }
 
       .hero__content__right {
+        position: relative;
         > div {
-          position: relative;
 
           > img {
             width: 428px;
@@ -310,7 +310,7 @@
       .hero__content {
         flex-direction: row;
         align-items: initial;
-        gap: 100px;
+        justify-content: space-between;
 
         .hero__content__left {
           padding: 100px 120px;
@@ -408,23 +408,25 @@
         .hero__content__right {
           > div {
             > img {
-              width: 628px;
+              width: 408px;
               height: 776px;
             }
 
             .hero__content__right__head {
-              top: -20px;
-              left: 120px;
+              padding: 0;
+              margin: 0;
+              top: 80px;
+              left: 70px;
 
-              width: 400px;
-              height: 400px;
+              width: 280px;
+              height: 280px;
             }
 
             > div {
               display: initial;
               position: absolute;
-              top: 50%;
-              left: 0;
+              top: 40%;
+              left: -30px;
 
               span {
                 position: absolute;
@@ -450,6 +452,8 @@
           }
 
           > p {
+            position: relative;
+            left: -100px;
             font-size: 16px;
             line-height: 28px;
             max-width: 690px;

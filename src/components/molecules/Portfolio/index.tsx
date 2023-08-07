@@ -2,69 +2,78 @@
 
 import { useEffect, useState } from "react";
 
-import data from "./data.json";
-
 import "./style.scss";
 import ProjectCard from "@/components/atomes/ProjectCard";
 import getTranslation from "@/utils/lang";
+import Project from "@/interfaces/project";
 
-const ProjectsList = ({ projects }: { projects: any }) => {
+const ProjectsList = ({ projects }: { projects: Project[] }) => {
   return (
-    <>
-      {projects.map(([_, value]: [string, any], index: number) => (
-        <ul key={index}>
-          {value.map((project: any, index: number) => (
-            <li key={index}>
-              <ProjectCard
-                title={project.title}
-                description={project.description}
-                thumbnail={project.thumbnail}
-                year={project.year}
-                link={project.link}
-              />
-            </li>
-          ))}
-        </ul>
+    <ul>
+      {projects.map((project: Project, index: number) => (
+        <li key={index}>
+          <ProjectCard
+            name={project.name}
+            description={project.description}
+            thumbnail={project.thumbnail}
+            date={project.created_at}
+            href={project.href}
+          />
+        </li>
       ))}
-    </>
+    </ul>
   );
 };
 
 export default ({ lang }: { lang: string }) => {
-  const [category, setCategory] = useState<string>("");
+  const [category, setCategory] = useState<string>("all");
+  const [categories, setCategories] = useState<string[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [error, setError] = useState<any>();
 
   useEffect(() => {
-    setCategory(Object.keys(data)[0]);
-  }, []);
+    fetch(`/api/projects?category=${category}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+      cache: "force-cache"
+    })
+      .then((response) => response.json())
+      .then(({
+        categories,
+        projects
+      }) => {
+        setProjects(projects);
+        setCategories(categories);
+      })
+      .catch((error) => setError(error));
+  }, [category]);
 
   return (
     <section className="portfolio" id="portfolio">
       <div className="title">
-        <h1>{getTranslation(lang, 'portfolio--title')}</h1>
-        <p>
-          {getTranslation(lang, 'portfolio--description')}
-        </p>
+        <h1>{getTranslation(lang, "portfolio--title")}</h1>
+        <p>{getTranslation(lang, "portfolio--description")}</p>
       </div>
       <ul className="categories">
-        {Object.keys(data).map((key, index) => (
+        {categories.map((name, index) => (
           <li
             key={index}
-            className={category === key ? "active" : ""}
-            onClick={() => setCategory(key)}
+            className={category === name ? "active" : ""}
+            onClick={() => setCategory(category === name ? "all" : name)}
           >
-            {key.charAt(0).toUpperCase() + key.slice(1)}
+            {name.replace('_', ' ')}
           </li>
         ))}
       </ul>
       <div className="projects">
-        {Object.entries(data).filter(([key, value]) => key === category && value.length > 0).length > 0 ? (
-          <ProjectsList
-            projects={Object.entries(data).filter(
-              ([key, value]) => key === category
-            )}
-          />
+        {!error && projects.length > 0 ? (
+          <ProjectsList projects={projects} />
         ) : (
-          <p className="no-projects">{getTranslation(lang, 'portfolio--error')}</p>
+          <p className="no-projects">
+            {getTranslation(lang, "portfolio--error")}
+          </p>
         )}
       </div>
     </section>
