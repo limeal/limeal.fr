@@ -62,7 +62,8 @@
         }
 
         input,
-        select {
+        select,
+        textarea {
           background: none;
           width: 345px;
           border: none;
@@ -175,16 +176,9 @@
             }
           }
 
-          input {
-            background: none;
-            width: 690px;
-            border: none;
-            outline: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-            padding: 12px 0px;
-          }
-
-          select {
+          input,
+          select,
+          textarea {
             background: none;
             width: 690px;
             border: none;

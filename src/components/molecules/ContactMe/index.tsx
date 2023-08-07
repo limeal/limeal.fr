@@ -11,7 +11,7 @@ import Image from "next/image";
 const ContactMe = ({ lang }: { lang: string }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [document, setDocument] = useState<File | null>(null);
+  const [content, setContent] = useState("");
   const [type, setType] = useState("web");
 
   const [width, setWidth] = useState(0);
@@ -30,7 +30,6 @@ const ContactMe = ({ lang }: { lang: string }) => {
 
     if (!document) return;
 
-    const documentPath = (window.URL || window.webkitURL).createObjectURL(document);
 
     await fetch('/api/send-mail', {
       method: 'POST',
@@ -41,8 +40,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
         to: email,
         name,
         service: type,
-        documentPath,
-        documentName: document?.name.split('.')[0]
+        content
       })
     });
   };
@@ -88,7 +86,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
             <label>
               <span>04</span>{getTranslation(lang, 'contact-me--q4')}
             </label>
-            <input type="file" accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" required onChange={(e) => setDocument(e.target.files ? e.target.files[0] : null)}/>
+            <textarea placeholder="I want..." value={content} onChange={(e) => setContent(e.target.value)} required></textarea>
           </div>
           <button type="submit">
             {getTranslation(lang, 'contact-me--button')}
