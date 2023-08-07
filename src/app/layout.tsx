@@ -4,7 +4,10 @@ import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
   title: 'Limeal - Junior Developer',
-  description: 'Portfolio',
+  description: 'My personal portfolio, to show my skills and my projects.',
+  keywords: ['Limeal', 'Portfolio', 'Junior Developer'],
+  applicationName: 'Limeal',
+  category: 'Portfolio',
   icons: [
     {
       url: '/assets/images/logo.png',
