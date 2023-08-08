@@ -14,10 +14,7 @@ type EmailPayload = {
 
 // Replace with your SMTP credentials
 const smtpOptions = {
-  host: process.env.SMTP_HOST || "smtp.mailtrap.io",
-  port: parseInt(process.env.SMTP_PORT || "2525"),
-  secure: process.env.SMTP_SECURE === "true" || false,
-  requireTLS: process.env.SMTP_REQUIRE_TLS === "true" || false,
+  service: "gmail",
   auth: {
     user: process.env.SMTP_USER || "user",
     pass: process.env.SMTP_PASSWORD || "password",
