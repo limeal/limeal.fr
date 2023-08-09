@@ -1,27 +1,19 @@
 "use client";
 
-import { RiExternalLinkLine } from 'react-icons/ri';
+import { RiExternalLinkLine } from "react-icons/ri";
 import { AiFillGithub } from "react-icons/ai";
 
 import "./style.scss";
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import Project from "@/interfaces/project";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 interface ProjectCardProps {
-  name: string;
-  thumbnail: string;
-  description: string;
-  date: string;
-  href: string;
+  project: Project;
 }
 
-const ProjectCard = ({
-  name,
-  thumbnail,
-  description,
-  date,
-  href,
-}: ProjectCardProps) => {
+const ProjectCard = ({ project }: ProjectCardProps) => {
   const [width, setWidth] = useState(0);
 
   const updateDimension = () => setWidth(window.innerWidth);
@@ -34,21 +26,48 @@ const ProjectCard = ({
   }, []);
 
 
+  const { user } = useAuthContext();
+
   return (
-    <div className="project-card" onClick={() => window.open(href, "_blank")}>
-      <Image src={thumbnail} alt={name} width={width < 728 ? 345 : 588} height={width < 728 ? 297 : 400} style={{
-        borderRadius: '12px',
-        objectFit: 'cover',
-        cursor: 'pointer'
-      }} />
+    <div className="project-card">
+      <Image
+        src={project.thumbnail}
+        alt={project.name}
+        width={width < 728 ? 345 : 588}
+        height={width < 728 ? 297 : 400}
+        style={{
+          borderRadius: "12px",
+          objectFit: "cover",
+          cursor: "pointer",
+        }}
+      />
       <div>
-        <div>
-          <span>{date}</span>
-          <h2>{name}</h2>
+        <div className="metadata">
+          <span>{project.release_date}</span>
+          <h2>{user ? project.name.replace("Limeal", "Paul") : project.name}</h2>
         </div>
-        {href.indexOf('github.com') >= 0 ? <AiFillGithub /> : <RiExternalLinkLine/>}
+        {(project.github || project.external_link) && (
+          <div className="links">
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+              >
+                <AiFillGithub />
+              </a>
+            )}
+            {project.external_link && (
+              <a
+                href={project.external_link}
+                target={project.external_link === "/" ? "_self" : "_blank"}
+              >
+                <RiExternalLinkLine />
+              </a>
+            )}
+          </div>
+        )}
       </div>
-      <p>{description}</p>
+      <p>{project.description}</p>
     </div>
   );
 };

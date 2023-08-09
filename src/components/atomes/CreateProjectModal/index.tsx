@@ -21,8 +21,9 @@ const CreateProjectModal = ({
   const [description, setDescription] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [category, setCategory] = useState("Web_Development");
-  const [href, setHref] = useState("");
-  const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
+  const [extLink, setExternalLink] = useState("");
+  const [releaseDate, setReleaseDate] = useState(moment().format("YYYY-MM-DD"));
+  const [github, setGithub] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -47,17 +48,19 @@ const CreateProjectModal = ({
 
     setLoading(true);
     try {
-      const thumbnailURL = await uploadFile(
+      await uploadFile(
         thumbnail,
         `projects/${thumbnail.name}`
       );
+
       await addProject({
         name,
-        thumbnail: thumbnailURL,
+        thumbnail: `projects/${thumbnail.name}`,
         category,
         description,
-        href,
-        created_at: date,
+        external_link: extLink,
+        release_date: releaseDate,
+        github
       });
 
       toast.success("You successfully added a new project to portfolio!");
@@ -124,8 +127,8 @@ const CreateProjectModal = ({
         <InputContainer label="Date" key={4}>
           <input
             type="date"
-            value={date || new Date().toISOString().split("T")[0]}
-            onChange={(e) => setDate(e.target.value)}
+            value={releaseDate || new Date().toISOString().split("T")[0]}
+            onChange={(e) => setReleaseDate(e.target.value)}
             required
           />
         </InputContainer>,
@@ -133,9 +136,17 @@ const CreateProjectModal = ({
           <input
             type="text"
             name="href"
-            value={href}
-            onChange={(e) => setHref(e.currentTarget.value)}
+            value={extLink}
+            onChange={(e) => setExternalLink(e.currentTarget.value)}
             required
+          />
+        </InputContainer>,
+        <InputContainer label="Github" key={6}>
+          <input
+            type="text"
+            name="github"
+            value={github}
+            onChange={(e) => setGithub(e.currentTarget.value)}
           />
         </InputContainer>,
       ]}

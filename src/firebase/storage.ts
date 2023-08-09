@@ -1,5 +1,5 @@
 import { auth, storage } from "./firebase";
-import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import { uploadBytes, ref } from "firebase/storage";
 
 const uploadFile = async (file: File, path: string) => {
 
@@ -11,8 +11,6 @@ const uploadFile = async (file: File, path: string) => {
             contentType: file.type,
         })
 
-        // TODO: Change this to path, the download url must be in the getDocs
-        return await getDownloadURL(reference);
     } catch (err) {
         console.log(err);
         throw err;

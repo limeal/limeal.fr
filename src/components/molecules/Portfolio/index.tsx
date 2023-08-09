@@ -12,18 +12,16 @@ import { User } from "firebase/auth";
 import CreateProjectModal from "@/components/atomes/CreateProjectModal";
 import { getProjects } from "@/firebase/firestore";
 
-const ProjectsList = ({ user, projects }: { user: User | null, projects: Project[] }) => {
+const ProjectsList = ({
+  projects,
+}: {
+  projects: Project[];
+}) => {
   return (
     <ul>
       {projects.map((project: Project, index: number) => (
         <li key={index}>
-          <ProjectCard
-            name={user ? project.name.replace("Limeal", "Paul") : project.name}
-            description={project.description}
-            thumbnail={project.thumbnail}
-            date={project.created_at}
-            href={project.href}
-          />
+          <ProjectCard project={project} />
         </li>
       ))}
     </ul>
@@ -41,16 +39,12 @@ const Portfolio = ({ lang }: { lang: string }) => {
   const { user } = useAuthContext();
 
   useEffect(() => {
-    getProjects(category).then(({
-      categories,
-      projects
-    }) => {
-
+    getProjects(category).then(({ categories, projects }) => {
       setProjects(projects);
 
       const set = new Set<string>(categories);
       setCategories(Array.from(set));
-    })
+    });
   }, [category]);
 
   return (
@@ -80,7 +74,7 @@ const Portfolio = ({ lang }: { lang: string }) => {
       </ul>
       <div className="projects">
         {!error && projects.length > 0 ? (
-          <ProjectsList user={user} projects={projects} />
+          <ProjectsList projects={projects} />
         ) : (
           <p className="no-projects">
             {getTranslation(lang, "portfolio--error")}

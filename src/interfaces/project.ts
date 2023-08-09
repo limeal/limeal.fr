@@ -3,8 +3,9 @@ interface Project {
     thumbnail: string;
     description: string;
     category: string;
-    href: string;
-    created_at: any;
+    github?: string;
+    external_link?: string;
+    release_date: string;
 }
 
 export default Project;

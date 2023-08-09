@@ -15,6 +15,13 @@
         font-family: "Satoshi";
         font-weight: 400;
         font-size: 16px;
+
+        &:required {
+            &::after {
+                content: "(Required)";
+                
+            }
+        }
     }
 
     .input-container--sub {

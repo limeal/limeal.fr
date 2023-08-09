@@ -1,31 +1,51 @@
 import Project from "@/interfaces/project";
-import { firestore } from "./firebase";
+import { firestore, storage } from "./firebase";
 import { getDocs, collection, addDoc } from "firebase/firestore";
 import moment from "moment";
+import { getDownloadURL, ref } from "firebase/storage";
 
 const getCollection = (collectionName: string) => getDocs(collection(firestore, collectionName))
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
+    "July", "August", "September", "October", "November", "December"
 ];
 
-const getProjects = async (category: string) => {
+const getProjects = async (selectedCategory: string) => {
     try {
         const collection = await getCollection("projects");
         const categories: string[] = [];
         let projects: Project[] = [];
-        
-        collection.forEach(project => projects.push(project.data() as Project));
 
-        projects.forEach(project => {
-            const date = moment(project.created_at, 'YYYY-MM-DD')
-            project.created_at = date.format("MMMM") + " - " + date.format("YYYY")
-            categories.push(project.category);
+        collection.forEach(async (project) => {
+
+            const {
+                name,
+                category,
+                description,
+                release_date,
+                thumbnail,
+                external_link,
+                github
+            } = project.data() as Project;
+            categories.push(category);
+
+            if (selectedCategory !== "all" && selectedCategory !== category) return;
+
+            try {
+                const date = moment(release_date, 'YYYY-MM-DD')
+                const thumbnailURL = await getDownloadURL(ref(storage, thumbnail));
+
+                projects.push({
+                    name,
+                    category,
+                    description,
+                    release_date: date.format("MMMM") + " - " + date.format("YYYY"),
+                    thumbnail: thumbnailURL,
+                    external_link,
+                    github
+                })
+            } catch (err) { }
         });
-
-        if (category !== "all") {
-            projects = projects.filter((doc: Project) => doc.category === category)
-        }
 
         return { categories, projects };
     } catch (err) {
