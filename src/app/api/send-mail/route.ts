@@ -17,6 +17,7 @@ export async function POST(request: Request) {
         content
     } = await request.json();
 
+    try {
     await sendEmail({
         html: render(ContactEmail({
             name,
@@ -28,5 +29,8 @@ export async function POST(request: Request) {
         subject: `Website (${service}) - ${name}`,
     })
 
-    return NextResponse.json({ message: "The mail has been sent !" });
+    return NextResponse.json({ message: "The mail has been sent !" }, { status: 200 });
+    } catch (err: any) {
+        return NextResponse.json({ message: 'message' in err ? err.message : 'An error occured' }, { status: 500})
+    }
 }

@@ -1,10 +1,9 @@
 import Project from "@/interfaces/project";
-import firebase from "./firebase";
-import { getFirestore, getDocs, collection } from "firebase/firestore";
+import { firestore } from "./firebase";
+import { getDocs, collection, addDoc } from "firebase/firestore";
+import moment from "moment";
 
-const db = getFirestore(firebase);
-
-const getCollection = (collectionName: string) => getDocs(collection(db, collectionName))
+const getCollection = (collectionName: string) => getDocs(collection(firestore, collectionName))
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -19,8 +18,8 @@ const getProjects = async (category: string) => {
         collection.forEach(project => projects.push(project.data() as Project));
 
         projects.forEach(project => {
-            const date = new Date(project.created_at.seconds * 1000);
-            project.created_at = monthNames[date.getMonth()] + " - " + date.getFullYear().toString();
+            const date = moment(project.created_at, 'YYYY-MM-DD')
+            project.created_at = date.format("MMMM") + " - " + date.format("YYYY")
             categories.push(project.category);
         });
 
@@ -34,4 +33,6 @@ const getProjects = async (category: string) => {
     }
 }
 
-export { getProjects };
+const addProject = async (project: Project) => await addDoc(collection(firestore, "projects"), project);
+
+export { getProjects, addProject };

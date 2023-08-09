@@ -3,7 +3,12 @@ import "./style.scss";
 import getTranslation from "@/utils/lang";
 import Image from "next/image";
 
+import { useAuthContext } from "@/contexts/AuthContext";
+
 const Hero = ({ lang }: { lang?: string }) => {
+
+  const { user } = useAuthContext();
+
   return (
     <section className="hero" id="about-me">
       <div>
@@ -17,7 +22,7 @@ const Hero = ({ lang }: { lang?: string }) => {
         <div className="hero__content">
           <div className="hero__content__left">
             <div className="hero__content__left__title">
-              <h1>Limeal</h1>
+              <h1>{user ? "Paul" : "Limeal"}</h1>
               <h2>{getTranslation(lang || "en", "hero--job")}</h2>
             </div>
 

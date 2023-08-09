@@ -1,0 +1,48 @@
+@import "@sass/main";
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    select, textarea, input {
+        margin-top: 5px;
+        padding: 10px;
+        border-radius: 5px;
+        background: var(--black, #111013);
+        border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+        color: var(--white, #fff);
+        font-family: "Satoshi";
+        font-weight: 400;
+        font-size: 16px;
+    }
+
+    .input-container--sub {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        position: relative;
+
+        > input {
+            width: 100%;
+        }
+
+        > button {
+            z-index: 105;
+            cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 5px;
+            padding: 10px;
+            border: none;
+            background: transparent;
+
+            svg {
+                width: 20px;
+                height: 20px;
+                fill: var(--white, #fff);
+            }
+        }
+    }
+}

@@ -5,10 +5,16 @@ import { AiFillHome } from "react-icons/ai";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import "./style.scss";
 import Tabs from "../Tabs";
+import AuthModal from "../AuthModal";
+
 import getTranslation from "@/utils/lang";
-import Image from "next/image";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { signOut } from "@/firebase/authentication";
 
 interface NavigationProps {
   lang: string;
@@ -18,11 +24,15 @@ interface NavigationProps {
 const Navigation = ({ lang, setLang }: NavigationProps) => {
   const [width, setWidth] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthOpen, setAuthOpen] = useState(false);
+
+  const router = useRouter();
+  const { user } = useAuthContext();
 
   const updateDimension = () => {
     if (window.innerWidth >= 1280) setIsMenuOpen(false);
     setWidth(window.innerWidth);
-  }
+  };
 
   useEffect(() => {
     updateDimension();
@@ -36,8 +46,17 @@ const Navigation = ({ lang, setLang }: NavigationProps) => {
       {isMenuOpen && (
         <div className="navbar__mobile">
           <Tabs lang={lang} onClick={() => setIsMenuOpen(false)} />
+          <button
+            onClick={() => (user ? signOut() : setAuthOpen(true))}
+            style={{
+              backgroundColor: user ? "#963696" : "#FF007F",
+            }}
+          >
+            {user ? "Logout" : "Login"}
+          </button>
         </div>
       )}
+      {isAuthOpen && <AuthModal setOpen={setAuthOpen} />}
       <div className="navbar__left">
         {width >= 1280 ? (
           <a href="#" className="navbar__toggle" id="mobile-menu">
@@ -54,8 +73,13 @@ const Navigation = ({ lang, setLang }: NavigationProps) => {
         )}
 
         <div className="navbar__logo">
-          <Image src="/assets/images/logo.png" alt="logo" width={width < 728 ? 28 : 44} height={width < 728 ? 28 : 44} />
-          <h1>Limeal.</h1>
+          <Image
+            src="/assets/images/logo.png"
+            alt="logo"
+            width={width < 728 ? 28 : 44}
+            height={width < 728 ? 28 : 44}
+          />
+          <h1>{user ? "Paul." : "Limeal."}</h1>
         </div>
       </div>
       <div className="navbar__middle">
@@ -89,8 +113,23 @@ const Navigation = ({ lang, setLang }: NavigationProps) => {
         </div>
         <a href="#contact-me">
           {getTranslation(lang, "tabs--contact-me")}
-          <Image src="/assets/images/icons/arrow_link.svg" alt="link-arrow" width={width < 728 ? 24 : 32} height={width < 728 ? 24 : 32} />
+          <Image
+            src="/assets/images/icons/arrow_link.svg"
+            alt="link-arrow"
+            width={width < 728 ? 24 : 32}
+            height={width < 728 ? 24 : 32}
+          />
         </a>
+        {width >= 1280 && (
+          <button
+            onClick={() => (user ? signOut() : setAuthOpen(true))}
+            style={{
+              backgroundColor: user ? "#963696" : "#FF007F",
+            }}
+          >
+            {user ? "Logout" : "Login"}
+          </button>
+        )}
       </div>
     </nav>
   );

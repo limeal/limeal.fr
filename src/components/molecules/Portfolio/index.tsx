@@ -1,19 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AiFillPlusCircle } from "react-icons/ai";
 
 import "./style.scss";
 import ProjectCard from "@/components/atomes/ProjectCard";
 import getTranslation from "@/utils/lang";
 import Project from "@/interfaces/project";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { User } from "firebase/auth";
+import CreateProjectModal from "@/components/atomes/CreateProjectModal";
+import { getProjects } from "@/firebase/firestore";
 
-const ProjectsList = ({ projects }: { projects: Project[] }) => {
+const ProjectsList = ({ user, projects }: { user: User | null, projects: Project[] }) => {
   return (
     <ul>
       {projects.map((project: Project, index: number) => (
         <li key={index}>
           <ProjectCard
-            name={project.name}
+            name={user ? project.name.replace("Limeal", "Paul") : project.name}
             description={project.description}
             thumbnail={project.thumbnail}
             date={project.created_at}
@@ -31,29 +36,35 @@ const Portfolio = ({ lang }: { lang: string }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [error, setError] = useState<any>();
 
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+  const { user } = useAuthContext();
+
   useEffect(() => {
-    fetch(`/api/projects?category=${category}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-      cache: "force-cache"
+    getProjects(category).then(({
+      categories,
+      projects
+    }) => {
+
+      setProjects(projects);
+
+      const set = new Set<string>(categories);
+      setCategories(Array.from(set));
     })
-      .then((response) => response.json())
-      .then(({
-        categories,
-        projects
-      }) => {
-        setProjects(projects);
-        setCategories(categories);
-      })
-      .catch((error) => setError(error));
   }, [category]);
 
   return (
     <section className="portfolio" id="portfolio">
+      {isMenuOpen && <CreateProjectModal setOpen={setIsMenuOpen} />}
       <div className="title">
-        <h1>{getTranslation(lang, "portfolio--title")}</h1>
+        <div>
+          <h1>{getTranslation(lang, "portfolio--title")}</h1>
+          {user && user.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
+            <button className="project-add" onClick={() => setIsMenuOpen(true)}>
+              <AiFillPlusCircle />
+            </button>
+          )}
+        </div>
         <p>{getTranslation(lang, "portfolio--description")}</p>
       </div>
       <ul className="categories">
@@ -63,13 +74,13 @@ const Portfolio = ({ lang }: { lang: string }) => {
             className={category === name ? "active" : ""}
             onClick={() => setCategory(category === name ? "all" : name)}
           >
-            {name.replace('_', ' ')}
+            {name.replace("_", " ")}
           </li>
         ))}
       </ul>
       <div className="projects">
         {!error && projects.length > 0 ? (
-          <ProjectsList projects={projects} />
+          <ProjectsList user={user} projects={projects} />
         ) : (
           <p className="no-projects">
             {getTranslation(lang, "portfolio--error")}
