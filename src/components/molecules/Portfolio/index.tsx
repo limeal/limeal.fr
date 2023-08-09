@@ -32,20 +32,22 @@ const Portfolio = ({ lang }: { lang: string }) => {
   const [category, setCategory] = useState<string>("all");
   const [categories, setCategories] = useState<string[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
-  const [error, setError] = useState<any>();
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const { user } = useAuthContext();
 
   useEffect(() => {
+    if (isMenuOpen) return;
+    
     getProjects(category).then(({ categories, projects }) => {
+      console.log("HERE");
       setProjects(projects);
 
       const set = new Set<string>(categories);
       setCategories(Array.from(set));
     });
-  }, [category]);
+  }, [category, isMenuOpen]);
 
   return (
     <section className="portfolio" id="portfolio">
@@ -73,7 +75,7 @@ const Portfolio = ({ lang }: { lang: string }) => {
         ))}
       </ul>
       <div className="projects">
-        {!error && projects.length > 0 ? (
+        {projects.length > 0 ? (
           <ProjectsList projects={projects} />
         ) : (
           <p className="no-projects">
