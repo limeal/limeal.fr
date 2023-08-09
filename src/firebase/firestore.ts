@@ -1,6 +1,6 @@
 import Project from "@/interfaces/project";
 import { firestore, storage } from "./firebase";
-import { getDocs, collection, addDoc } from "firebase/firestore";
+import { getDocs, collection, addDoc, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import moment from "moment";
 import { getDownloadURL, ref } from "firebase/storage";
 
@@ -9,40 +9,38 @@ const getCollection = (collectionName: string) => getDocs(collection(firestore, 
 const getProjects = async () => {
     try {
         const collection = await getCollection("projects");
-        const categories: string[] = [];
-        let projects: Project[] = [];
 
-        collection.forEach(async (project) => {
 
-            const {
-                name,
-                category,
-                description,
-                release_date,
-                thumbnail,
-                external_link,
-                github
-            } = project.data() as Project;
-            categories.push(category);
+        const projects = collection.docs.map(async (document: QueryDocumentSnapshot<DocumentData, DocumentData>) => {
 
-            const date = moment(release_date, 'YYYY-MM-DD')
+            const data = document.data();
+
+            const date = moment(data.release_date, 'YYYY-MM-DD');
+            const rDate = date.format("MMMM") + " - " + date.format("YYYY");
             let thumbnailURL = "/assets/images/no-image.png";
             try {
-                thumbnailURL = await getDownloadURL(ref(storage, thumbnail));
+                thumbnailURL = await getDownloadURL(ref(storage, data.thumbnail));
             } catch (err) { }
 
-            projects.push({
-                name,
-                category,
-                description,
-                release_date: date.format("MMMM") + " - " + date.format("YYYY"),
+            return {
+                name: data.name,
+                description: data.description,
+                category: data.category,
+                external_link: data.external_link,
+                github: data.github,
+                release_date: rDate,
                 thumbnail: thumbnailURL,
-                external_link,
-                github
-            })
-        });
+            };
+        })
 
-        return { categories, projects };
+        const copyProjects: Project[] = [];
+        for (let i = 0; i < projects.length; i++) {
+            copyProjects.push(await projects[i]);
+        }
+
+        console.log(copyProjects.length);
+
+        return copyProjects;
     } catch (err) {
         throw err;
     }

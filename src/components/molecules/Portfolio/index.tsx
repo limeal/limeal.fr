@@ -34,13 +34,12 @@ const Portfolio = ({ lang }: { lang: string }) => {
 
   const { user } = useAuthContext();
 
-  const refreshProjects = () => {
-    getProjects().then(({ categories, projects }) => {
-      setProjects(projects);
+  const refreshProjects = async () => {
+    
+    const projects = await getProjects();
 
-      const set = new Set<string>(categories);
-      setCategories(Array.from(set));
-    })
+    setCategories([...new Set(projects.map((project: Project) => project.category))])
+    setProjects(projects);
   };
 
   useEffect(() => {
@@ -49,11 +48,11 @@ const Portfolio = ({ lang }: { lang: string }) => {
 
   return (
     <section className="portfolio" id="portfolio">
-      {isMenuOpen && <CreateProjectModal setOpen={setIsMenuOpen} />}
+      {isMenuOpen && <CreateProjectModal setOpen={setIsMenuOpen} refresh={refreshProjects} />}
       <div className="title">
         <div>
           <h1>{getTranslation(lang, "portfolio--title")}</h1>
-          <button className="refresh" onClick={refreshProjects}>
+          <button className="refresh" onClick={(e) => {e.preventDefault(); refreshProjects();}}>
             <LuRefreshCcw />
           </button>
           {user && user.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
@@ -76,7 +75,7 @@ const Portfolio = ({ lang }: { lang: string }) => {
         ))}
       </ul>
       <div className="projects">
-        {projects.length > 0 ? (
+        {projects ? (
           <ProjectsList
             projects={
               category === ""

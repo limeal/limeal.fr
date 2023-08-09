@@ -14,8 +14,10 @@ import moment from "moment";
 
 const CreateProjectModal = ({
   setOpen,
+  refresh
 }: {
   setOpen: (open: boolean) => void;
+  refresh: () => void;
 }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -65,6 +67,7 @@ const CreateProjectModal = ({
 
       toast.success("You successfully added a new project to portfolio!");
       setOpen(false);
+      refresh();
     } catch (error: any) {
       toast.error(
         "message" in error ? error.message : "Failed to add a new project!"
