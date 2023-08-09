@@ -3,6 +3,7 @@
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Error from 'next/error'
 
 const Page = ({
     params,
@@ -18,10 +19,12 @@ const Page = ({
         if (user == null) router.push("/");
     }, [user]);
 
+    if (!user) return <Error statusCode={401} title="Unauthorized. Redirecting..." />
+
     return (
         <p style={{
             color: "white"
-        }}>Bienvenue sur la page Caché ;) </p>
+        }}>Bienvenue sur la page Cachée ;) </p>
     )
 }
 
