@@ -57,7 +57,9 @@ const CreateProjectModal = ({
 
       await addProject({
         name,
-        thumbnail: `projects/${thumbnail.name}`,
+        thumbnail: {
+          ref: `projects/${thumbnail.name}`,
+        },
         category,
         description,
         external_link: extLink,

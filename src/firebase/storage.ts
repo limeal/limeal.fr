@@ -1,5 +1,5 @@
 import { auth, storage } from "./firebase";
-import { uploadBytes, ref } from "firebase/storage";
+import { uploadBytes, ref, deleteObject } from "firebase/storage";
 
 const uploadFile = async (file: File, path: string) => {
 
@@ -12,9 +12,17 @@ const uploadFile = async (file: File, path: string) => {
         })
 
     } catch (err) {
-        console.log(err);
         throw err;
     }
 }
 
-export { uploadFile };
+const deleteFile = async (fileRef: string) => {
+    try {
+        const reference = ref(storage, fileRef);
+        await deleteObject(reference);
+    } catch (err) {
+        throw err;
+    }
+}
+
+export { uploadFile, deleteFile };

@@ -14,7 +14,31 @@
     font-size: 16px;
   }
 
-  > div {
+  .thumbnail {
+    position: relative;
+
+    > button {
+      position: absolute;
+      border: none;
+      background: transparent;
+      top: 0;
+      right: 0;
+      margin: 10px;
+
+      svg {
+        width: 32px;
+        height: 32px;
+        fill: #fff;
+        cursor: pointer;
+
+        &:hover {
+          fill: var(--lime, #fbd52b);
+        }
+      }
+    }
+  }
+
+  .content {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -68,8 +92,8 @@
   .project-card {
     max-width: 588px;
 
-    > div {
-      > div {
+    .content {
+      .metadata {
         margin-top: 24px;
 
         > h2 {
@@ -78,9 +102,13 @@
         }
       }
 
-      > svg {
-        width: 44px;
-        height: 44px;
+      .links {
+        > a {
+          > svg {
+            width: 44px;
+            height: 44px;
+          }
+        }
       }
     }
 

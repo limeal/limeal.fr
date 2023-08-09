@@ -1,6 +1,10 @@
 interface Project {
+    id?: string;
     name: string;
-    thumbnail: string;
+    thumbnail: {
+        ref: string;
+        url?: string;
+    };
     description: string;
     category: string;
     github?: string;

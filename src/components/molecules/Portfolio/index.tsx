@@ -12,13 +12,14 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { User } from "firebase/auth";
 import CreateProjectModal from "@/components/atomes/CreateProjectModal";
 import { getProjects } from "@/firebase/firestore";
+import { toast } from "react-toastify";
 
-const ProjectsList = ({ projects }: { projects: Project[] }) => {
+const ProjectsList = ({ projects, refresh }: { projects: Project[], refresh: () => void }) => {
   return (
     <ul>
       {projects.map((project: Project, index: number) => (
         <li key={index}>
-          <ProjectCard project={project} />
+          <ProjectCard refresh={refresh} project={project} />
         </li>
       ))}
     </ul>
@@ -34,25 +35,29 @@ const Portfolio = ({ lang }: { lang: string }) => {
 
   const { user } = useAuthContext();
 
-  const refreshProjects = async () => {
+  const refreshProjects = async (isClick: boolean) => {
     
     const projects = await getProjects();
 
     setCategories([...new Set(projects.map((project: Project) => project.category))])
     setProjects(projects);
+
+    if (isClick) {
+      toast.success("Portfolio refreshed !");
+    }
   };
 
   useEffect(() => {
-    refreshProjects();
+    refreshProjects(false);
   }, []);
 
   return (
     <section className="portfolio" id="portfolio">
-      {isMenuOpen && <CreateProjectModal setOpen={setIsMenuOpen} refresh={refreshProjects} />}
+      {isMenuOpen && <CreateProjectModal setOpen={setIsMenuOpen} refresh={() => refreshProjects(false)} />}
       <div className="title">
         <div>
           <h1>{getTranslation(lang, "portfolio--title")}</h1>
-          <button className="refresh" onClick={(e) => {e.preventDefault(); refreshProjects();}}>
+          <button className="refresh" onClick={(e) => {e.preventDefault(); refreshProjects(true);}}>
             <LuRefreshCcw />
           </button>
           {user && user.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
@@ -77,6 +82,7 @@ const Portfolio = ({ lang }: { lang: string }) => {
       <div className="projects">
         {projects ? (
           <ProjectsList
+            refresh={() => refreshProjects(false)}
             projects={
               category === ""
                 ? projects
