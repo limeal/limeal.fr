@@ -4,10 +4,13 @@ import getTranslation from "@/utils/lang";
 import Image from "next/image";
 
 import { useAuthContext } from "@/contexts/AuthContext";
+import { BsBookHalf } from "react-icons/bs";
+import { useRouter } from "next/navigation";
 
 const Hero = ({ lang }: { lang?: string }) => {
 
   const { user } = useAuthContext();
+  const router = useRouter();
 
   return (
     <section className="hero" id="about-me">
@@ -92,7 +95,11 @@ const Hero = ({ lang }: { lang?: string }) => {
               <div>
                 <Image sizes="100vw" style={{width: "100%", height: "100%" }} src="/assets/images/icons/arrow_spiral.svg" alt="quote" width={0} height={0} />
                 <span>
-                  {getTranslation(lang || "en", "hero--image--quote")}
+                  {user ? (
+                    <button onClick={() => router.push("/blog")}>
+                      <BsBookHalf />
+                    </button>
+                  ) : getTranslation(lang || "en", "hero--image--quote")}
                 </span>
               </div>
             </div>
