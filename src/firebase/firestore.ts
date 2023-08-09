@@ -6,7 +6,7 @@ import { getDownloadURL, ref } from "firebase/storage";
 
 const getCollection = (collectionName: string) => getDocs(collection(firestore, collectionName))
 
-const getProjects = async (selectedCategory: string) => {
+const getProjects = async () => {
     try {
         const collection = await getCollection("projects");
         const categories: string[] = [];
@@ -41,10 +41,6 @@ const getProjects = async (selectedCategory: string) => {
                 github
             })
         });
-
-        if (selectedCategory !== "all") {
-            projects = projects.filter((doc: Project) => doc.category === selectedCategory)
-        }
 
         return { categories, projects };
     } catch (err) {

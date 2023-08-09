@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
+import { LuRefreshCcw } from "react-icons/lu";
 
 import "./style.scss";
 import ProjectCard from "@/components/atomes/ProjectCard";
@@ -12,11 +13,7 @@ import { User } from "firebase/auth";
 import CreateProjectModal from "@/components/atomes/CreateProjectModal";
 import { getProjects } from "@/firebase/firestore";
 
-const ProjectsList = ({
-  projects,
-}: {
-  projects: Project[];
-}) => {
+const ProjectsList = ({ projects }: { projects: Project[] }) => {
   return (
     <ul>
       {projects.map((project: Project, index: number) => (
@@ -29,7 +26,7 @@ const ProjectsList = ({
 };
 
 const Portfolio = ({ lang }: { lang: string }) => {
-  const [category, setCategory] = useState<string>("all");
+  const [category, setCategory] = useState<string>("");
   const [categories, setCategories] = useState<string[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
 
@@ -37,17 +34,18 @@ const Portfolio = ({ lang }: { lang: string }) => {
 
   const { user } = useAuthContext();
 
-  useEffect(() => {
-    if (isMenuOpen) return;
-    
-    getProjects(category).then(({ categories, projects }) => {
-      console.log("HERE");
+  const refreshProjects = () => {
+    getProjects().then(({ categories, projects }) => {
       setProjects(projects);
 
       const set = new Set<string>(categories);
       setCategories(Array.from(set));
-    });
-  }, [category, isMenuOpen]);
+    })
+  };
+
+  useEffect(() => {
+    refreshProjects();
+  }, []);
 
   return (
     <section className="portfolio" id="portfolio">
@@ -55,6 +53,9 @@ const Portfolio = ({ lang }: { lang: string }) => {
       <div className="title">
         <div>
           <h1>{getTranslation(lang, "portfolio--title")}</h1>
+          <button className="refresh" onClick={refreshProjects}>
+            <LuRefreshCcw />
+          </button>
           {user && user.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
             <button className="project-add" onClick={() => setIsMenuOpen(true)}>
               <AiFillPlusCircle />
@@ -68,7 +69,7 @@ const Portfolio = ({ lang }: { lang: string }) => {
           <li
             key={index}
             className={category === name ? "active" : ""}
-            onClick={() => setCategory(category === name ? "all" : name)}
+            onClick={() => setCategory(category === name ? "" : name)}
           >
             {name.replace("_", " ")}
           </li>
@@ -76,7 +77,15 @@ const Portfolio = ({ lang }: { lang: string }) => {
       </ul>
       <div className="projects">
         {projects.length > 0 ? (
-          <ProjectsList projects={projects} />
+          <ProjectsList
+            projects={
+              category === ""
+                ? projects
+                : projects.filter(
+                    (project: Project) => project.category === category
+                  )
+            }
+          />
         ) : (
           <p className="no-projects">
             {getTranslation(lang, "portfolio--error")}
