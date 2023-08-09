@@ -6,10 +6,6 @@ import { getDownloadURL, ref } from "firebase/storage";
 
 const getCollection = (collectionName: string) => getDocs(collection(firestore, collectionName))
 
-const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-];
-
 const getProjects = async (selectedCategory: string) => {
     try {
         const collection = await getCollection("projects");
@@ -29,23 +25,26 @@ const getProjects = async (selectedCategory: string) => {
             } = project.data() as Project;
             categories.push(category);
 
-            if (selectedCategory !== "all" && selectedCategory !== category) return;
-
+            const date = moment(release_date, 'YYYY-MM-DD')
+            let thumbnailURL = "/assets/images/no-image.png";
             try {
-                const date = moment(release_date, 'YYYY-MM-DD')
-                const thumbnailURL = await getDownloadURL(ref(storage, thumbnail));
-
-                projects.push({
-                    name,
-                    category,
-                    description,
-                    release_date: date.format("MMMM") + " - " + date.format("YYYY"),
-                    thumbnail: thumbnailURL,
-                    external_link,
-                    github
-                })
+                thumbnailURL = await getDownloadURL(ref(storage, thumbnail));
             } catch (err) { }
+
+            projects.push({
+                name,
+                category,
+                description,
+                release_date: date.format("MMMM") + " - " + date.format("YYYY"),
+                thumbnail: thumbnailURL,
+                external_link,
+                github
+            })
         });
+
+        if (selectedCategory !== "all") {
+            projects = projects.filter((doc: Project) => doc.category === selectedCategory)
+        }
 
         return { categories, projects };
     } catch (err) {
