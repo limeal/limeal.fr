@@ -47,8 +47,10 @@ const CreateProjectModal = ({
 
     setLoading(true);
     try {
-
-      const thumbnailURL = await uploadFile(thumbnail, `projects/${thumbnail.name}`);
+      const thumbnailURL = await uploadFile(
+        thumbnail,
+        `projects/${thumbnail.name}`
+      );
       await addProject({
         name,
         thumbnail: thumbnailURL,
@@ -56,7 +58,7 @@ const CreateProjectModal = ({
         description,
         href,
         created_at: date,
-      })
+      });
 
       toast.success("You successfully added a new project to portfolio!");
       setOpen(false);
@@ -78,81 +80,64 @@ const CreateProjectModal = ({
       setOpen={setOpen}
       onSubmit={submitProject}
       inputs={[
-        <InputContainer
-          children={
-            <ImageDrop
-              width={"100%"}
-              height={width < 1280 ? 200 : 300}
-              image={thumbnail}
-              setImage={setThumbnail}
-            />
-          }
-        />,
-        <InputContainer
-          label="Name"
-          children={
-            <input
-              type="text"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.currentTarget.value)}
-              required
-            />
-          }
-        />,
-        <InputContainer
-          label="Description"
-          children={
-            <textarea
-              name="description"
-              value={description}
-              onChange={(e) => setDescription(e.currentTarget.value)}
-              required
-            />
-          }
-        />,
-        <InputContainer
-          label="Category"
-          children={
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            >
-              <option value="Web_Development">Web Development</option>
-              <option value="Mobile_Development">Mobile Development</option>
-              <option value="Software_Development">Software Development</option>
-              <option value="Game_Development">Game Development</option>
-              <option value="Minecraft_Addons">
-                Minecraft Development (Plugins, Mods, etc...)
-              </option>
-              <option value="Other">Other</option>
-            </select>
-          }
-        />,
-        <InputContainer
-          label="Date"
-          children={
-            <input
-              type="date"
-              value={date || new Date().toISOString().split("T")[0]}
-              onChange={(e) => setDate(e.target.value)}
-              required
-            />
-          }
-        />,
-        <InputContainer
-          label="Link"
-          children={
-            <input
-              type="text"
-              name="href"
-              value={href}
-              onChange={(e) => setHref(e.currentTarget.value)}
-              required
-            />
-          }
-        />,
+        <InputContainer key={0}>
+          <ImageDrop
+            width={"100%"}
+            height={width < 1280 ? 200 : 300}
+            image={thumbnail}
+            setImage={setThumbnail}
+          />
+        </InputContainer>,
+        <InputContainer label="Name" key={1}>
+          <input
+            type="text"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.currentTarget.value)}
+            required
+          />
+        </InputContainer>,
+        <InputContainer label="Description" key={2}>
+          <textarea
+            name="description"
+            value={description}
+            onChange={(e) => setDescription(e.currentTarget.value)}
+            required
+          />
+        </InputContainer>,
+        <InputContainer label="Category" key={3}>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            required
+          >
+            <option value="Web_Development">Web Development</option>
+            <option value="Mobile_Development">Mobile Development</option>
+            <option value="Software_Development">Software Development</option>
+            <option value="Game_Development">Game Development</option>
+            <option value="Minecraft_Addons">
+              Minecraft Development (Plugins, Mods, etc...)
+            </option>
+            <option value="Other">Other</option>
+          </select>
+        </InputContainer>,
+        <InputContainer label="Date" key={4}>
+          <input
+            type="date"
+            value={date || new Date().toISOString().split("T")[0]}
+            onChange={(e) => setDate(e.target.value)}
+            required
+          />
+        </InputContainer>,
+        <InputContainer label="Link" key={5}>
+          <input
+            type="text"
+            name="href"
+            value={href}
+            onChange={(e) => setHref(e.currentTarget.value)}
+            required
+          />
+        </InputContainer>,
       ]}
     />
   );
