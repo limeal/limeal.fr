@@ -42,8 +42,8 @@ export const ImageDrop = ({
 
     const file = files[0];
 
-    if (file.type !== "image/png" && file.type !== "image/jpeg") {
-      alert("Only png and jpeg files are allowed!");
+    if (file.type !== "image/png" && file.type !== "image/jpeg" && file.type !== "image/webp") {
+      alert("Only png, jpeg and webp files are allowed!");
       return;
     }
 

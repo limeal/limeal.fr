@@ -1,6 +1,7 @@
 "use client";
 
 import { RiExternalLinkLine } from 'react-icons/ri';
+import { AiFillGithub } from "react-icons/ai";
 
 import "./style.scss";
 import Image from 'next/image';
@@ -45,7 +46,7 @@ const ProjectCard = ({
           <span>{date}</span>
           <h2>{name}</h2>
         </div>
-        <RiExternalLinkLine />
+        {href.indexOf('github.com') >= 0 ? <AiFillGithub /> : <RiExternalLinkLine/>}
       </div>
       <p>{description}</p>
     </div>

@@ -107,9 +107,20 @@
       margin-top: 60px;
       gap: 24px;
 
-      li a svg {
-        width: 32px;
-        height: 32px;
+      li {
+        a,
+        button {
+          cursor: pointer;
+          svg {
+            width: 32px;
+            height: 32px;
+          }
+        }
+
+        button {
+          border: none;
+          background: transparent;
+        }
       }
     }
   }

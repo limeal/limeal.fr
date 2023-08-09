@@ -7,6 +7,7 @@ import { BsDiscord } from "react-icons/bs";
 import "./style.scss";
 import getTranslation from "@/utils/lang";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 const ContactMe = ({ lang }: { lang: string }) => {
   const [name, setName] = useState("");
@@ -101,14 +102,17 @@ const ContactMe = ({ lang }: { lang: string }) => {
         }}/>}
         <ul>
           <li>
-            <a href="https://github.com/limeal" target="_blank">
+            <a href="https://github.com/limeal" target="_blank" title="Github">
               <AiFillGithub />
             </a>
           </li>
           <li>
-            <a href="https://discord.gg/8QXZQ5Q" target="_blank">
+            <button onClick={() => {
+              navigator.clipboard.writeText("limeal")
+              toast.info("Discord ID: Copied to clipboard !")
+            }} title="Discord">
               <BsDiscord />
-            </a>
+            </button>
           </li>
         </ul>
       </div>
