@@ -8,6 +8,8 @@ import Error from "next/error";
 import Navigation from "@/components/atomes/Navigation";
 
 import './style.scss';
+import Blog from "@/components/molecules/DataSection/Blog";
+import Article from "@/components/atomes/Article";
 
 const Page = ({
   params,
@@ -27,7 +29,7 @@ const Page = ({
 
   useEffect(() => {
     if (params.slug) {
-      setSlug(params.slug[1] || "");
+      setSlug(params.slug[0] || "");
     }
   }, [params]);
 
@@ -42,7 +44,7 @@ const Page = ({
             ]} />
         </header>
         <main>
-            {slug ? <p>{slug}</p> : <p>lol</p>}
+            {slug !== "" ? <Article slug={slug} /> : <Blog lang="fr"/>}
         </main>
         <footer>
 

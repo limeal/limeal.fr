@@ -3,7 +3,8 @@ import './style.scss';
 export const InputContainer = ({
     label,
     children,
-    button
+    button,
+    style
 }: {
     label?: string;
     children: React.ReactNode,
@@ -11,9 +12,10 @@ export const InputContainer = ({
         content?: string | React.ReactNode,
         onClick: () => void
     }
+    style?: React.CSSProperties
 }) => {
   return (
-    <div className="input-container">
+    <div className="input-container" style={style}>
       {label && <label htmlFor={label.toLowerCase()}>{label}</label>}
       {button ? (
         <div className='input-container--sub'>

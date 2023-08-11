@@ -4,15 +4,16 @@ import { useEffect, useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { LuRefreshCcw } from "react-icons/lu";
 
-import "./style.scss";
+import { toast } from "react-toastify";
+
 import ProjectCard from "@/components/atomes/ProjectCard";
 import getTranslation from "@/utils/lang";
 import Project from "@/interfaces/project";
 import { useAuthContext } from "@/contexts/AuthContext";
-import { User } from "firebase/auth";
-import CreateProjectModal from "@/components/atomes/CreateProjectModal";
+import CPModal from "@/components/atomes/Modal/variants/CPModal";
 import { getProjects } from "@/firebase/firestore";
-import { toast } from "react-toastify";
+
+import "./style.scss";
 
 const ProjectsList = ({ projects, refresh }: { projects: Project[], refresh: () => void }) => {
   return (
@@ -53,7 +54,7 @@ const Portfolio = ({ lang }: { lang: string }) => {
 
   return (
     <section className="portfolio" id="portfolio">
-      {isMenuOpen && <CreateProjectModal setOpen={setIsMenuOpen} refresh={() => refreshProjects(false)} />}
+      {isMenuOpen && <CPModal setOpen={setIsMenuOpen} refresh={() => refreshProjects(false)} />}
       <div className="title">
         <div>
           <h1>{getTranslation(lang, "portfolio--title")}</h1>

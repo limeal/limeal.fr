@@ -6,6 +6,7 @@
   justify-content: space-between;
   background: var(--black, #111013);
   border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  min-height: 72px;
 
   a {
     text-decoration: none;
@@ -106,10 +107,6 @@
         line-height: normal;
       }
     }
-  }
-
-  .navbar__middle {
-    display: none;
   }
 
   .navbar__right {

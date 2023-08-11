@@ -6,11 +6,10 @@ import { BiSolidDownArrow } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import "./style.scss";
 import Tabs from "../Tabs";
-import AuthModal from "../AuthModal";
+import AuthModal from "../Modal/variants/AuthModal";
 
 import getTranslation from "@/utils/lang";
 import { useAuthContext } from "@/contexts/AuthContext";
@@ -29,7 +28,6 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
 
-  const router = useRouter();
   const { user } = useAuthContext();
 
   const updateDimension = () => {
@@ -66,7 +64,7 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
       {isAuthOpen && <AuthModal setOpen={setAuthOpen} />}
       <div className="navbar__left">
         {width >= 1280 ? (
-          <a href="#" className="navbar__toggle" id="mobile-menu">
+          <a href="/#" className="navbar__toggle" id="mobile-menu">
             <AiFillHome />
           </a>
         ) : (
@@ -89,13 +87,18 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
           <h1>{user ? "Paul." : "Limeal."}</h1>
         </div>
       </div>
-      <div className="navbar__middle" style={{
-        margin: hideRight ? 0 : "auto",
-        display: hideRight ? "flex" : "initial",
-        alignItems: hideRight ? "center" : "initial",
-      }}>
-        <Tabs elements={tabs} lang={lang} />
-      </div>
+      {width >= 1280 && (
+        <div
+          className="navbar__middle"
+          style={{
+            margin: hideRight ? 0 : "auto",
+            display: hideRight ? "flex" : "initial",
+            alignItems: hideRight ? "center" : "initial",
+          }}
+        >
+          <Tabs elements={tabs} lang={lang} />
+        </div>
+      )}
       {!hideRight && (
         <div className="navbar__right">
           {setLang && (

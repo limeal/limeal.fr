@@ -194,5 +194,26 @@
         "fr": "Corée",
         "es": "Corea",
         "kr": "한국"
+    },
+    {
+        "id": "blog--title",
+        "en": "Blog",
+        "fr": "Blog",
+        "es": "Blog",
+        "kr": "블로그"
+    },
+    {
+        "id": "blog--description",
+        "en": "Each article reflects a day in my life, don't hesitate to give me some feedback.",
+        "fr": "Chaque article reflète une journée de ma vie, n'hésitez pas à me donner des commentaires.",
+        "es": "Cada artículo refleja un día de mi vida, no dude en darme algunos comentarios.",
+        "kr": "각 기사는 제 삶의 하루를 반영합니다. 의견을 주시기 바랍니다."
+    },
+    {
+        "id": "blog--error",
+        "en": "No articles for this filter. Try another !",
+        "fr": "Aucun article pour ce filtre. Essayez un autre !",
+        "es": "No hay artículos para este filtro. ¡Prueba otro !",
+        "kr": "이 필터에 대한 기사가 없습니다. 다른 것을 시도하십시오!"
     }
 ]

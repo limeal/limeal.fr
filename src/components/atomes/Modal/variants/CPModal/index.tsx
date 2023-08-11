@@ -3,10 +3,9 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import "./style.scss";
-import Modal from "../Modal";
-import { InputContainer } from "../InputContainer";
-import ImageDrop from "../ImageDrop";
+import Modal from "../..";
+import { InputContainer } from "../../InputContainer";
+import ImageDrop from "../../../ImageDrop";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { uploadFile } from "@/firebase/storage";
 import { addProject } from "@/firebase/firestore";

@@ -1,0 +1,25 @@
+.first-row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        justify-content: flex-end;
+        flex: 1;
+    }
+}
+
+.third-row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+
+    * {
+        background-color: transparent !important;
+        color: white !important;
+    }
+}

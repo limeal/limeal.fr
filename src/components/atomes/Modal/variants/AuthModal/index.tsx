@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AiOutlineClose, AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { LiaEyeSolid, LiaEyeSlash } from "react-icons/lia";
 
 import { signIn } from "@/firebase/authentication";
-import "./style.scss";
-import Modal from "../Modal";
-import { InputContainer } from "../InputContainer";
+import { InputContainer } from "../../InputContainer";
+import Modal from "../..";
 
 const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
   const [email, setEmail] = useState("");

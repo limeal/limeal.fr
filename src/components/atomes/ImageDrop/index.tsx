@@ -43,8 +43,6 @@ export const ImageDrop = ({
       if (file) images.push(file);
     }
 
-    console.log("Extracted File: ", images);
-    console.log("After Extracted File: ", images.slice(0, limit ?? undefined));
     return images.slice(0, limit ?? undefined);
   };
 
@@ -70,7 +68,6 @@ export const ImageDrop = ({
     }
 
     setImages(extractImages(files));
-    console.log("Dropped File: ", images);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {

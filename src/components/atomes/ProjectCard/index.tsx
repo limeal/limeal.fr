@@ -32,7 +32,7 @@ const ProjectCard = ({ project, refresh }: ProjectCardProps) => {
 
   const handleDelete = (e: any) => {
     e.preventDefault();
-    deleteProject(project.thumbnail.ref, project.id || "")
+    deleteProject(project)
       .then(() => {
         toast.success(`Project ${project.name} deleted !`);
         refresh();

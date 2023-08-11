@@ -14,6 +14,7 @@ const Modal = ({
   onSubmit,
   loading,
   setLoading,
+  overrideStyle,
 }: {
   title: string;
   lore: string;
@@ -23,6 +24,9 @@ const Modal = ({
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   loading: boolean;
   setLoading: (loading: boolean) => void;
+  overrideStyle?: {
+    [key: string]: React.CSSProperties;
+  }
 }) => {
 
   useEffect(() => {
@@ -36,8 +40,8 @@ const Modal = ({
   return (
     <div className="modal">
       <div className="modal__overlay" onClick={() => setOpen(false)}></div>
-      <form onSubmit={onSubmit}>
-        <div className="modal__header">
+      <form onSubmit={onSubmit} style={overrideStyle ? overrideStyle["form"] : {}}>
+        <div className="modal__header" style={overrideStyle ? overrideStyle["header"] : {}}>
           <button type="button" onClick={() => setOpen(false)}>
             <AiOutlineClose />
           </button>
@@ -48,12 +52,12 @@ const Modal = ({
             </p>
           </div>
         </div>
-        <ul className="modal__body">
+        <ul className="modal__body" style={overrideStyle ? overrideStyle["body"] : {}}>
           {inputs.map((input, index) => {
             return <li key={index}>{input}</li>;
           })}
         </ul>
-        <div className="modal__footer">
+        <div className="modal__footer" style={overrideStyle ? overrideStyle["footer"] : {}}>
           <button
             type="submit"
             style={{
