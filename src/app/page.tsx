@@ -7,6 +7,7 @@ import Skills from "@/components/molecules/Skills";
 import Portfolio from "@/components/molecules/Portfolio";
 import ContactMe from "@/components/molecules/ContactMe";
 import Credits from "@/components/atomes/Credits";
+import { defaultTabs } from "@/utils/constant";
 
 const Page = () => {
 
@@ -15,7 +16,7 @@ const Page = () => {
   return (
     <>
       <header>
-        <Navigation lang={lang} setLang={setLang} />
+        <Navigation tabs={defaultTabs} lang={lang} setLang={setLang} />
       </header>
       <main>
         <Hero lang={lang} />

@@ -180,5 +180,19 @@
         "fr": "Envoyer le message",
         "es": "Enviar mensaje",
         "kr": "메시지 보내기"
+    },
+    {
+        "id": "blog-tabs--profile",
+        "en": "Profile",
+        "fr": "Profil",
+        "es": "Perfil",
+        "kr": "프로필"
+    },
+    {
+        "id": "blog-tabs--korea",
+        "en": "Korea",
+        "fr": "Corée",
+        "es": "Corea",
+        "kr": "한국"
     }
 ]

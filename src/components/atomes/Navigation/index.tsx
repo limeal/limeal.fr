@@ -17,11 +17,14 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { signOut } from "@/firebase/authentication";
 
 interface NavigationProps {
-  lang: string;
-  setLang: (language: string) => void;
+  lang?: string;
+  setLang?: (language: string) => void;
+  tabs: Tab[];
+
+  hideRight?: boolean;
 }
 
-const Navigation = ({ lang, setLang }: NavigationProps) => {
+const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
   const [width, setWidth] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
@@ -45,7 +48,11 @@ const Navigation = ({ lang, setLang }: NavigationProps) => {
     <nav className="navbar">
       {isMenuOpen && (
         <div className="navbar__mobile">
-          <Tabs lang={lang} onClick={() => setIsMenuOpen(false)} />
+          <Tabs
+            elements={tabs}
+            lang={lang}
+            onClick={() => setIsMenuOpen(false)}
+          />
           <button
             onClick={() => (user ? signOut() : setAuthOpen(true))}
             style={{
@@ -82,55 +89,75 @@ const Navigation = ({ lang, setLang }: NavigationProps) => {
           <h1>{user ? "Paul." : "Limeal."}</h1>
         </div>
       </div>
-      <div className="navbar__middle">
-        <Tabs lang={lang} />
+      <div className="navbar__middle" style={{
+        margin: hideRight ? 0 : "auto",
+        display: hideRight ? "flex" : "initial",
+        alignItems: hideRight ? "center" : "initial",
+      }}>
+        <Tabs elements={tabs} lang={lang} />
       </div>
-      <div className="navbar__right">
-        <div className="navbar__language">
-          <select id="language" onChange={(e) => setLang(e.target.value)}>
-            <option value="en">
-              {width >= 768
-                ? getTranslation(lang, "lang--english")
-                : getTranslation(lang, "lang--english").substring(0, 2)}
-            </option>
-            <option value="fr">
-              {width >= 768
-                ? getTranslation(lang, "lang--french")
-                : getTranslation(lang, "lang--french").substring(0, 2)}
-            </option>
-            <option value="es">
-              {width >= 768
-                ? getTranslation(lang, "lang--spanish")
-                : getTranslation(lang, "lang--spanish").substring(0, 2)}
-            </option>
-            <option value="kr">
-              {width >= 768
-                ? getTranslation(lang, "lang--korean")
-                : getTranslation(lang, "lang--korean").substring(0, 2)}
-            </option>
-          </select>
-          <BiSolidDownArrow />
+      {!hideRight && (
+        <div className="navbar__right">
+          {setLang && (
+            <div className="navbar__language">
+              <select id="language" onChange={(e) => setLang(e.target.value)}>
+                <option value="en">
+                  {width >= 768
+                    ? getTranslation(lang || "en", "lang--english")
+                    : getTranslation(lang || "en", "lang--english").substring(
+                        0,
+                        2
+                      )}
+                </option>
+                <option value="fr">
+                  {width >= 768
+                    ? getTranslation(lang || "en", "lang--french")
+                    : getTranslation(lang || "en", "lang--french").substring(
+                        0,
+                        2
+                      )}
+                </option>
+                <option value="es">
+                  {width >= 768
+                    ? getTranslation(lang || "en", "lang--spanish")
+                    : getTranslation(lang || "en", "lang--spanish").substring(
+                        0,
+                        2
+                      )}
+                </option>
+                <option value="kr">
+                  {width >= 768
+                    ? getTranslation(lang || "en", "lang--korean")
+                    : getTranslation(lang || "en", "lang--korean").substring(
+                        0,
+                        2
+                      )}
+                </option>
+              </select>
+              <BiSolidDownArrow />
+            </div>
+          )}
+          <a href="#contact-me">
+            {getTranslation(lang || "en", "tabs--contact-me")}
+            <Image
+              src="/assets/images/icons/arrow_link.svg"
+              alt="link-arrow"
+              width={width < 728 ? 24 : 32}
+              height={width < 728 ? 24 : 32}
+            />
+          </a>
+          {width >= 1280 && (
+            <button
+              onClick={() => (user ? signOut() : setAuthOpen(true))}
+              style={{
+                backgroundColor: user ? "#963696" : "#FF007F",
+              }}
+            >
+              {user ? "Logout" : "Login"}
+            </button>
+          )}
         </div>
-        <a href="#contact-me">
-          {getTranslation(lang, "tabs--contact-me")}
-          <Image
-            src="/assets/images/icons/arrow_link.svg"
-            alt="link-arrow"
-            width={width < 728 ? 24 : 32}
-            height={width < 728 ? 24 : 32}
-          />
-        </a>
-        {width >= 1280 && (
-          <button
-            onClick={() => (user ? signOut() : setAuthOpen(true))}
-            style={{
-              backgroundColor: user ? "#963696" : "#FF007F",
-            }}
-          >
-            {user ? "Logout" : "Login"}
-          </button>
-        )}
-      </div>
+      )}
     </nav>
   );
 };

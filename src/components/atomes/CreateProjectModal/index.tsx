@@ -91,9 +91,10 @@ const CreateProjectModal = ({
         <InputContainer key={0}>
           <ImageDrop
             width={"100%"}
+            limit={1}
             height={width < 1280 ? 200 : 300}
-            image={thumbnail}
-            setImage={setThumbnail}
+            images={thumbnail ? [thumbnail] : null}
+            setImages={(images: Array<File> | null) => setThumbnail(images ? images[0] : null)}
           />
         </InputContainer>,
         <InputContainer label="Name" key={1}>

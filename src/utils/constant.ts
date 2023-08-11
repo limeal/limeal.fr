@@ -10,4 +10,22 @@ const splashPhrases = [
     "Elon Musk is a reptilian",
 ];
 
-export { splashPhrases };
+const defaultTabs: Tab[] = [
+    {
+        href: "#about",
+        tid: "tabs--about-me",
+        type: "link"
+    },
+    {
+        href: "#skills",
+        tid: "tabs--skills",
+        type: "link"
+    },
+    {
+        href: "#portfolio",
+        tid: "tabs--portfolio",
+        type: "link"
+    }
+]
+
+export { splashPhrases, defaultTabs };

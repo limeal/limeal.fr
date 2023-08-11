@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { BsBookHalf } from "react-icons/bs";
 import { useRouter } from "next/navigation";
+import { defaultTabs } from "@/utils/constant";
 
 const Hero = ({ lang }: { lang?: string }) => {
 
@@ -74,11 +75,13 @@ const Hero = ({ lang }: { lang?: string }) => {
 
             <Tabs
               lang={lang}
-              additionals={[
+              elements={[
+                ...defaultTabs,
                 {
-                  id: "contact-me",
+                  href: "#contact-me",
                   tid: "tabs--contact-me",
-                },
+                  type: "link"
+                }
               ]}
             />
           </div>
