@@ -4,7 +4,7 @@ import Hero from "@/components/molecules/Hero";
 import Navigation from "@/components/atomes/Navigation";
 import { useState } from "react";
 import Skills from "@/components/molecules/Skills";
-import Portfolio from "@/components/molecules/Portfolio";
+import Portfolio from "@/components/molecules/DataSection/Portfolio";
 import ContactMe from "@/components/molecules/ContactMe";
 import Credits from "@/components/atomes/Credits";
 import { defaultTabs } from "@/utils/constant";

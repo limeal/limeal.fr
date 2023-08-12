@@ -28,6 +28,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import Like from "@/interfaces/like";
 import { addLike, deleteLike, getLikesFromEntity } from "@/firebase/store/like";
+import BaseLoading from "../BaseLoading";
 
 const Article = ({ slug }: { slug: string }) => {
   const [article, setArticle] = useState<Article | null>(null);
@@ -166,7 +167,7 @@ const Article = ({ slug }: { slug: string }) => {
       });
   };
 
-  if (article == null) return <div>Loading...</div>;
+  if (article == null) return <BaseLoading />
   if (error) return <div>Error</div>;
 
   const minSwipeDistance = 60

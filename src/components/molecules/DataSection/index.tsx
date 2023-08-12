@@ -8,6 +8,7 @@ import getTranslation from "@/utils/lang";
 import { useAuthContext } from "@/contexts/AuthContext";
 
 import "./style.scss";
+import BaseLoading from "@/components/atomes/BaseLoading";
 
 const DataSection = ({
   sectionName,
@@ -23,6 +24,7 @@ const DataSection = ({
 
   refresh,
   lang,
+  loading,
 }: {
   sectionName: string;
 
@@ -32,27 +34,27 @@ const DataSection = ({
 
   elements: any[];
 
-  callbackAdd: (props: { setIsMenuOpen: (open :boolean) => void; refresh: () => void }) => React.ReactElement;
+  callbackAdd: (props: {
+    setIsMenuOpen: (open: boolean) => void;
+    refresh: () => void;
+  }) => React.ReactElement;
   callbackChild: (props: {
     element: any;
     refresh: () => void;
   }) => React.ReactElement;
 
-  refresh: (isClick: boolean) => void;
+  refresh: (isClick: boolean) => Promise<void>;
   lang: string;
+  loading: boolean;
 }) => {
-
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const { user } = useAuthContext();
 
-  useEffect(() => {
-    refresh(false);
-  }, [refresh]);
-
   return (
     <section className="data-section" id={sectionName}>
-      {isMenuOpen && callbackAdd({ setIsMenuOpen, refresh: () => refresh(false) })}
+      {isMenuOpen &&
+        callbackAdd({ setIsMenuOpen, refresh: () => refresh(false) })}
       <div className="title">
         <div>
           <h1>{getTranslation(lang, `${sectionName}--title`)}</h1>
@@ -76,32 +78,40 @@ const DataSection = ({
         </div>
         <p>{getTranslation(lang, `${sectionName}--description`)}</p>
       </div>
-      <ul className="filters">
-        {filters.map((name, index) => (
-          <li
-            key={index}
-            className={selectedFilter === name ? "active" : ""}
-            onClick={() => setSelectedFilter(selectedFilter === name ? "" : name)}
-          >
-            {name.replace("_", " ")}
-          </li>
-        ))}
-      </ul>
-      <div className={`elements`}>
-        {elements ? (
-          <ul>
-            {elements.map((element: any, index: number) => (
-              <li key={index}>
-                {callbackChild({ element, refresh: () => refresh(false) })}
+      {!loading ? (
+        <>
+          <ul className="filters">
+            {filters.map((name, index) => (
+              <li
+                key={index}
+                className={selectedFilter === name ? "active" : ""}
+                onClick={() =>
+                  setSelectedFilter(selectedFilter === name ? "" : name)
+                }
+              >
+                {name.replace("_", " ")}
               </li>
             ))}
           </ul>
-        ) : (
-          <p className={`no-elements`}>
-            {getTranslation(lang, `${sectionName}--error`)}
-          </p>
-        )}
-      </div>
+          <div className={`elements`}>
+            {elements ? (
+              <ul>
+                {elements.map((element: any, index: number) => (
+                  <li key={index}>
+                    {callbackChild({ element, refresh: () => refresh(false) })}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className={`no-elements`}>
+                {getTranslation(lang, `${sectionName}--error`)}
+              </p>
+            )}
+          </div>
+        </>
+      ) : (
+        <BaseLoading />
+      )}
     </section>
   );
 };

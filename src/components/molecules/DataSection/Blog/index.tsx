@@ -15,8 +15,10 @@ const Blog = ({ lang }: { lang: string }) => {
   const [country, setCountry] = useState<string>("");
   const [countries, setCountries] = useState<string[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const refreshArticles = async (isClick: boolean) => {
+    setLoading(true);
     const articles = await getArticles();
 
     setCountries([
@@ -31,6 +33,7 @@ const Blog = ({ lang }: { lang: string }) => {
     if (isClick) {
       toast.success("Portfolio refreshed !");
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -43,6 +46,7 @@ const Blog = ({ lang }: { lang: string }) => {
       filters={countries}
       selectedFilter={country}
       setSelectedFilter={setCountry}
+      loading={loading}
       elements={
         country === ""
           ? articles
