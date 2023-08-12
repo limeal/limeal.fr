@@ -88,6 +88,7 @@ const Article = ({ slug }: { slug: string }) => {
     addComment(newComment)
       .then(() => {
         toast.success("Commentaire ajouté !");
+        setComment("");
         refreshComments(false);
       })
       .catch((err) => {
@@ -293,9 +294,9 @@ const Article = ({ slug }: { slug: string }) => {
                       </button>
                       <span>{comment.likes?.length}</span>
                     </div>
-                    {(comment.author_id === user?.uid ||
-                      comment.author_id ===
-                        process.env.NEXT_PUBLIC_ADMIN_ID) && (
+                    {((comment.author_id === user?.uid) ||
+                      (user?.uid ===
+                        process.env.NEXT_PUBLIC_ADMIN_USER_ID)) && (
                       <button onClick={(e) => handleCommentDelete(e, comment)}>
                         <AiFillDelete />
                       </button>
