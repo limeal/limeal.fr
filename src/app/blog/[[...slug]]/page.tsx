@@ -43,6 +43,7 @@ const Page = ({
   return (
     <>
       <header>
+        {openProfile && <ProfileModal setOpen={setOpenProfile} />}
         <Navigation
           hideRight={true}
           lang="fr"
@@ -56,7 +57,6 @@ const Page = ({
         />
       </header>
       <main>
-        {openProfile && <ProfileModal setOpen={setOpenProfile} />}
         {slug !== "" ? <Article slug={slug} /> : <Blog lang="fr" />}
       </main>
       <footer>

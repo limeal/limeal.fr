@@ -65,11 +65,6 @@ const ProfileModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
       setLoading={setLoading}
       setOpen={setOpen}
       onSubmit={update}
-      overrideStyle={{
-        body: {
-          padding: 0
-        }
-      }}
       inputs={[
         <ImageDrop
           key={0}
@@ -86,6 +81,7 @@ const ProfileModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
             type="text"
             name="username"
             value={username}
+            style={{ width: "100%" }}
             onChange={(e) => setUsername(e.currentTarget.value)}
           />
         </InputContainer>,
