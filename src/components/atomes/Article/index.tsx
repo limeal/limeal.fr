@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ImLocation } from "react-icons/im";
 import { BsFillCalendarDateFill } from "react-icons/bs";
 import { IoArrowBack } from "react-icons/io5";
@@ -8,6 +8,7 @@ import {
   AiOutlineArrowRight,
   AiFillHeart,
   AiOutlineHeart,
+  AiFillDelete,
 } from "react-icons/ai";
 import { LuRefreshCcw } from "react-icons/lu";
 
@@ -18,6 +19,7 @@ import Comment from "@/interfaces/comment";
 import "./style.scss";
 import {
   addComment,
+  deleteComment,
   getComments,
   getCommentsFromParam,
 } from "@/firebase/store/comment";
@@ -46,6 +48,11 @@ const Article = ({ slug }: { slug: string }) => {
       .catch(() => setError(true));
   }, [slug]);
 
+  useEffect(() => {
+    refreshComments();
+    refreshLikes();
+  }, [article]);
+
   const refreshComments = (isClick?: boolean) => {
     getCommentsFromParam("article_ref", article?.id || "").then(
       (comments: Comment[]) => {
@@ -66,11 +73,6 @@ const Article = ({ slug }: { slug: string }) => {
       setLikes(newLikes);
     });
   };
-
-  useEffect(() => {
-    refreshComments();
-    refreshLikes();
-  }, []);
 
   const handleCommentSubmit = (e: any) => {
     e.preventDefault();
@@ -143,6 +145,20 @@ const Article = ({ slug }: { slug: string }) => {
       toast.success("Commentaire liké !");
       refreshComments(false);
     });
+  };
+
+  const handleCommentDelete = (e: any, comment: Comment) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    deleteComment(comment)
+      .then(() => {
+        toast.success("Commentaire supprimé !");
+        refreshComments(false);
+      })
+      .catch(() => {
+        toast.error("Erreur lors de la suppression du commentaire !");
+      });
   };
 
   if (article == null) return <div>Loading...</div>;
@@ -256,21 +272,34 @@ const Article = ({ slug }: { slug: string }) => {
                     <p>{comment.content}</p>
                   </div>
                   <div className="right">
-                    <button
-                      onClick={(e) => handleCommentLike(e, comment)}
-                      className={
-                        comment.likes?.find((like) => like.author_id === user?.uid)
-                          ? "active"
-                          : ""
-                      }
-                    >
-                      {comment.likes?.find((like) => like.author_id === user?.uid) ? (
-                        <AiFillHeart />
-                      ) : (
-                        <AiOutlineHeart />
-                      )}
-                    </button>
-                    <span>{comment.likes?.length}</span>
+                    <div>
+                      <button
+                        onClick={(e) => handleCommentLike(e, comment)}
+                        className={
+                          comment.likes?.find(
+                            (like) => like.author_id === user?.uid
+                          )
+                            ? "active"
+                            : ""
+                        }
+                      >
+                        {comment.likes?.find(
+                          (like) => like.author_id === user?.uid
+                        ) ? (
+                          <AiFillHeart />
+                        ) : (
+                          <AiOutlineHeart />
+                        )}
+                      </button>
+                      <span>{comment.likes?.length}</span>
+                    </div>
+                    {(comment.author_id === user?.uid ||
+                      comment.author_id ===
+                        process.env.NEXT_PUBLIC_ADMIN_ID) && (
+                      <button onClick={(e) => handleCommentDelete(e, comment)}>
+                        <AiFillDelete />
+                      </button>
+                    )}
                   </div>
                 </div>
               </li>
