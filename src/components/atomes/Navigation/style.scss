@@ -109,6 +109,16 @@
     }
   }
 
+  .navbar_auth {
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: white;
+    padding: 14px 30px;
+    height: 73px;
+  }
+
   .navbar__right {
     display: flex;
     flex-direction: row;
@@ -170,15 +180,6 @@
       img {
         width: 24px;
       }
-    }
-
-    > button {
-      border: none;
-      cursor: pointer;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: white;
-      padding: 14px 30px;
     }
   }
 }

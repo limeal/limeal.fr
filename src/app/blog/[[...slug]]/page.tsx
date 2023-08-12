@@ -51,7 +51,7 @@ const Page = ({
               onClick: () => setOpenProfile(true),
               tid: "blog-tabs--profile",
               type: "button",
-            },
+            }
           ]}
         />
       </header>

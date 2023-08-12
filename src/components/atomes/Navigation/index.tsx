@@ -14,6 +14,7 @@ import AuthModal from "../Modal/variants/AuthModal";
 import getTranslation from "@/utils/lang";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { signOut } from "@/firebase/authentication";
+import { useRouter } from "next/navigation";
 
 interface NavigationProps {
   lang?: string;
@@ -29,6 +30,7 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
   const [isAuthOpen, setAuthOpen] = useState(false);
 
   const { user } = useAuthContext();
+  const router = useRouter();
 
   const updateDimension = () => {
     if (window.innerWidth >= 1280) setIsMenuOpen(false);
@@ -97,6 +99,17 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
           }}
         >
           <Tabs elements={tabs} lang={lang} />
+          {hideRight && (
+            <button
+              className="navbar_auth"
+              onClick={() => (user ? signOut().then(() => router.push("/")) : setAuthOpen(true))}
+              style={{
+                backgroundColor: user ? "#963696" : "#FF007F",
+              }}
+            >
+              {user ? "Logout" : "Login"}
+            </button>
+          )}
         </div>
       )}
       {!hideRight && (
@@ -151,6 +164,7 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
           </a>
           {width >= 1280 && (
             <button
+              className="navbar_auth"
               onClick={() => (user ? signOut() : setAuthOpen(true))}
               style={{
                 backgroundColor: user ? "#963696" : "#FF007F",
