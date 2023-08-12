@@ -9,7 +9,7 @@ import { AiFillDelete } from "react-icons/ai";
 
 import "./style.scss";
 import { useAuthContext } from "@/contexts/AuthContext";
-import { deleteArticle } from "@/firebase/firestore";
+import { deleteArticle } from "@/firebase/store/article";
 import Article from "@/interfaces/article";
 
 interface ArticleCardProps {
@@ -45,7 +45,7 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
   };
 
   return (
-    <div className="article-card" onClick={() => router.push(`/blog/${article.slug}`)}>
+    <div className="article-card">
       <div className="thumbnail">
         <Image
           src={article.images[0].url || "/assets/images/no-image.png"}
@@ -56,14 +56,17 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
             borderRadius: "12px",
             objectFit: "cover",
           }}
+          onClick={() => router.push(`/blog/${article.slug}`)}
         />
         {user && user.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
-          <button onClick={(e) => handleDelete(e)}>
+          <button onClick={(e) => handleDelete(e)} style={{
+            zIndex: 1000
+          }}>
             <AiFillDelete />
           </button>
         )}
       </div>
-      <div className="content">
+      <div className="content" onClick={() => router.push(`/blog/${article.slug}`)}>
         <div className="metadata">
           <span>{article.created_at}</span>
           <h2>

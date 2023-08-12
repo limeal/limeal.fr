@@ -1,5 +1,5 @@
 import { auth, storage } from "./firebase";
-import { uploadBytes, ref, deleteObject } from "firebase/storage";
+import { uploadBytes, ref, deleteObject, getDownloadURL, getBlob } from "firebase/storage";
 
 const uploadFile = async (file: File, path: string) => {
 
@@ -16,6 +16,30 @@ const uploadFile = async (file: File, path: string) => {
     }
 }
 
+const getImagesURL = async (images: {
+    ref: string;
+    url?: string;
+}[]) => {
+    let urls: string[] = [];
+    let defaultImage = "/assets/images/no-image.png";
+
+    for (let i = 0; i < images.length; i++) {
+        try {
+            const imageURL = await getDownloadURL(ref(storage, images[i].ref));
+            urls.push(imageURL);
+        } catch (err) {
+            urls.push(defaultImage);
+        }
+    }
+
+    return urls;
+}
+
+const getFileFromUrl = async (imageRef: string, name: string, defaultType = 'image/jpeg') => {
+    const file = await getBlob(ref(storage, imageRef));
+    return new File([file], name, { type: file.type || defaultType });
+}
+
 const deleteFile = async (fileRef: string) => {
     try {
         const reference = ref(storage, fileRef);
@@ -25,4 +49,4 @@ const deleteFile = async (fileRef: string) => {
     }
 }
 
-export { uploadFile, deleteFile };
+export { uploadFile, deleteFile, getImagesURL, getFileFromUrl };

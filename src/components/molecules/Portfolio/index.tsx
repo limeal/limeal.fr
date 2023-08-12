@@ -11,7 +11,7 @@ import getTranslation from "@/utils/lang";
 import Project from "@/interfaces/project";
 import { useAuthContext } from "@/contexts/AuthContext";
 import CPModal from "@/components/atomes/Modal/variants/CPModal";
-import { getProjects } from "@/firebase/firestore";
+import { getProjects } from "@/firebase/store/project";
 
 import "./style.scss";
 

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import Article from "@/interfaces/article";
-import { getArticles } from "@/firebase/firestore";
+import { getArticles } from "@/firebase/store/article";
 
 import ArticleCard from "@/components/atomes/ArticleCard";
 import DataSection from "..";

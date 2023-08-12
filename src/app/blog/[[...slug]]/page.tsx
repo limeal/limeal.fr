@@ -7,9 +7,11 @@ import { useRouter } from "next/navigation";
 import Error from "next/error";
 import Navigation from "@/components/atomes/Navigation";
 
-import './style.scss';
+import "./style.scss";
 import Blog from "@/components/molecules/DataSection/Blog";
 import Article from "@/components/atomes/Article";
+import Credits from "@/components/atomes/Credits";
+import ProfileModal from "@/components/atomes/Modal/variants/ProfileModal";
 
 const Page = ({
   params,
@@ -21,11 +23,13 @@ const Page = ({
   const router = useRouter();
   const { user } = useAuthContext();
 
+  const [openProfile, setOpenProfile] = useState<boolean>(false);
+
   const [slug, setSlug] = useState<string>(""); // == Article slug
 
   useEffect(() => {
     if (user == null) router.push("/");
-  }, [user]);
+  }, [user, router]);
 
   useEffect(() => {
     if (params.slug) {
@@ -38,17 +42,26 @@ const Page = ({
 
   return (
     <>
-        <header>
-            <Navigation hideRight={true} lang="fr" tabs={[
-                {onClick: () => router.push("/profile"), tid: "blog-tabs--profile", type: "button"}
-            ]} />
-        </header>
-        <main>
-            {slug !== "" ? <Article slug={slug} /> : <Blog lang="fr"/>}
-        </main>
-        <footer>
-
-        </footer>
+      <header>
+        <Navigation
+          hideRight={true}
+          lang="fr"
+          tabs={[
+            {
+              onClick: () => setOpenProfile(true),
+              tid: "blog-tabs--profile",
+              type: "button",
+            },
+          ]}
+        />
+      </header>
+      <main>
+        {openProfile && <ProfileModal setOpen={setOpenProfile} />}
+        {slug !== "" ? <Article slug={slug} /> : <Blog lang="fr" />}
+      </main>
+      <footer>
+        <Credits />
+      </footer>
     </>
   );
 };

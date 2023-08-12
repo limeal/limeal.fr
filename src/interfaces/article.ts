@@ -1,3 +1,6 @@
+import Comment from './comment';
+import Like from './like';
+
 interface Article {
     id?: string;
     
@@ -19,6 +22,9 @@ interface Article {
 
     created_at: string; // YYYY-MM-DD
     published: boolean;
+
+    likes?: Like[];
+    comments?: Comment[];
 }
 
 export default Article;

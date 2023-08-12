@@ -8,7 +8,7 @@ import { InputContainer } from "../../InputContainer";
 import ImageDrop from "../../../ImageDrop";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { uploadFile } from "@/firebase/storage";
-import { addProject } from "@/firebase/firestore";
+import { addProject } from "@/firebase/store/project";
 import moment from "moment";
 
 const CreateProjectModal = ({

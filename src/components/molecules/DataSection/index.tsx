@@ -48,7 +48,7 @@ const DataSection = ({
 
   useEffect(() => {
     refresh(false);
-  }, []);
+  }, [refresh]);
 
   return (
     <section className="data-section" id={sectionName}>

@@ -8,7 +8,7 @@ import Modal from "../..";
 import { InputContainer } from "../../InputContainer";
 import ImageDrop from "../../../ImageDrop";
 import { uploadFile } from "@/firebase/storage";
-import { addArticle } from "@/firebase/firestore";
+import { addArticle } from "@/firebase/store/article";
 import moment from "moment";
 
 import "./style.scss";

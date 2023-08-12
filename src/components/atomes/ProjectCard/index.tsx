@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Project from "@/interfaces/project";
 import { useAuthContext } from "@/contexts/AuthContext";
-import { deleteProject } from "@/firebase/firestore";
+import { deleteProject } from "@/firebase/store/project";
 import { toast } from "react-toastify";
 
 interface ProjectCardProps {
