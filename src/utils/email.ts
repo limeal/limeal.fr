@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer"
+import SMTPTransport from "nodemailer/lib/smtp-transport"
 
 type EmailPayload = {
   to: string
@@ -13,8 +14,10 @@ type EmailPayload = {
 }
 
 // Replace with your SMTP credentials
-const smtpOptions = {
-  service: "gmail",
+const smtpOptions: SMTPTransport.Options = {
+  host: process.env.SMTP_HOST || "",
+  port: parseInt(process.env.SMTP_PORT || "587"),
+  secure: process.env.SMTP_SECURE === "true" ?? false,
   auth: {
     user: process.env.SMTP_USER || "user",
     pass: process.env.SMTP_PASSWORD || "password",
@@ -27,7 +30,7 @@ export const sendEmail = async (data: EmailPayload) => {
   })
 
   return await transporter.sendMail({
-    from: process.env.SMTP_EMAIL_SENDER,
+    from: process.env.SMTP_USER,
     ...data,
   })
 }
