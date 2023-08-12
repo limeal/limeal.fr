@@ -44,7 +44,7 @@ const Portfolio = ({ lang }: { lang: string }) => {
     setProjects(projects);
 
     if (isClick) {
-      toast.success("Portfolio refreshed !");
+      toast.success(getTranslation(lang, "portfolio--refresh-success"));
     }
   };
 

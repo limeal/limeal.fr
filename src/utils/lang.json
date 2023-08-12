@@ -133,6 +133,27 @@
         "kr": "이 카테고리에 프로젝트가 없습니다. 다른 것을 시도하십시오!"
     },
     {
+        "id": "portfolio--refresh-success",
+        "en": "All project(s) has been re-fetched !",
+        "fr": "Tous les projets ont été récupérés !",
+        "es": "¡Todos los proyectos han sido recuperados!",
+        "kr": "모든 프로젝트가 다시 가져 왔습니다!"
+    },
+    {
+        "id": "portfolio--add-success",
+        "en": "Project has been added !",
+        "fr": "Le projet a été ajouté !",
+        "es": "¡El proyecto ha sido agregado!",
+        "kr": "프로젝트가 추가되었습니다!"
+    },
+    {
+        "id": "portfolio--add-error",
+        "en": "An error occured while adding the project. Please try again later.",
+        "fr": "Une erreur s'est produite lors de l'ajout du projet. Veuillez réessayer plus tard.",
+        "es": "Se produjo un error al agregar el proyecto. Por favor, inténtelo de nuevo más tarde.",
+        "kr": "프로젝트를 추가하는 중에 오류가 발생했습니다. 나중에 다시 시도하십시오."
+    },
+    {
         "id": "contact-me--title",
         "en": "Let's work together",
         "fr": "Travaillons ensemble",
@@ -180,6 +201,27 @@
         "fr": "Envoyer le message",
         "es": "Enviar mensaje",
         "kr": "메시지 보내기"
+    },
+    {
+        "id": "contact-me--success",
+        "en": "Your message has been sent successfully !",
+        "fr": "Votre message a été envoyé avec succès !",
+        "es": "¡Tu mensaje ha sido enviado con éxito!",
+        "kr": "메시지가 성공적으로 전송되었습니다!"
+    },
+    {
+        "id": "contact-me--error",
+        "en": "An error occured, please try again later.",
+        "fr": "Une erreur s'est produite, veuillez réessayer plus tard.",
+        "es": "Se produjo un error, inténtelo de nuevo más tarde.",
+        "kr": "오류가 발생했습니다. 나중에 다시 시도하십시오."
+    },
+    {
+        "id": "contact-me--discord-copied",
+        "en": "Discord ID copied to clipboard !",
+        "fr": "ID Discord copié dans le presse-papiers !",
+        "es": "ID de Discord copiado al portapapeles!",
+        "kr": "디스코드 ID가 클립 보드에 복사되었습니다!"
     },
     {
         "id": "blog-tabs--profile",

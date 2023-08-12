@@ -10,13 +10,16 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { uploadFile } from "@/firebase/storage";
 import { addProject } from "@/firebase/store/project";
 import moment from "moment";
+import getTranslation from "@/utils/lang";
 
 const CreateProjectModal = ({
   setOpen,
-  refresh
+  refresh,
+  lang
 }: {
   setOpen: (open: boolean) => void;
   refresh: () => void;
+  lang?: string;
 }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -66,13 +69,11 @@ const CreateProjectModal = ({
         github
       });
 
-      toast.success("You successfully added a new project to portfolio!");
+      toast.success(getTranslation(lang || "en", "portfolio--add-success"));
       setOpen(false);
       refresh();
     } catch (error: any) {
-      toast.error(
-        "message" in error ? error.message : "Failed to add a new project!"
-      );
+      toast.error(getTranslation(lang || "en", "portfolio--add-error"));
     }
     setLoading(false);
   };
