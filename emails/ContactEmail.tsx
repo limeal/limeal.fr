@@ -55,12 +55,12 @@ export const ContactEmail = ({
           <Hr style={hr} />
           <Row>
             <Column>
-              <Link href="https://discord.com/limeal_">
+              <Link href="https://discord.com/users/983030818794532914">
                 <Img src="https://logodownload.org/wp-content/uploads/2017/11/discord-logo-4-1.png" alt="Discord" width={20} height={20} />
               </Link>
             </Column>
             <Column>
-              <Link href="https://github.com/limeal_">
+              <Link href="https://github.com/limeal">
                 <Img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/2048px-Octicons-mark-github.svg.png" alt="Github" width={20} height={20} />
               </Link>
             </Column>
