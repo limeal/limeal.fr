@@ -24,7 +24,7 @@
   }
 
   .navbar__mobile {
-    top: 50px;
+    top: 73px;
     position: absolute;
     width: 100%;
     height: 50px;
@@ -34,7 +34,6 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
 
     ul {
       display: flex;
@@ -48,8 +47,8 @@
 
         a {
           font-family: "Satoshi";
-          font-weight: 700;
-          font-size: 16px;
+          font-weight: 600;
+          font-size: 14px;
           text-transform: uppercase;
 
           &:hover {
@@ -59,14 +58,19 @@
       }
     }
 
-    > button {
-      border: none;
-      outline: none;
-      font-size: 16px;
-      width: 100px;
-      text-align: center;
-      font-family: "Satoshi";
-      font-weight: 700;
+    > div {
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      > button {
+        border: none;
+        outline: none;
+        font-size: 14px;
+        padding: 10px 15px;
+        text-align: center;
+        font-family: "Satoshi";
+        font-weight: 700;
+      }
     }
   }
 
@@ -159,7 +163,7 @@
           padding-left: 8px;
         }
       }
-      
+
       svg {
         margin-right: 14px;
       }
@@ -188,10 +192,6 @@
   .navbar {
     * {
       font-size: 16px;
-    }
-
-    .navbar__mobile {
-      top: 70px;
     }
 
     .navbar__left {

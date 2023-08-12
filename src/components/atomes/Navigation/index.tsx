@@ -53,14 +53,26 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
             lang={lang}
             onClick={() => setIsMenuOpen(false)}
           />
-          <button
-            onClick={() => (user ? signOut() : setAuthOpen(true))}
-            style={{
-              backgroundColor: user ? "#963696" : "#FF007F",
-            }}
-          >
-            {user ? "Logout" : "Login"}
-          </button>
+          <div>
+            {user && (
+              <button
+                onClick={() => router.push("/blog")}
+                style={{
+                  backgroundColor: "#fbd52b",
+                }}
+              >
+                Blog
+              </button>
+            )}
+            <button
+              onClick={() => (user ? signOut() : setAuthOpen(true))}
+              style={{
+                backgroundColor: user ? "#963696" : "#FF007F",
+              }}
+            >
+              {user ? "Logout" : "Login"}
+            </button>
+          </div>
         </div>
       )}
       {isAuthOpen && <AuthModal setOpen={setAuthOpen} />}
@@ -102,7 +114,11 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
           {hideRight && (
             <button
               className="navbar_auth"
-              onClick={() => (user ? signOut().then(() => router.push("/")) : setAuthOpen(true))}
+              onClick={() =>
+                user
+                  ? signOut().then(() => router.push("/"))
+                  : setAuthOpen(true)
+              }
               style={{
                 backgroundColor: user ? "#963696" : "#FF007F",
               }}
