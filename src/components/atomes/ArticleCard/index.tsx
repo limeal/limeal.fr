@@ -60,7 +60,7 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
         />
         {user && user.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
           <button onClick={(e) => handleDelete(e)} style={{
-            zIndex: 1000
+            zIndex: 1
           }}>
             <AiFillDelete />
           </button>

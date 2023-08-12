@@ -53,10 +53,6 @@ const ProfileModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
   useEffect(() => {
     if (profile) {
       setUsername(profile.username);
-
-      getFileFromUrl(profile.picture?.ref || "", profile.username + "_picture").then((file) => {
-        setPicture(file);
-      });
     }
   }, [profile]);
 
@@ -69,6 +65,11 @@ const ProfileModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
       setLoading={setLoading}
       setOpen={setOpen}
       onSubmit={update}
+      overrideStyle={{
+        body: {
+          padding: 0
+        }
+      }}
       inputs={[
         <ImageDrop
           key={0}
