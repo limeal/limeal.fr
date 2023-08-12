@@ -32,6 +32,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
     e.preventDefault();
 
     if (!document) return;
+    if (loading) return;
 
     setLoading(true);
     fetch("/api/send-mail", {
@@ -52,6 +53,9 @@ const ContactMe = ({ lang }: { lang: string }) => {
         toast.error(getTranslation(lang, "contact-me--error"));
       }
       setLoading(false);
+    }).catch(() => {
+      toast.error(getTranslation(lang, "contact-me--error"));
+      setLoading(false);
     });
   };
 
@@ -70,6 +74,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
             </label>
             <input
               type="text"
+              disabled={loading}
               placeholder="Type your full name"
               required
               value={name}
@@ -83,6 +88,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
             </label>
             <input
               type="email"
+              disabled={loading}
               placeholder="example@mail.com"
               required
               value={email}
@@ -94,7 +100,11 @@ const ContactMe = ({ lang }: { lang: string }) => {
               <span>03</span>
               {getTranslation(lang, "contact-me--q3")}
             </label>
-            <select onChange={(e) => setType(e.target.value)} value={type}>
+            <select
+              onChange={(e) => setType(e.target.value)}
+              value={type}
+              disabled={loading}
+            >
               <option value="Web Development">Web Development</option>
               <option value="Mobile Development">Mobile Development</option>
               <option value="Software Development">Software Development</option>
@@ -111,6 +121,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
               {getTranslation(lang, "contact-me--q4")}
             </label>
             <textarea
+              disabled={loading}
               placeholder="I want..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -119,6 +130,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
           </div>
           <button
             type="submit"
+            disabled={loading}
             style={{
               opacity: loading ? 0.5 : 1,
             }}
