@@ -37,6 +37,10 @@ const Article = ({ slug }: { slug: string }) => {
 
   const [comment, setComment] = useState<string>("");
   const [currentImage, setCurrentImage] = useState(0);
+  
+  // Swipe
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
 
   const { user, profile } = useAuthContext();
 
@@ -165,6 +169,31 @@ const Article = ({ slug }: { slug: string }) => {
   if (article == null) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
+  const minSwipeDistance = 60
+
+  const onTouchStart = (e: any) => {
+    setTouchEnd(null) // otherwise the swipe is fired even with usual touch events
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: any) => setTouchEnd(e.targetTouches[0].clientX)
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+    if (isLeftSwipe) {
+      if (currentImage < article.images.length - 1) {
+        setCurrentImage(currentImage + 1)
+      }
+    } else if (isRightSwipe) {
+      if (currentImage > 0) {
+        setCurrentImage(currentImage - 1)
+      }
+    }
+  }
+
   return (
     <div className="article">
       <button className="back" onClick={() => window.history.back()}>
@@ -172,7 +201,11 @@ const Article = ({ slug }: { slug: string }) => {
         Retour
       </button>
       <section className="hero">
-        <div className="slider">
+        <div className="slider"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
           <button
             style={{
               visibility: currentImage === 0 ? "hidden" : "visible",
