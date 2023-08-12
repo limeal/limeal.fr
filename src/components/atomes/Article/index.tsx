@@ -259,15 +259,15 @@ const Article = ({ slug }: { slug: string }) => {
                   <div className="left">
                     <div>
                       <Image
-                        src={profile?.picture?.url || ""}
-                        alt={profile?.username + " picture" || ""}
+                        src={comment.author?.picture?.url || ""}
+                        alt={comment.author?.username + " picture" || ""}
                         width={30}
                         height={30}
                         style={{
                           borderRadius: "50%",
                         }}
                       />
-                      <h3>{profile?.username}</h3>
+                      <h3>{comment.author?.username}</h3>
                     </div>
                     <p>{comment.content}</p>
                   </div>
