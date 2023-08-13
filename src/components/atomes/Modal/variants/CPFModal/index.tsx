@@ -1,48 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { InputContainer } from "../../InputContainer";
 import Modal from "../..";
 
-import { updateProfile } from "@/firebase/store/profile";
+import { createProfile, getProfileFromId } from "@/firebase/store/profile";
+import { useAuthContext } from "@/contexts/AuthContext";
 import { uploadFile } from "@/firebase/storage";
 import ImageDrop from "@/components/atomes/ImageDrop";
-import Profile from "@/interfaces/profile";
 
-const ProfileModal = ({
-  profile,
+const CPFModal = ({
+  setProfile,
   setOpen,
 }: {
-  profile: Profile | null;
+  setProfile: (profile: any) => void;
   setOpen: (open: boolean) => void;
 }) => {
   const [username, setUsername] = useState("");
   const [picture, setPicture] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const { user } = useAuthContext();
 
-  const update = async (e: React.FormEvent<HTMLFormElement>) => {
+  const create = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!user) {
+      toast.error("You must be logged in to create a profile");
+      return;
+    }
+    if (!picture || !username) {
+      toast.error("Merci de remplir tous les champs");
+      return;
+    }
     setLoading(true);
     try {
-      let picturePath = profile?.picture?.ref;
+      let picturePath = `profiles/${user?.uid}.${picture?.name
+        .split(".")
+        .pop()}`;
 
-      if (picture) {
-        picturePath = `profiles/${profile?.id}.${picture?.name
-          .split(".")
-          .pop()}`;
-        await uploadFile(picture, picturePath);
-      }
+      await uploadFile(picture, picturePath);
 
-      await updateProfile({
-        id: profile?.id,
-        username,
+      await createProfile({
+        id: user?.uid,
+        username: username,
         picture: {
           ref: picturePath || "",
         },
       });
+
+      const profile = await getProfileFromId(user?.uid);
+      setProfile(profile);
 
       toast.success("Profile updated successfully!");
       setOpen(false);
@@ -52,21 +61,15 @@ const ProfileModal = ({
     setLoading(false);
   };
 
-  useEffect(() => {
-    if (profile) {
-      setUsername(profile.username);
-    }
-  }, [profile]);
-
   return (
     <Modal
-      title="Update profile"
-      lore="new values"
-      buttonText="Update"
+      title="Create profile"
+      lore="your data"
+      buttonText="Create"
       loading={loading}
       setLoading={setLoading}
       setOpen={setOpen}
-      onSubmit={update}
+      onSubmit={create}
       inputs={[
         <ImageDrop
           key={0}
@@ -92,4 +95,4 @@ const ProfileModal = ({
   );
 };
 
-export default ProfileModal;
+export default CPFModal;

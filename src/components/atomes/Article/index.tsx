@@ -20,7 +20,6 @@ import "./style.scss";
 import {
   addComment,
   deleteComment,
-  getComments,
   getCommentsFromParam,
 } from "@/firebase/store/comment";
 import { useAuthContext } from "@/contexts/AuthContext";
@@ -43,7 +42,7 @@ const Article = ({ slug }: { slug: string }) => {
   const [touchStart, setTouchStart] = useState(null)
   const [touchEnd, setTouchEnd] = useState(null)
 
-  const { user, profile } = useAuthContext();
+  const { user } = useAuthContext();
 
   useEffect(() => {
     getArticlesFromParam("slug", slug)
