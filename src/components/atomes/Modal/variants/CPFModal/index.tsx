@@ -54,7 +54,6 @@ const CPFModal = ({
       setProfile(profile);
 
       toast.success("Profile updated successfully!");
-      setOpen(false);
     } catch (error) {
       toast.error("Failed to update profile!");
     }
