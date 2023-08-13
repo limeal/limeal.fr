@@ -166,7 +166,7 @@ const Hero = ({ lang }: { lang?: string }) => {
         onTouchEnd={onTouchEnd}
         style={{
           right: "598px",
-          left: "initial",
+          left: "0",
         }}
       >
         {Array(6)
