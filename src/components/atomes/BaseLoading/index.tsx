@@ -7,7 +7,7 @@ const ArticleLoading = () => {
         <div className="article-loading">
             <Image width={300} height={300} style={{
                 objectFit: 'cover'
-            }} src="https://media0.giphy.com/media/xTkcEQACH24SMPxIQg/giphy.gif" alt="Waiting Gif" />
+            }} src="/assets/images/loading.gif" alt="Waiting Gif" />
             <h1>Loading...</h1>
         </div>
     )

@@ -58,7 +58,7 @@ const Page = ({
 
   if (profileLoading) return <Loading />;
   if (!profileLoading && !profile)
-    return <CPFModal setProfile={setProfile} setOpen={() => {}} />;
+    return <CPFModal setProfile={setProfile} setOpen={() => router.push("/")} />;
 
   return (
     <>
