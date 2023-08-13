@@ -23,15 +23,16 @@ const Blog = ({ lang }: { lang: string }) => {
   const refreshArticles = async (isClick: boolean) => {
     setLoading(true);
     const articles = await getArticles();
+    const filteredArticles = user?.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID ? articles : articles.filter((article: Article) => article.published);
 
     setCountries([
       ...new Set(
-        articles
+        filteredArticles
           .filter((article: Article) => article.place !== undefined)
           .map((article: Article) => (article.place ? article.place.country : ""))
       ),
     ]);
-    setArticles(user?.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID ? articles : articles.filter((article: Article) => article.published));
+    setArticles(filteredArticles);
 
     if (isClick) {
       toast.success("Portfolio refreshed !");
