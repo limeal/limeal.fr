@@ -6,10 +6,11 @@ import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import { AiFillDelete } from "react-icons/ai";
+import { MdPublish, MdUnpublished } from "react-icons/md";
 
 import "./style.scss";
 import { useAuthContext } from "@/contexts/AuthContext";
-import { deleteArticle } from "@/firebase/store/article";
+import { deleteArticle, publishArticle } from "@/firebase/store/article";
 import Article from "@/interfaces/article";
 
 interface ArticleCardProps {
@@ -44,8 +45,21 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
       });
   };
 
+  const handlePublish = (e: any, state: boolean) => {
+    e.preventDefault();
+    publishArticle(article, state)
+      .then(() => {
+        toast.success(`Article ${article.title} published !`);
+        refresh();
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
   return (
     <div className="article-card">
+      {!article.published && <p className="unpublished">Unpublished</p>}
       <div className="thumbnail">
         <Image
           src={article.images[0].url || "/assets/images/no-image.png"}
@@ -59,19 +73,33 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
           onClick={() => router.push(`/blog/${article.slug}`)}
         />
         {user && user.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
-          <button onClick={(e) => handleDelete(e)} style={{
-            zIndex: 1
-          }}>
-            <AiFillDelete />
-          </button>
+          <div className="actions">
+            <button
+              onClick={(e) => handlePublish(e, !article.published)}
+              style={{
+                zIndex: 1,
+              }}
+            >
+              {article.published ? <MdUnpublished /> : <MdPublish />}
+            </button>
+            <button
+              onClick={(e) => handleDelete(e)}
+              style={{
+                zIndex: 1,
+              }}
+            >
+              <AiFillDelete />
+            </button>
+          </div>
         )}
       </div>
-      <div className="content" onClick={() => router.push(`/blog/${article.slug}`)}>
+      <div
+        className="content"
+        onClick={() => router.push(`/blog/${article.slug}`)}
+      >
         <div className="metadata">
           <span>{article.created_at}</span>
-          <h2>
-            {article.title}
-          </h2>
+          <h2>{article.title}</h2>
         </div>
       </div>
       <p>{article.lore}</p>

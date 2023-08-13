@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   max-width: 345px;
+  position: relative;
 
   * {
     margin: 0;
@@ -15,25 +16,46 @@
     font-size: 16px;
   }
 
+  .unpublished {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background: var(--red, #f44336);
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 40px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
   .thumbnail {
     position: relative;
 
-    > button {
+    .actions {
       position: absolute;
-      border: none;
-      background: transparent;
       top: 0;
       right: 0;
-      margin: 10px;
 
-      svg {
-        width: 32px;
-        height: 32px;
-        fill: #fff;
-        cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
 
-        &:hover {
-          fill: var(--lime, #fbd52b);
+
+      > button {
+        border: none;
+        background: transparent;
+        margin: 10px;
+
+        svg {
+          width: 32px;
+          height: 32px;
+          fill: #fff;
+          cursor: pointer;
+
+          &:hover {
+            fill: var(--lime, #fbd52b);
+          }
         }
       }
     }
