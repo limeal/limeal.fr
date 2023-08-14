@@ -7,6 +7,7 @@ import { LiaEyeSolid, LiaEyeSlash } from "react-icons/lia";
 import { signIn } from "@/firebase/authentication";
 import { InputContainer } from "../../InputContainer";
 import Modal from "../..";
+import { useLangContext } from "@/contexts/LangContext";
 
 const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
   const [email, setEmail] = useState("");
@@ -16,6 +17,8 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
   const [remember, setRemember] = useState(false);
 
   const [width, setWidth] = useState(0);
+
+  const { getTranslation } = useLangContext();
 
   const updateDimension = () => setWidth(window.innerWidth);
 
@@ -60,8 +63,8 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
 
   return (
     <Modal
-      title="Sign in"
-      lore="your credentials"
+      title={getTranslation("authm--title")}
+      lore={getTranslation("authm--lore")}
       buttonText="Sign in"
       loading={loading}
       setLoading={setLoading}
@@ -73,7 +76,7 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
         },
       }}
       inputs={[
-        <InputContainer key={0} label="Email">
+        <InputContainer key={0} label={getTranslation("authm--email")}>
           <input
             type="email"
             name="email"
@@ -84,7 +87,7 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
         </InputContainer>,
         <InputContainer
           key={1}
-          label="Password"
+          label={getTranslation("authm--password")}
           button={{
             onClick: () => setShowPassword(!showPassword),
             content: showPassword ? <LiaEyeSlash /> : <LiaEyeSolid />,
@@ -100,7 +103,7 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
         </InputContainer>,
         <InputContainer
           key={2}
-          label="Remember me ?"
+          label={getTranslation("authm--remember-me")}
           style={{ flexDirection: "row", alignItems: "center", gap: "20px" }}
         >
           <input

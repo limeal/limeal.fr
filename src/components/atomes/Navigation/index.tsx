@@ -156,7 +156,7 @@ const Navigation = ({ tabs, hideContact }: NavigationProps) => {
               backgroundColor: user ? "#963696" : "#FF007F",
             }}
           >
-            {user ? "Logout" : "Login"}
+            {user ? getTranslation("logout") : getTranslation("login")}
           </button>
         )}
       </div>

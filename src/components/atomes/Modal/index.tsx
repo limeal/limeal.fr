@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import "./style.scss";
+import { useLangContext } from "@/contexts/LangContext";
 
 const Modal = ({
   title,
@@ -29,6 +30,8 @@ const Modal = ({
   }
 }) => {
 
+  const { getTranslation } = useLangContext();
+
   /* useEffect(() => {
     document.body.style.overflow = "hidden";
 
@@ -48,7 +51,7 @@ const Modal = ({
           <div>
             <h2>{title}</h2>
             <p>
-              with <strong>{lore}</strong>
+              {getTranslation("modal--with")} <strong>{lore}</strong>
             </p>
           </div>
         </div>

@@ -1,5 +1,61 @@
 [
     {
+        "id": "logout",
+        "en": "Logout",
+        "fr": "Déconnexion",
+        "es": "Cerrar sesión",
+        "kr": "로그 아웃"
+    },
+    {
+        "id": "login",
+        "en": "Login",
+        "fr": "Connexion",
+        "es": "Iniciar sesión",
+        "kr": "로그인"
+    },
+    {
+        "id": "authm--title",
+        "en": "Sign In",
+        "fr": "Se connecter",
+        "es": "Registrarse",
+        "kr": "로그인"
+    },
+    {
+        "id": "modal--with",
+        "en": "with",
+        "fr": "avec",
+        "es": "con",
+        "kr": "와 함께"
+    },
+    {
+        "id": "authm--lore",
+        "en": "your credentials",
+        "fr": "vos informations d'identification",
+        "es": "sus credenciales",
+        "kr": "자격 증명"
+    },
+    {
+        "id": "authm--email",
+        "en": "Email",
+        "fr": "Email",
+        "es": "Correo electrónico",
+        "kr": "이메일"
+    },
+    {
+        "id": "authm--password",
+        "en": "Password",
+        "fr": "Mot de passe",
+        "es": "Contraseña",
+        "kr": "암호"
+    },
+    {
+        "id": "authm--remember-me",
+        "en": "Remember Me ?",
+        "fr": "Se souvenir de moi ?",
+        "es": "¿Recuérdame ?",
+        "kr": "나를 기억해 ?"
+    },
+    {
         "id": "lang--french",
         "en": "French",
         "fr": "Français",
