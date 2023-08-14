@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { InputContainer } from "../../InputContainer";
 import Modal from "../..";
@@ -22,6 +22,17 @@ const CPFModal = ({
   const [loading, setLoading] = useState(false);
 
   const { user } = useAuthContext();
+
+  const [width, setWidth] = useState(0);
+
+  const updateDimension = () => setWidth(window.innerWidth);
+
+  useEffect(() => {
+    updateDimension();
+    window.addEventListener("resize", updateDimension);
+
+    return () => window.removeEventListener("resize", updateDimension);
+  }, []);
 
   const create = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,6 +80,11 @@ const CPFModal = ({
       setLoading={setLoading}
       setOpen={setOpen}
       onSubmit={create}
+      overrideStyle={{
+        modal: {
+          justifyContent: width > 1280 ? "center" : "flex-start",
+        }
+      }}
       inputs={[
         <ImageDrop
           key={0}

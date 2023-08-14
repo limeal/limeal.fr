@@ -38,7 +38,7 @@ const Modal = ({
   }, []); */
 
   return (
-    <div className="modal">
+    <div className="modal" style={overrideStyle ? overrideStyle["modal"] : {}}>
       <div className="modal__overlay" onClick={() => setOpen(false)}></div>
       <form onSubmit={onSubmit} style={overrideStyle ? overrideStyle["form"] : {}}>
         <div className="modal__header" style={overrideStyle ? overrideStyle["header"] : {}}>

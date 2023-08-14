@@ -10,7 +10,7 @@ import { uploadFile } from "@/firebase/storage";
 import ImageDrop from "@/components/atomes/ImageDrop";
 import Profile from "@/interfaces/profile";
 
-const ProfileModal = ({
+const EditProfileModal = ({
   profile,
   setOpen,
 }: {
@@ -20,6 +20,17 @@ const ProfileModal = ({
   const [username, setUsername] = useState("");
   const [picture, setPicture] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const [width, setWidth] = useState(0);
+
+  const updateDimension = () => setWidth(window.innerWidth);
+
+  useEffect(() => {
+    updateDimension();
+    window.addEventListener("resize", updateDimension);
+
+    return () => window.removeEventListener("resize", updateDimension);
+  }, []);
 
 
   const update = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -67,6 +78,11 @@ const ProfileModal = ({
       setLoading={setLoading}
       setOpen={setOpen}
       onSubmit={update}
+      overrideStyle={{
+        modal: {
+          justifyContent: width > 1280 ? "center" : "flex-start",
+        }
+      }}
       inputs={[
         <ImageDrop
           key={0}
@@ -92,4 +108,4 @@ const ProfileModal = ({
   );
 };
 
-export default ProfileModal;
+export default EditProfileModal;

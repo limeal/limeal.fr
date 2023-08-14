@@ -1,12 +1,12 @@
 .first-row {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 
     > div {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 10px;
         justify-content: flex-end;
         flex: 1;
     }
@@ -15,7 +15,7 @@
 .third-row {
     display: flex;
     flex-direction: row;
-    gap: 20px;
+    gap: 10px;
     align-items: center;
 
     * {
