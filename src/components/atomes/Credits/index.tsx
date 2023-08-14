@@ -1,3 +1,5 @@
+"use client";
+
 import { useAuthContext } from '@/contexts/AuthContext';
 import './style.scss';
 

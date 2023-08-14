@@ -3,11 +3,7 @@ import { BiSolidQuoteAltLeft } from "react-icons/bi";
 import "./style.scss";
 import Image from "next/image";
 
-const Testimonial = ({
-    lang
-} : {
-    lang: string;
-}) => {
+const Testimonial = () => {
   return (
     <section className="testimonial" id="testimonial">
       <h1>Our happy customers</h1>

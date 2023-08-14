@@ -67,7 +67,6 @@ const Page = ({
         )}
         <Navigation
           hideRight={true}
-          lang="fr"
           tabs={[
             {
               onClick: () => setOpenProfile(true),
@@ -77,7 +76,7 @@ const Page = ({
           ]}
         />
       </header>
-      <main>{slug !== "" ? <Article slug={slug} /> : <Blog lang="fr" />}</main>
+      <main>{slug !== "" ? <Article slug={slug} /> : <Blog />}</main>
       <footer>
         <Credits />
       </footer>

@@ -10,16 +10,14 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { uploadFile } from "@/firebase/storage";
 import { addProject } from "@/firebase/store/project";
 import moment from "moment";
-import getTranslation from "@/utils/lang";
+import { useLangContext } from "@/contexts/LangContext";
 
 const CreateProjectModal = ({
   setOpen,
-  refresh,
-  lang
+  refresh
 }: {
   setOpen: (open: boolean) => void;
   refresh: () => void;
-  lang?: string;
 }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -31,7 +29,7 @@ const CreateProjectModal = ({
 
   const [loading, setLoading] = useState(false);
 
-  const { user } = useAuthContext();
+  const { getTranslation } = useLangContext();
 
   const [width, setWidth] = useState(0);
 
@@ -69,11 +67,11 @@ const CreateProjectModal = ({
         github
       });
 
-      toast.success(getTranslation(lang || "en", "portfolio--add-success"));
+      toast.success(getTranslation("portfolio--add-success"));
       setOpen(false);
       refresh();
     } catch (error: any) {
-      toast.error(getTranslation(lang || "en", "portfolio--add-error"));
+      toast.error(getTranslation("portfolio--add-error"));
     }
     setLoading(false);
   };

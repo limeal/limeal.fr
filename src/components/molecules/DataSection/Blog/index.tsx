@@ -11,8 +11,9 @@ import ArticleCard from "@/components/atomes/ArticleCard";
 import DataSection from "..";
 import ACModal from "@/components/atomes/Modal/variants/ACModal";
 import { useAuthContext } from "@/contexts/AuthContext";
+import { useLangContext } from "@/contexts/LangContext";
 
-const Blog = ({ lang }: { lang: string }) => {
+const Blog = () => {
   const [country, setCountry] = useState<string>("");
   const [countries, setCountries] = useState<string[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
@@ -59,7 +60,6 @@ const Blog = ({ lang }: { lang: string }) => {
                 article.place !== undefined && article.place.country === country
             )
       }
-      lang={lang}
       refresh={refreshArticles}
       callbackAdd={({ setIsMenuOpen, refresh }) => (
         <ACModal setOpen={setIsMenuOpen} refresh={refresh} />

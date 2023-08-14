@@ -2,7 +2,6 @@
 
 import Tabs from "@/components/atomes/Tabs";
 import "./style.scss";
-import getTranslation from "@/utils/lang";
 import Image from "next/image";
 
 import { useAuthContext } from "@/contexts/AuthContext";
@@ -11,9 +10,11 @@ import { useRouter } from "next/navigation";
 import { defaultTabs } from "@/utils/constant";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useLangContext } from "@/contexts/LangContext";
 
-const Hero = ({ lang }: { lang?: string }) => {
+const Hero = () => {
   const { user } = useAuthContext();
+  const { getTranslation } = useLangContext();
   const router = useRouter();
 
   const [touchStart, setTouchStart] = useState(null);
@@ -60,7 +61,7 @@ const Hero = ({ lang }: { lang?: string }) => {
           <div className="hero__content__left">
             <div className="hero__content__left__title">
               <h1>{user ? "Paul" : "Limeal"}</h1>
-              <h2>{getTranslation(lang || "en", "hero--job")}</h2>
+              <h2>{getTranslation("hero--job")}</h2>
             </div>
 
             <div className="hero__content__left__reviews">
@@ -98,16 +99,15 @@ const Hero = ({ lang }: { lang?: string }) => {
                   <div>
                     <span>200+</span>
                     <p>
-                      {getTranslation(lang || "en", "hero--satisfied--title")}
+                      {getTranslation("hero--satisfied--title")}
                     </p>
                   </div>
                 </div>
               </div>
-              <p>{getTranslation(lang || "en", "hero--satisfied--content")}</p>
+              <p>{getTranslation("hero--satisfied--content")}</p>
             </div>
 
             <Tabs
-              lang={lang}
               elements={[
                 ...defaultTabs,
                 {
@@ -151,12 +151,12 @@ const Hero = ({ lang }: { lang?: string }) => {
                       <BsBookHalf />
                     </Link>
                   ) : (
-                    getTranslation(lang || "en", "hero--image--quote")
+                    getTranslation("hero--image--quote")
                   )}
                 </span>
               </div>
             </div>
-            <p>{getTranslation(lang || "en", "hero--image--description")}</p>
+            <p>{getTranslation("hero--image--description")}</p>
           </div>
         </div>
       </div>
