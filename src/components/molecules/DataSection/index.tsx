@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { LuRefreshCcw } from "react-icons/lu";
 
-import getTranslation from "@/utils/lang";
 import { useAuthContext } from "@/contexts/AuthContext";
 
 import "./style.scss";
 import BaseLoading from "@/components/atomes/BaseLoading";
+import { useLangContext } from "@/contexts/LangContext";
 
 const DataSection = ({
   sectionName,
@@ -23,7 +23,6 @@ const DataSection = ({
   callbackChild,
 
   refresh,
-  lang,
   loading,
 }: {
   sectionName: string;
@@ -44,12 +43,12 @@ const DataSection = ({
   }) => React.ReactElement;
 
   refresh: (isClick: boolean) => Promise<void>;
-  lang: string;
   loading: boolean;
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const { user } = useAuthContext();
+  const { getTranslation } = useLangContext();
 
   return (
     <section className="data-section" id={sectionName}>
@@ -57,7 +56,7 @@ const DataSection = ({
         callbackAdd({ setIsMenuOpen, refresh: () => refresh(false) })}
       <div className="title">
         <div>
-          <h1>{getTranslation(lang, `${sectionName}--title`)}</h1>
+          <h1>{getTranslation(`${sectionName}--title`)}</h1>
           <button
             className="refresh"
             onClick={(e) => {
@@ -76,7 +75,7 @@ const DataSection = ({
             </button>
           )}
         </div>
-        <p>{getTranslation(lang, `${sectionName}--description`)}</p>
+        <p>{getTranslation(`${sectionName}--description`)}</p>
       </div>
       {!loading ? (
         <>
@@ -104,7 +103,7 @@ const DataSection = ({
               </ul>
             ) : (
               <p className={`no-elements`}>
-                {getTranslation(lang, `${sectionName}--error`)}
+                {getTranslation(`${sectionName}--error`)}
               </p>
             )}
           </div>

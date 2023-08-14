@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineClose, AiOutlineLoading3Quarters } from "react-icons/ai";
 
 import "./style.scss";
+import { useLangContext } from "@/contexts/LangContext";
 
 const Modal = ({
   title,
@@ -29,16 +30,18 @@ const Modal = ({
   }
 }) => {
 
-  useEffect(() => {
+  const { getTranslation } = useLangContext();
+
+  /* useEffect(() => {
     document.body.style.overflow = "hidden";
 
     return () => {
       document.body.style.overflow = "unset"
     }
-  }, []);
+  }, []); */
 
   return (
-    <div className="modal">
+    <div className="modal" style={overrideStyle ? overrideStyle["modal"] : {}}>
       <div className="modal__overlay" onClick={() => setOpen(false)}></div>
       <form onSubmit={onSubmit} style={overrideStyle ? overrideStyle["form"] : {}}>
         <div className="modal__header" style={overrideStyle ? overrideStyle["header"] : {}}>
@@ -48,7 +51,7 @@ const Modal = ({
           <div>
             <h2>{title}</h2>
             <p>
-              with <strong>{lore}</strong>
+              {getTranslation("modal--with")} <strong>{lore}</strong>
             </p>
           </div>
         </div>

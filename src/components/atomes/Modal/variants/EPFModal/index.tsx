@@ -2,23 +2,36 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { LiaEyeSolid, LiaEyeSlash } from "react-icons/lia";
-
-import { signIn } from "@/firebase/authentication";
 import { InputContainer } from "../../InputContainer";
 import Modal from "../..";
 
 import { updateProfile } from "@/firebase/store/profile";
-import { useAuthContext } from "@/contexts/AuthContext";
-import { getFileFromUrl, uploadFile } from "@/firebase/storage";
+import { uploadFile } from "@/firebase/storage";
 import ImageDrop from "@/components/atomes/ImageDrop";
+import Profile from "@/interfaces/profile";
 
-const ProfileModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
+const EditProfileModal = ({
+  profile,
+  setOpen,
+}: {
+  profile: Profile | null;
+  setOpen: (open: boolean) => void;
+}) => {
   const [username, setUsername] = useState("");
   const [picture, setPicture] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const { profile } = useAuthContext();
+  const [width, setWidth] = useState(0);
+
+  const updateDimension = () => setWidth(window.innerWidth);
+
+  useEffect(() => {
+    updateDimension();
+    window.addEventListener("resize", updateDimension);
+
+    return () => window.removeEventListener("resize", updateDimension);
+  }, []);
+
 
   const update = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,6 +78,11 @@ const ProfileModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
       setLoading={setLoading}
       setOpen={setOpen}
       onSubmit={update}
+      overrideStyle={{
+        modal: {
+          justifyContent: width >= 1280 ? "center" : "flex-start",
+        }
+      }}
       inputs={[
         <ImageDrop
           key={0}
@@ -90,4 +108,4 @@ const ProfileModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
   );
 };
 
-export default ProfileModal;
+export default EditProfileModal;

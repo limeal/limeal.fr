@@ -48,7 +48,7 @@
         a {
           font-family: "Satoshi";
           font-weight: 600;
-          font-size: 14px;
+          font-size: 8px;
           text-transform: uppercase;
 
           &:hover {
@@ -62,11 +62,12 @@
       display: flex;
       flex-direction: row;
       height: 100%;
-      > button {
+      > a, > button {
         border: none;
         outline: none;
-        font-size: 14px;
-        padding: 10px 15px;
+        font-size: 12px;
+        text-decoration: none;
+        padding: 15px;
         text-align: center;
         font-family: "Satoshi";
         font-weight: 700;

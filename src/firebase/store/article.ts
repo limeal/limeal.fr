@@ -1,4 +1,4 @@
-import { getDocs, collection, query, where, DocumentData, Query, addDoc, deleteDoc, doc } from "firebase/firestore"
+import { getDocs, collection, query, where, DocumentData, Query, addDoc, deleteDoc, doc, setDoc } from "firebase/firestore"
 
 import { firestore } from "../firebase"
 import { deleteComment, getCommentsFromParam } from "./comment";
@@ -42,6 +42,8 @@ const getArticles = async (query?: Query<DocumentData, DocumentData>) => {
 
 const getArticlesFromParam = async (key: string, value: string) => await getArticles(query(collection(firestore, "articles"), where(key, "==", value)));
 const addArticle = async (article: Article) => await addDoc(collection(firestore, "articles"), article);
+const publishArticle = async (article: Article, state: boolean) => await setDoc(doc(firestore, "articles", article.id || ''), { published: state }, { merge: true });
+
 const deleteArticle = async (article: Article) => {
 
     try {
@@ -75,4 +77,5 @@ export {
     getArticlesFromParam,
     addArticle,
     deleteArticle,
+    publishArticle,
 }

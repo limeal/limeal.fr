@@ -11,11 +11,14 @@ import "./style.scss";
 import Blog from "@/components/molecules/DataSection/Blog";
 import Article from "@/components/atomes/Article";
 import Credits from "@/components/atomes/Credits";
-import ProfileModal from "@/components/atomes/Modal/variants/ProfileModal";
+import IProfile from "@/interfaces/profile";
+import CPFModal from "@/components/atomes/Modal/variants/CPFModal";
+import { getProfileFromId } from "@/firebase/store/profile";
+import Profile from "@/components/atomes/Profile";
+import { Loading } from "@/components/molecules/Loading";
 
 const Page = ({
   params,
-  searchParams,
 }: {
   params: Record<string, string | string[]>;
   searchParams: URLSearchParams;
@@ -23,7 +26,8 @@ const Page = ({
   const router = useRouter();
   const { user } = useAuthContext();
 
-  const [openProfile, setOpenProfile] = useState<boolean>(false);
+  const [profileLoading, setProfileLoading] = useState<boolean>(true); // == Loading profile [boolean
+  const [profile, setProfile] = useState<IProfile | any>(null); // == User profile [object
 
   const [slug, setSlug] = useState<string>(""); // == Article slug
 
@@ -37,27 +41,32 @@ const Page = ({
     }
   }, [params]);
 
+  useEffect(() => {
+    if (!user) return;
+    setProfileLoading(true);
+    getProfileFromId(user?.uid)
+      .then((profile) => {
+        setProfile(profile);
+      })
+      .finally(() => setProfileLoading(false));
+  }, [user]);
+
   if (!user)
     return <Error statusCode={401} title="Unauthorized. Redirecting..." />;
+
+  if (!profileLoading && !profile)
+    return (
+      <CPFModal setProfile={setProfile} setOpen={() => router.push("/")} />
+    );
 
   return (
     <>
       <header>
-        {openProfile && <ProfileModal setOpen={setOpenProfile} />}
-        <Navigation
-          hideRight={true}
-          lang="fr"
-          tabs={[
-            {
-              onClick: () => setOpenProfile(true),
-              tid: "blog-tabs--profile",
-              type: "button",
-            }
-          ]}
-        />
+        <Navigation hideContact={true} />
       </header>
       <main>
-        {slug !== "" ? <Article slug={slug} /> : <Blog lang="fr" />}
+        <Profile profile={profile} />
+        {slug !== "" ? <Article slug={slug} /> : <Blog />}
       </main>
       <footer>
         <Credits />

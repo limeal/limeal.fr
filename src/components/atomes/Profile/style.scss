@@ -1,0 +1,38 @@
+.profile {
+    cursor: pointer;
+    position: relative;
+    top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    > img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    > h2 {
+        font-family: "Satoshi";
+        font-weight: 600;
+        font-size: 14px;
+        text-transform: uppercase;
+        color: white;
+
+        > span {
+            margin-left: 5px;
+            font-weight: 700;
+        }
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .profile {
+        top: 30px;
+        right: 30px;
+        justify-content: flex-end;
+    }
+    
+}

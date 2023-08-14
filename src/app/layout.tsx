@@ -4,7 +4,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { AuthContextProvider } from "@/contexts/AuthContext";
 import { ToastContainer } from "react-toastify";
 
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import { LangContextProvider } from "@/contexts/LangContext";
 
 export const metadata: Metadata = {
   title: "Limeal - Junior Developer",
@@ -39,7 +40,9 @@ export default function RootLayout({
           closeOnClick={true}
           pauseOnHover={false}
         />
-        <AuthContextProvider>{children}</AuthContextProvider>
+        <LangContextProvider>
+          <AuthContextProvider>{children}</AuthContextProvider>
+        </LangContextProvider>
       </body>
       <Analytics />
     </html>

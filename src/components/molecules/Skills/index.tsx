@@ -5,25 +5,13 @@ import './style.scss'
 
 import data from './data.json'
 import SkillCard from '@/components/atomes/SkillCard';
-import getTranslation from '@/utils/lang';
 import Image from 'next/image';
+import { useLangContext } from '@/contexts/LangContext';
 
-const Skills = ({
-    lang
-}: {
-    lang: string;
-}) => {
+const Skills = () => {
     const [category, setCategory] = useState<string>('');
-    const [width, setWidth] = useState(0);
 
-    const updateDimension = () => setWidth(window.innerWidth);
-
-    useEffect(() => {
-      updateDimension();
-      window.addEventListener("resize", updateDimension);
-
-      return () => window.removeEventListener("resize", updateDimension);
-    }, []);
+    const { getTranslation } = useLangContext();
 
     useEffect(() => {
         setCategory(Object.keys(data)[0]);
@@ -33,8 +21,8 @@ const Skills = ({
         <section className="skills" id="skills">
             <div>
                 <div className="left">
-                    <h1>{getTranslation(lang, 'skills--title')}</h1>
-                    <p>{getTranslation(lang, 'skills--description')}</p>
+                    <h1>{getTranslation('skills--title')}</h1>
+                    <p>{getTranslation('skills--description')}</p>
                     <ul>
                         {Object.keys(data).map((key, index) => (
                             <li key={index} className={category === key ? 'active' : ''} onClick={() => setCategory(key)}>

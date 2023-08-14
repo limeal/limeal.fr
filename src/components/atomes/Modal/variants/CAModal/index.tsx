@@ -96,7 +96,7 @@ const AddArticleModal = ({
       onSubmit={submitArticle}
       overrideStyle={{
         form: {
-          width: "1000px",
+          width: width < 1280 ? "100%" : "1000px",
         },
         body: {
           gap: "20px",
@@ -106,7 +106,7 @@ const AddArticleModal = ({
         <div key={0} className="first-row">
           <InputContainer>
             <ImageDrop
-              width={500}
+              width={width < 1280 ? width - 80 : 500}
               height={width < 1280 ? 200 : 250}
               images={images}
               setImages={setImages}
@@ -157,7 +157,7 @@ const AddArticleModal = ({
               name="content"
               value={content}
               onChange={(e) => setContent(e.currentTarget.value)}
-              style={{ height: "300px" }}
+              style={{ height: width < 1280 ? "100px" : "300px" }}
               required
             />
           </InputContainer>

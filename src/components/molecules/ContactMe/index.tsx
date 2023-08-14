@@ -5,11 +5,12 @@ import { AiFillGithub, AiOutlineLoading3Quarters } from "react-icons/ai";
 import { BsDiscord } from "react-icons/bs";
 
 import "./style.scss";
-import getTranslation from "@/utils/lang";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import Link from "next/link";
+import { useLangContext } from "@/contexts/LangContext";
 
-const ContactMe = ({ lang }: { lang: string }) => {
+const ContactMe = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
@@ -18,6 +19,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
   const [loading, setLoading] = useState(false);
 
   const [width, setWidth] = useState(0);
+  const { getTranslation } = useLangContext();
 
   const updateDimension = () => setWidth(window.innerWidth);
 
@@ -48,13 +50,13 @@ const ContactMe = ({ lang }: { lang: string }) => {
       }),
     }).then((res) => {
       if (res.status === 200) {
-        toast.success(getTranslation(lang, "contact-me--success"));
+        toast.success(getTranslation("contact-me--success"));
       } else {
-        toast.error(getTranslation(lang, "contact-me--error"));
+        toast.error(getTranslation("contact-me--error"));
       }
       setLoading(false);
     }).catch(() => {
-      toast.error(getTranslation(lang, "contact-me--error"));
+      toast.error(getTranslation("contact-me--error"));
       setLoading(false);
     });
   };
@@ -63,14 +65,14 @@ const ContactMe = ({ lang }: { lang: string }) => {
     <section className="contact-me" id="contact-me">
       <div className="left">
         <div>
-          <h1>{getTranslation(lang, "contact-me--title")}</h1>
-          <p>{getTranslation(lang, "contact-me--description")}</p>
+          <h1>{getTranslation("contact-me--title")}</h1>
+          <p>{getTranslation("contact-me--description")}</p>
         </div>
         <form onSubmit={onFormSubmit}>
           <div>
             <label>
               <span>01</span>
-              {getTranslation(lang, "contact-me--q1")}
+              {getTranslation("contact-me--q1")}
             </label>
             <input
               type="text"
@@ -84,7 +86,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
           <div>
             <label>
               <span>02</span>
-              {getTranslation(lang, "contact-me--q2")}
+              {getTranslation("contact-me--q2")}
             </label>
             <input
               type="email"
@@ -98,7 +100,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
           <div>
             <label>
               <span>03</span>
-              {getTranslation(lang, "contact-me--q3")}
+              {getTranslation("contact-me--q3")}
             </label>
             <select
               onChange={(e) => setType(e.target.value)}
@@ -118,7 +120,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
           <div>
             <label>
               <span>04</span>
-              {getTranslation(lang, "contact-me--q4")}
+              {getTranslation("contact-me--q4")}
             </label>
             <textarea
               disabled={loading}
@@ -139,7 +141,7 @@ const ContactMe = ({ lang }: { lang: string }) => {
               <AiOutlineLoading3Quarters className="loading" />
             ) : (
               <>
-                {getTranslation(lang, "contact-me--button")}
+                {getTranslation("contact-me--button")}
                 <Image
                   src="/assets/images/icons/arrow_link.svg"
                   alt="link-arrow"
@@ -166,15 +168,15 @@ const ContactMe = ({ lang }: { lang: string }) => {
         )}
         <ul>
           <li>
-            <a href="https://github.com/limeal" target="_blank" title="Github">
+            <Link href="https://github.com/limeal" target="_blank" title="Github">
               <AiFillGithub />
-            </a>
+            </Link>
           </li>
           <li>
             <button
               onClick={() => {
                 navigator.clipboard.writeText("limeal");
-                toast.info(getTranslation(lang, "contact-me--discord-copied"));
+                toast.info(getTranslation("contact-me--discord-copied"));
               }}
               title="Discord"
             >

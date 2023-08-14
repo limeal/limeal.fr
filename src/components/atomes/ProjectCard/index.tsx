@@ -10,6 +10,7 @@ import Project from "@/interfaces/project";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { deleteProject } from "@/firebase/store/project";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 interface ProjectCardProps {
   project: Project;
@@ -71,17 +72,17 @@ const ProjectCard = ({ project, refresh }: ProjectCardProps) => {
         {(project.github || project.external_link) && (
           <div className="links">
             {project.github && (
-              <a href={project.github} target="_blank">
+              <Link href={project.github} target="_blank">
                 <AiFillGithub />
-              </a>
+              </Link>
             )}
             {project.external_link && (
-              <a
+              <Link
                 href={project.external_link}
                 target={project.external_link === "/" ? "_self" : "_blank"}
               >
                 <RiExternalLinkLine />
-              </a>
+              </Link>
             )}
           </div>
         )}
