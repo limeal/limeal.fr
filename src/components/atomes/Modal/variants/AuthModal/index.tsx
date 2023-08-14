@@ -13,6 +13,7 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [remember, setRemember] = useState(false);
 
   const [width, setWidth] = useState(0);
 
@@ -22,6 +23,12 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
     updateDimension();
     window.addEventListener("resize", updateDimension);
 
+    if (localStorage.getItem("remember")) {
+      setEmail(localStorage.getItem("email") || "");
+      setPassword(localStorage.getItem("password") || "");
+      setRemember(true);
+    }
+
     return () => window.removeEventListener("resize", updateDimension);
   }, []);
 
@@ -29,6 +36,18 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
     e.preventDefault();
 
     setLoading(true);
+
+
+    if (remember) {
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
+      localStorage.setItem("remember", "true");
+    } else {
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
+      localStorage.removeItem("remember");
+    }
+
     try {
       await signIn(email, password);
       toast.success("You are now logged in!");
@@ -51,7 +70,7 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
       overrideStyle={{
         modal: {
           justifyContent: width >= 1280 ? "center" : "flex-start",
-        }
+        },
       }}
       inputs={[
         <InputContainer key={0} label="Email">
@@ -59,6 +78,7 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
             type="email"
             name="email"
             id="email"
+            value={email}
             onChange={(e) => setEmail(e.currentTarget.value)}
           />
         </InputContainer>,
@@ -74,7 +94,31 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
             type={showPassword ? "text" : "password"}
             name="password"
             id="password"
+            value={password}
             onChange={(e) => setPassword(e.currentTarget.value)}
+          />
+        </InputContainer>,
+        <InputContainer
+          key={2}
+          label="Remember me ?"
+          style={{ flexDirection: "row", alignItems: "center", gap: "20px" }}
+        >
+          <input
+            type="checkbox"
+            name="remember"
+            id="remember"
+            checked={remember}
+            style={{
+              width: "20px",
+              height: "20px",
+              border: "none",
+              filter: "hue-rotate(0deg)",
+              outline: "none",
+              margin: 0,
+            }}
+            onChange={(e) => {
+              setRemember(e.currentTarget.checked);
+            }}
           />
         </InputContainer>,
       ]}
