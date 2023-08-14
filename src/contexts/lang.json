@@ -224,11 +224,25 @@
         "kr": "디스코드 ID가 클립 보드에 복사되었습니다!"
     },
     {
-        "id": "blog-tabs--profile",
-        "en": "Profile",
-        "fr": "Profil",
-        "es": "Perfil",
-        "kr": "프로필"
+        "id": "credits--develop-by",
+        "en": "Developed by",
+        "fr": "Développé par",
+        "es": "Desarrollado por",
+        "kr": "개발자"
+    },
+    {
+        "id": "credits--design-by",
+        "en": "Designed by",
+        "fr": "Conçu par",
+        "es": "Diseñado por",
+        "kr": "디자이너"
+    },
+    {
+        "id": "blog-tabs--edit-profile",
+        "en": "Edit Profile",
+        "fr": "Modifier le Profil",
+        "es": "Editar perfil",
+        "kr": "프로필 수정"
     },
     {
         "id": "blog-tabs--korea",
