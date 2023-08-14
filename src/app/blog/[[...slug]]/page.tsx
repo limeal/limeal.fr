@@ -15,6 +15,7 @@ import IProfile from "@/interfaces/profile";
 import CPFModal from "@/components/atomes/Modal/variants/CPFModal";
 import { getProfileFromId } from "@/firebase/store/profile";
 import Profile from "@/components/atomes/Profile";
+import { Loading } from "@/components/molecules/Loading";
 
 const Page = ({
   params,
@@ -57,6 +58,7 @@ const Page = ({
     return (
       <CPFModal setProfile={setProfile} setOpen={() => router.push("/")} />
     );
+  if (!profile || profileLoading) return <Loading />;
 
   return (
     <>
