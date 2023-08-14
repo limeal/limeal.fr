@@ -15,6 +15,7 @@ import getTranslation from "@/utils/lang";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { signOut } from "@/firebase/authentication";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface NavigationProps {
   lang?: string;
@@ -55,14 +56,14 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
           />
           <div>
             {user && (
-              <button
-                onClick={() => router.push("/blog")}
+              <Link
+                href={"/blog"}
                 style={{
                   backgroundColor: "#fbd52b",
                 }}
               >
                 Blog
-              </button>
+              </Link>
             )}
             <button
               onClick={() => (user ? signOut() : setAuthOpen(true))}
@@ -78,9 +79,9 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
       {isAuthOpen && <AuthModal setOpen={setAuthOpen} />}
       <div className="navbar__left">
         {width >= 1280 ? (
-          <a href="/#" className="navbar__toggle" id="mobile-menu">
+          <Link href="/#" className="navbar__toggle" id="mobile-menu">
             <AiFillHome />
-          </a>
+          </Link>
         ) : (
           <button
             className="navbar__toggle"
@@ -169,7 +170,7 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
               <BiSolidDownArrow />
             </div>
           )}
-          <a href="#contact-me">
+          <Link href="#contact-me">
             {getTranslation(lang || "en", "tabs--contact-me")}
             <Image
               src="/assets/images/icons/arrow_link.svg"
@@ -177,7 +178,7 @@ const Navigation = ({ lang, setLang, tabs, hideRight }: NavigationProps) => {
               width={width < 728 ? 24 : 32}
               height={width < 728 ? 24 : 32}
             />
-          </a>
+          </Link>
           {width >= 1280 && (
             <button
               className="navbar_auth"

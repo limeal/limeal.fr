@@ -56,7 +56,6 @@ const Page = ({
   if (!user)
     return <Error statusCode={401} title="Unauthorized. Redirecting..." />;
 
-  if (profileLoading) return <Loading />;
   if (!profileLoading && !profile)
     return <CPFModal setProfile={setProfile} setOpen={() => router.push("/")} />;
 

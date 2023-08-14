@@ -12,6 +12,7 @@ import "./style.scss";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { deleteArticle, publishArticle } from "@/firebase/store/article";
 import Article from "@/interfaces/article";
+import Link from "next/link";
 
 interface ArticleCardProps {
   article: Article;
@@ -31,7 +32,6 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
   }, []);
 
   const { user } = useAuthContext();
-  const router = useRouter();
 
   const handleDelete = (e: any) => {
     e.preventDefault();
@@ -59,6 +59,7 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
 
   return (
     <div className="article-card">
+      <Link href={`/blog/${article.slug}`} />
       {!article.published && <p className="unpublished">Unpublished</p>}
       <div className="thumbnail">
         <Image
@@ -70,7 +71,6 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
             borderRadius: "12px",
             objectFit: "cover",
           }}
-          onClick={() => router.push(`/blog/${article.slug}`)}
         />
         {user && user.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
           <div className="actions">
@@ -95,7 +95,6 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
       </div>
       <div
         className="content"
-        onClick={() => router.push(`/blog/${article.slug}`)}
       >
         <div className="metadata">
           <span>{article.created_at}</span>

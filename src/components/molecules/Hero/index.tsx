@@ -10,6 +10,7 @@ import { BsBookHalf } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 import { defaultTabs } from "@/utils/constant";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 const Hero = ({ lang }: { lang?: string }) => {
   const { user } = useAuthContext();
@@ -146,9 +147,9 @@ const Hero = ({ lang }: { lang?: string }) => {
                 />
                 <span>
                   {user ? (
-                    <button onClick={() => router.push("/blog")}>
+                    <Link href="/blog">
                       <BsBookHalf />
-                    </button>
+                    </Link>
                   ) : (
                     getTranslation(lang || "en", "hero--image--quote")
                   )}

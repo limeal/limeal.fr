@@ -8,6 +8,7 @@ import "./style.scss";
 import getTranslation from "@/utils/lang";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 const ContactMe = ({ lang }: { lang: string }) => {
   const [name, setName] = useState("");
@@ -166,9 +167,9 @@ const ContactMe = ({ lang }: { lang: string }) => {
         )}
         <ul>
           <li>
-            <a href="https://github.com/limeal" target="_blank" title="Github">
+            <Link href="https://github.com/limeal" target="_blank" title="Github">
               <AiFillGithub />
-            </a>
+            </Link>
           </li>
           <li>
             <button

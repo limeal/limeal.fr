@@ -1,6 +1,7 @@
 import getTranslation from "@/utils/lang";
 
 import "./style.scss";
+import Link from "next/link";
 
 interface TabsProps {
   lang?: string;
@@ -14,9 +15,9 @@ const Tabs = ({ lang, elements, onClick }: TabsProps) => {
       {elements.map((element: Tab, index) => (
         <li key={index} onClick={onClick}>
           {element.type === "link" ? (
-            <a href={element.href}>
+            <Link href={element.href || ""}>
               {getTranslation(lang || "en", element.tid)}
-            </a>
+            </Link>
           ) : (
             <button onClick={element.onClick}>
               {getTranslation(lang || "en", element.tid)}
