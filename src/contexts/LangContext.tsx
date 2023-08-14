@@ -47,8 +47,6 @@ export const LangContextProvider = ({
     if (savedLang) {
       setLang(savedLang);
     }
-    
-    return () => localStorage.setItem("lang", lang);
   }, []);
 
   return (

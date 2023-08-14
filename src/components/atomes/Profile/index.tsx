@@ -6,7 +6,7 @@ import Profile from "@/interfaces/profile";
 
 import "./style.scss";
 import { useRef, useState } from "react";
-import ProfileModal from "../Modal/variants/ProfileModal";
+import ProfileModal from "../Modal/variants/EPFModal";
 
 const Profile = ({ profile }: { profile: Profile }) => {
   const [openProfileEdit, setOpenProfileEdit] = useState<boolean>(false);

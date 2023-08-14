@@ -11,7 +11,6 @@ import "./style.scss";
 import Blog from "@/components/molecules/DataSection/Blog";
 import Article from "@/components/atomes/Article";
 import Credits from "@/components/atomes/Credits";
-import ProfileModal from "@/components/atomes/Modal/variants/ProfileModal";
 import IProfile from "@/interfaces/profile";
 import CPFModal from "@/components/atomes/Modal/variants/CPFModal";
 import { getProfileFromId } from "@/firebase/store/profile";

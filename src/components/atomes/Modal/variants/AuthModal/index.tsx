@@ -50,7 +50,7 @@ const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
       onSubmit={login}
       overrideStyle={{
         modal: {
-          justifyContent: width > 1280 ? "center" : "flex-start",
+          justifyContent: width >= 1280 ? "center" : "flex-start",
         }
       }}
       inputs={[

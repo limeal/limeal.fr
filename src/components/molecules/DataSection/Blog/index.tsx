@@ -9,7 +9,7 @@ import { getArticles } from "@/firebase/store/article";
 
 import ArticleCard from "@/components/atomes/ArticleCard";
 import DataSection from "..";
-import ACModal from "@/components/atomes/Modal/variants/ACModal";
+import ACModal from "@/components/atomes/Modal/variants/CAModal";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLangContext } from "@/contexts/LangContext";
 

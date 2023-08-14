@@ -80,7 +80,7 @@ const EditProfileModal = ({
       onSubmit={update}
       overrideStyle={{
         modal: {
-          justifyContent: width > 1280 ? "center" : "flex-start",
+          justifyContent: width >= 1280 ? "center" : "flex-start",
         }
       }}
       inputs={[
