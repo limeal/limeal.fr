@@ -4,6 +4,7 @@ import Image from "next/image";
 import { BsUpload } from "react-icons/bs";
 
 import "./style.scss";
+import { AiFillDelete } from "react-icons/ai";
 
 export const ImageDrop = ({
   width,
@@ -14,7 +15,7 @@ export const ImageDrop = ({
 }: {
   width: string | number;
   height: string | number;
-  images: Array<File> | null;
+  images: Array<File | string> | null;
   setImages: (images: Array<File> | null) => void;
   limit?: number;
 }) => {
@@ -78,6 +79,12 @@ export const ImageDrop = ({
     inputFile.current?.click();
   };
 
+  const clearSelection = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setImages(null);
+  };
+
   return (
     <div
       className="drag-drop"
@@ -92,6 +99,9 @@ export const ImageDrop = ({
         height: height,
       }}
     >
+      <button onClick={clearSelection}>
+        <AiFillDelete />
+      </button>
       <div className="drag-drop--click" onClick={handleClick}></div>
       {images ? (
         <ul
@@ -110,7 +120,7 @@ export const ImageDrop = ({
             }}>
               <Image
                 key={index}
-                src={URL.createObjectURL(image)}
+                src={typeof image === "string" ? image : URL.createObjectURL(image)}
                 alt="logo"
                 width={0}
                 height={0}

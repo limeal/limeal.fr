@@ -14,6 +14,8 @@ import { deleteArticle, publishArticle } from "@/firebase/store/article";
 import Article from "@/interfaces/article";
 import Link from "next/link";
 import { useLangContext } from "@/contexts/LangContext";
+import ArticleModal from "../Modal/variants/CAModal";
+import { BsFillPencilFill } from "react-icons/bs";
 
 interface ArticleCardProps {
   article: Article;
@@ -22,6 +24,7 @@ interface ArticleCardProps {
 
 const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
   const [width, setWidth] = useState(0);
+  const [openEdit, setOpenEdit] = useState(false);
 
   const updateDimension = () => setWidth(window.innerWidth);
   const { lang } = useLangContext();
@@ -59,8 +62,14 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
       });
   };
 
+  const handleEdit = (e: any) => {
+    e.preventDefault();
+    setOpenEdit(true);
+  };
+
   return (
     <div className="article-card">
+      {openEdit && <ArticleModal mode="edit" article={article} setOpen={setOpenEdit} refresh={refresh} />}
       <Link href={`/blog/${article.slug}`} />
       {!article.published && <p className="unpublished">Unpublished</p>}
       <div className="thumbnail">
@@ -76,6 +85,14 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
         />
         {user && user.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
           <div className="actions">
+            <button
+              onClick={(e) => handleEdit(e)}
+              style={{
+                zIndex: 1,
+              }}
+            >
+              <BsFillPencilFill />
+            </button>
             <button
               onClick={(e) => handlePublish(e, !article.published)}
               style={{

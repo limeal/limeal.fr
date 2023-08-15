@@ -262,7 +262,7 @@ const Article = ({ slug }: { slug: string }) => {
           </span>
           <span>
             <ImLocation />
-            {article.place?.address}
+            {article.translations[lang] ? article.translations[lang].place?.address : article.translations[article.defaultLanguage].place?.address}
           </span>
         </div>
       </section>

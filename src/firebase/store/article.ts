@@ -41,6 +41,7 @@ const getArticles = async (query?: Query<DocumentData, DocumentData>) => {
 const getArticlesFromParam = async (key: string, value: string) => await getArticles(query(collection(firestore, "articles"), where(key, "==", value)));
 const addArticle = async (article: Article) => await addDoc(collection(firestore, "articles"), article);
 const publishArticle = async (article: Article, state: boolean) => await setDoc(doc(firestore, "articles", article.id || ''), { published: state }, { merge: true });
+const updateArticle = async (article: Article) => await setDoc(doc(firestore, "articles", article.id || ''), {...article});
 
 const deleteArticle = async (article: Article) => {
 
@@ -75,5 +76,6 @@ export {
     getArticlesFromParam,
     addArticle,
     deleteArticle,
+    updateArticle,
     publishArticle,
 }
