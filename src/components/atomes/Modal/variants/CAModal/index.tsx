@@ -235,7 +235,7 @@ const ArticleModal = ({
 
       setDefaultLang(article.defaultLanguage);
     }
-  }, [article]);
+  }, [article, langs]);
 
   return (
     <Modal
@@ -258,8 +258,8 @@ const ArticleModal = ({
         <div key={0} className="first-row">
           <InputContainer>
             <ImageDrop
-              width={width < 1280 ? width - 80 : 500}
-              height={200}
+              width={width < 1280 ? width - 80 : 400}
+              height={width < 1280 ? 300 : 200}
               images={images}
               setImages={setImages}
             />
@@ -318,7 +318,7 @@ const ArticleModal = ({
             </InputContainer>
           </div>
           <div className="third-row">
-            <InputContainer label="Name" style={{ flex: 1 }}>
+            <InputContainer label="Name" style={width >= 768 ? { flex: 1 } : {}}>
               <input
                 type="text"
                 name="title"
@@ -333,7 +333,7 @@ const ArticleModal = ({
             </InputContainer>
             <InputContainer
               label="Geo (Address, City, Country)"
-              style={{ flex: 1 }}
+              style={width >= 768 ? { flex: 1 } : {}}
             >
               <input
                 type="text"
@@ -366,7 +366,7 @@ const ArticleModal = ({
                   new Map([...content, [editLang, e.currentTarget.value]])
                 )
               }
-              style={{ height: width < 1280 ? "100px" : "300px" }}
+              style={{ height: width < 1280 ? "100px" : "200px" }}
               required
             />
           </InputContainer>
