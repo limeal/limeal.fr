@@ -51,7 +51,6 @@
       flex-direction: row;
       gap: 5px;
 
-
       > button {
         border: none;
         background: transparent;
@@ -94,23 +93,6 @@
         font-weight: 900;
       }
     }
-
-    .links {
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-
-      > a {
-        text-decoration: none;
-
-        > svg {
-          color: white;
-          width: 32px;
-          height: 32px;
-          cursor: pointer;
-        }
-      }
-    }
   }
 
   > p {
@@ -118,6 +100,29 @@
     color: #fff;
     font-weight: 300;
     font-size: 14px;
+  }
+
+  > ul {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 16px;
+
+    > li {
+      padding: 5px;
+      background: white;
+      > a {
+        font-family: "Satoshi";
+        font-weight: 700;
+        color: var(--black, #111013);
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+    }
+
+    .active {
+      background: var(--lime, #fbd52b);
+    }
   }
 }
 

@@ -9,8 +9,8 @@ import { getArticles } from "@/firebase/store/article";
 
 import ArticleCard from "@/components/atomes/ArticleCard";
 import DataSection from "..";
-import ACModal from "@/components/atomes/Modal/variants/CAModal";
 import { useAuthContext } from "@/contexts/AuthContext";
+import ArticleModal from "@/components/atomes/Modal/variants/CAModal";
 import { useLangContext } from "@/contexts/LangContext";
 
 const Blog = () => {
@@ -20,6 +20,7 @@ const Blog = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const { user } = useAuthContext();
+  const { lang } = useLangContext();
 
   const refreshArticles = async (isClick: boolean) => {
     setLoading(true);
@@ -29,8 +30,14 @@ const Blog = () => {
     setCountries([
       ...new Set(
         filteredArticles
-          .filter((article: Article) => article.place !== undefined)
-          .map((article: Article) => (article.place ? article.place.country : ""))
+          .filter((article: Article) => {
+            const translation = article.translations[lang] || article.translations[article.defaultLanguage];
+            return translation.place !== undefined;
+          })
+          .map((article: Article) => {
+            const translation = article.translations[lang] || article.translations[article.defaultLanguage];
+            return translation.place ? translation.place.country: "";
+          })
       ),
     ]);
     setArticles(filteredArticles);
@@ -56,13 +63,15 @@ const Blog = () => {
         country === ""
           ? articles
           : articles.filter(
-              (article: Article) =>
-                article.place !== undefined && article.place.country === country
+              (article: Article) => {
+                const translation = article.translations[lang] || article.translations[article.defaultLanguage];
+                return translation.place && translation.place.country === country;
+              }
             )
       }
       refresh={refreshArticles}
       callbackAdd={({ setIsMenuOpen, refresh }) => (
-        <ACModal setOpen={setIsMenuOpen} refresh={refresh} />
+        <ArticleModal mode="create" setOpen={setIsMenuOpen} refresh={refresh} />
       )}
       callbackChild={({ element, refresh }) => (
         <ArticleCard article={element} refresh={refresh} />

@@ -12,10 +12,11 @@ import Blog from "@/components/molecules/DataSection/Blog";
 import Article from "@/components/atomes/Article";
 import Credits from "@/components/atomes/Credits";
 import IProfile from "@/interfaces/profile";
-import CPFModal from "@/components/atomes/Modal/variants/CPFModal";
+import CPFModal from "@/components/atomes/Modal/variants/PFModal";
 import { getProfileFromId } from "@/firebase/store/profile";
 import Profile from "@/components/atomes/Profile";
 import { Loading } from "@/components/molecules/Loading";
+import ProfileModal from "@/components/atomes/Modal/variants/PFModal";
 
 const Page = ({
   params,
@@ -56,7 +57,7 @@ const Page = ({
 
   if (!profileLoading && !profile)
     return (
-      <CPFModal setProfile={setProfile} setOpen={() => router.push("/")} />
+      <ProfileModal mode="create" setProfile={setProfile} setOpen={() => router.push("/")} />
     );
 
   return (
@@ -65,7 +66,7 @@ const Page = ({
         <Navigation hideContact={true} />
       </header>
       <main>
-        <Profile profile={profile} />
+        <Profile setProfile={setProfile} profile={profile} />
         {slug !== "" ? <Article slug={slug} /> : <Blog />}
       </main>
       <footer>

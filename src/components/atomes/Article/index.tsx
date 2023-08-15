@@ -28,6 +28,7 @@ import moment from "moment";
 import Like from "@/interfaces/like";
 import { addLike, deleteLike, getLikesFromEntity } from "@/firebase/store/like";
 import BaseLoading from "../BaseLoading";
+import { useLangContext } from "@/contexts/LangContext";
 
 const Article = ({ slug }: { slug: string }) => {
   const [article, setArticle] = useState<Article | null>(null);
@@ -37,6 +38,8 @@ const Article = ({ slug }: { slug: string }) => {
 
   const [comment, setComment] = useState<string>("");
   const [currentImage, setCurrentImage] = useState(0);
+
+  const { lang } = useLangContext();
   
   // Swipe
   const [touchStart, setTouchStart] = useState(null)
@@ -216,7 +219,7 @@ const Article = ({ slug }: { slug: string }) => {
           </button>
           <Image
             src={article.images[currentImage].url || ""}
-            alt={article.title}
+            alt={article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title}
             width={0}
             height={0}
             sizes="100vw"
@@ -234,7 +237,7 @@ const Article = ({ slug }: { slug: string }) => {
             <AiOutlineArrowRight />
           </button>
         </div>
-        <h1>{article.title}</h1>
+        <h1>{article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title}</h1>
         <div>
           <span>
             <BsFillCalendarDateFill />
@@ -259,14 +262,14 @@ const Article = ({ slug }: { slug: string }) => {
           </span>
           <span>
             <ImLocation />
-            {article.place?.address}
+            {article.translations[lang] ? article.translations[lang].place?.address : article.translations[article.defaultLanguage].place?.address}
           </span>
         </div>
       </section>
       <br />
       <div
         className="content"
-        dangerouslySetInnerHTML={{ __html: article.content }}
+        dangerouslySetInnerHTML={{ __html: article.translations[lang] ? article.translations[lang].content : article.translations[article.defaultLanguage].content }}
       />
       <br />
       <section className="comments">

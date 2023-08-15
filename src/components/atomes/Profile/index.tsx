@@ -6,9 +6,15 @@ import Profile from "@/interfaces/profile";
 
 import "./style.scss";
 import { useRef, useState } from "react";
-import ProfileModal from "../Modal/variants/EPFModal";
+import ProfileModal from "../Modal/variants/PFModal";
 
-const Profile = ({ profile }: { profile: Profile }) => {
+const Profile = ({
+  profile,
+  setProfile,
+}: {
+  profile: Profile;
+  setProfile: any;
+}) => {
   const [openProfileEdit, setOpenProfileEdit] = useState<boolean>(false);
   const [hover, setHover] = useState<boolean>(false);
 
@@ -17,7 +23,12 @@ const Profile = ({ profile }: { profile: Profile }) => {
   return (
     <>
       {openProfileEdit && (
-        <ProfileModal profile={profile} setOpen={setOpenProfileEdit} />
+        <ProfileModal
+          mode="edit"
+          setProfile={setProfile}
+          profile={profile}
+          setOpen={setOpenProfileEdit}
+        />
       )}
 
       <div
@@ -33,7 +44,8 @@ const Profile = ({ profile }: { profile: Profile }) => {
           alt="profile"
         />
         <h2>
-          {profile.username}{hover && <span>✏️</span>}
+          {profile.username}
+          {hover && <span>✏️</span>}
         </h2>
       </div>
     </>

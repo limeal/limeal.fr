@@ -8,33 +8,50 @@ import Modal from "../..";
 import { InputContainer } from "../../InputContainer";
 import ImageDrop from "../../../ImageDrop";
 import { uploadFile } from "@/firebase/storage";
-import { addArticle } from "@/firebase/store/article";
+import { addArticle, updateArticle } from "@/firebase/store/article";
 import moment from "moment";
 
 import "./style.scss";
+import { useLangContext } from "@/contexts/LangContext";
+import Article from "@/interfaces/article";
+import { getCurrentTimeInFormat } from "@/utils/time";
 
-const AddArticleModal = ({
+const ArticleModal = ({
+  mode,
+  article,
   setOpen,
   refresh,
 }: {
+  mode: "create" | "edit";
+  article?: Article | null;
   setOpen: (open: boolean) => void;
   refresh: () => void;
 }) => {
-  const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
-  const [images, setImages] = useState<Array<File> | null>(null);
-  const [lore, setLore] = useState("");
-  const [content, setContent] = useState("");
+  const [images, setImages] = useState<Array<File | string> | null>(null);
   const [creationDate, setCreationDate] = useState(
     moment().format("YYYY-MM-DD")
   );
   const [published, setPublished] = useState(false);
-  const [geo, setGeo] = useState<any>(null);
+
+  const [title, setTitle] = useState<Map<string, string>>(new Map());
+  const [lore, setLore] = useState<Map<string, string>>(new Map());
+  const [content, setContent] = useState<Map<string, string>>(new Map());
+  const [geo, setGeo] = useState<Map<string, any>>(new Map());
+
+  const [editLang, setEditLang] = useState("");
+  const [defaultLang, setDefaultLang] = useState("");
+
+  const { lang, langs } = useLangContext();
 
   const [loading, setLoading] = useState(false);
   const [width, setWidth] = useState(0);
 
   const updateDimension = () => setWidth(window.innerWidth);
+
+  useEffect(() => {
+    setEditLang(lang);
+  }, [lang]);
 
   useEffect(() => {
     updateDimension();
@@ -49,27 +66,57 @@ const AddArticleModal = ({
 
     setLoading(true);
     try {
-      if (images) {
-        for (const image of images) {
-          await uploadFile(image, `articles/${image.name}`);
-        }
+      if (!images) throw new Error("You must add at least one image!");
+      for (const image of images) {
+        if (typeof image === "string") continue;
+        await uploadFile(image, `articles/${image.name}`);
+      }
+
+      if (!defaultLang) {
+        throw new Error("You must select a default language!");
       }
 
       await addArticle({
-        title,
+        translations: langs.reduce((acc, lang) => {
+          if (!title.get(lang) || !lore.get(lang) || !content.get(lang)) {
+            return acc;
+          }
+
+          return {
+            ...acc,
+            [lang]: {
+              title: title.get(lang) || "",
+              lore: lore.get(lang) || "",
+              content: content.get(lang) || "",
+
+              place: {
+                country: geo.get(lang).split(", ")[
+                  geo.get(lang).split(", ").length - 1
+                ],
+                city:
+                  geo.get(lang).split(", ").length >= 2
+                    ? geo.get(lang).split(", ")[
+                        geo.get(lang).split(", ").length - 2
+                      ]
+                    : "",
+                address: geo.get(lang),
+              },
+            },
+          };
+        }, {}),
+        defaultLanguage: defaultLang,
         slug,
-        lore,
         images: images
-          ? images.map((image) => ({
-              ref: `articles/${image.name}`,
-            }))
+          ? images
+              .filter((i) => typeof i !== "string")
+              .map((image) => {
+                if (typeof image === "string") return { ref: image };
+
+                return {
+                  ref: `articles/${image.name}`,
+                };
+              })
           : [],
-        place: {
-          country: geo.value.terms[geo.value.terms.length - 1].value,
-          city: geo.value.terms.length >= 2 ? geo.value.terms[geo.value.terms.length - 2].value : "",
-          address: geo.value.description,
-        },
-        content,
         created_at: creationDate,
         published,
       });
@@ -85,15 +132,108 @@ const AddArticleModal = ({
     setLoading(false);
   };
 
+  const editArticle = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!article) return;
+
+    setLoading(true);
+    try {
+      let imagePath = article?.images.map((image) => image.ref) || [];
+
+      if (images) {
+        imagePath = [];
+        for (const image of images) {
+          if (typeof image === "string") continue;
+          await uploadFile(image, `articles/${image.name}`);
+          imagePath.push(`articles/${image.name}`);
+        }
+      }
+
+      console.log(imagePath);
+
+      await updateArticle({
+        id: article.id,
+        translations: langs.reduce((acc, lang) => {
+          if (!title.get(lang) || !lore.get(lang) || !content.get(lang)) {
+            return acc;
+          }
+
+          return {
+            ...acc,
+            [lang]: {
+              title: title.get(lang) || "",
+              lore: lore.get(lang) || "",
+              content: content.get(lang) || "",
+              place: {
+                country: geo.get(lang).split(", ")[
+                  geo.get(lang).split(", ").length - 1
+                ],
+                city:
+                  geo.get(lang).split(", ").length >= 2
+                    ? geo.get(lang).split(", ")[
+                        geo.get(lang).split(", ").length - 2
+                      ]
+                    : "",
+                address: geo.get(lang),
+              },
+            },
+          };
+        }, {}),
+        defaultLanguage: defaultLang,
+        slug,
+        images: imagePath.map((path) => ({
+          ref: `${path}`,
+        })),
+        created_at: creationDate,
+        published,
+      });
+
+      toast.success("You successfully edit this article!");
+      setOpen(false);
+      refresh();
+    } catch (error: any) {
+      toast.error(
+        "message" in error ? error.message : "Failed to edit article!"
+      );
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (article) {
+      setSlug(article.slug);
+      setCreationDate(getCurrentTimeInFormat(article.created_at));
+      setPublished(article.published);
+      setImages([...article.images.map((image) => image.url || "")]);
+
+      langs.forEach((lang) => {
+        if (article.translations[lang]) {
+          setTitle((prev) => prev.set(lang, article.translations[lang].title));
+          setLore((prev) => prev.set(lang, article.translations[lang].lore));
+          setContent((prev) =>
+            prev.set(lang, article.translations[lang].content)
+          );
+          setGeo((prev) =>
+            prev.set(lang, article.translations[lang].place?.address)
+          );
+        }
+      });
+
+      setDefaultLang(article.defaultLanguage);
+    }
+  }, [article]);
+
   return (
     <Modal
-      title="Create Article"
-      lore="their properties"
-      buttonText="Create"
+      title={mode === "create" ? "Create an article" : "Edit an article"}
+      lore={mode === "create" ? "their properties" : "their new properties"}
+      buttonText={mode === "create" ? "Create" : "Edit"}
       loading={loading}
       setLoading={setLoading}
       setOpen={setOpen}
-      onSubmit={submitArticle}
+      onSubmit={mode === "create" ? submitArticle : editArticle}
       overrideStyle={{
         form: {
           width: width < 1280 ? "100%" : "1000px",
@@ -107,18 +247,17 @@ const AddArticleModal = ({
           <InputContainer>
             <ImageDrop
               width={width < 1280 ? width - 80 : 500}
-              height={width < 1280 ? 200 : 250}
+              height={200}
               images={images}
               setImages={setImages}
             />
           </InputContainer>
           <div>
-            <InputContainer label="Name">
+            <InputContainer label="Date">
               <input
-                type="text"
-                name="title"
-                value={title}
-                onChange={(e) => setTitle(e.currentTarget.value)}
+                type="date"
+                value={creationDate || new Date().toISOString().split("T")[0]}
+                onChange={(e) => setCreationDate(e.target.value)}
                 required
               />
             </InputContainer>
@@ -142,42 +281,81 @@ const AddArticleModal = ({
             </InputContainer>
           </div>
         </div>,
-        <div key={1} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div
+          key={1}
+          style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+        >
+          <div className="languages-row">
+            <ul className="languages">
+              {langs.map((name, index) => (
+                <li
+                  key={index}
+                  className={editLang === name ? "active" : ""}
+                  onClick={() => setEditLang(editLang === name ? "" : name)}
+                >
+                  {name.replace("_", " ")}
+                </li>
+              ))}
+            </ul>
+            <InputContainer label="Default Language ?">
+              <input
+                type="checkbox"
+                checked={defaultLang === editLang}
+                onChange={(e) => setDefaultLang(editLang)}
+              />
+            </InputContainer>
+          </div>
+          <div className="third-row">
+            <InputContainer label="Name" style={{ flex: 1 }}>
+              <input
+                type="text"
+                name="title"
+                value={title.get(editLang) || ""}
+                onChange={(e) =>
+                  setTitle(
+                    new Map([...title, [editLang, e.currentTarget.value]])
+                  )
+                }
+                required
+              />
+            </InputContainer>
+            <InputContainer
+              label="Geo (Address, City, Country)"
+              style={{ flex: 1 }}
+            >
+              <input
+                type="text"
+                name="geo"
+                value={geo.get(editLang) || ""}
+                onChange={(e) =>
+                  setGeo(new Map([...geo, [editLang, e.currentTarget.value]]))
+                }
+                required
+              />
+            </InputContainer>
+          </div>
           <InputContainer label="Lore">
             <input
               type="text"
               name="lore"
-              value={lore}
-              onChange={(e) => setLore(e.currentTarget.value)}
+              value={lore.get(editLang) || ""}
+              onChange={(e) =>
+                setLore(new Map([...lore, [editLang, e.currentTarget.value]]))
+              }
               required
             />
           </InputContainer>
           <InputContainer label="Content">
             <textarea
               name="content"
-              value={content}
-              onChange={(e) => setContent(e.currentTarget.value)}
+              value={content.get(editLang) || ""}
+              onChange={(e) =>
+                setContent(
+                  new Map([...content, [editLang, e.currentTarget.value]])
+                )
+              }
               style={{ height: width < 1280 ? "100px" : "300px" }}
               required
-            />
-          </InputContainer>
-        </div>,
-        <div key={2} className="third-row">
-          <InputContainer label="Date" style={{ flex: 1 }}>
-            <input
-              type="date"
-              value={creationDate || new Date().toISOString().split("T")[0]}
-              onChange={(e) => setCreationDate(e.target.value)}
-              required
-            />
-          </InputContainer>
-          <InputContainer label="Geo" style={{ flex: 1 }}>
-            <GooglePlacesAutocomplete
-              apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}
-              selectProps={{
-                value: geo,
-                onChange: setGeo,
-              }}
             />
           </InputContainer>
         </div>,
@@ -186,4 +364,4 @@ const AddArticleModal = ({
   );
 };
 
-export default AddArticleModal;
+export default ArticleModal;

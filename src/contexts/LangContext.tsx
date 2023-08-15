@@ -12,6 +12,7 @@ interface Translation {
 }
 
 export const LangContext = React.createContext({
+  langs: [] as Array<string>,
   lang: "en" as string,
   updateLang: (lang: string) => {},
   getTranslation: (key: string) => "" as string,
@@ -50,7 +51,12 @@ export const LangContextProvider = ({
   }, []);
 
   return (
-    <LangContext.Provider value={{ lang, updateLang, getTranslation }}>
+    <LangContext.Provider value={{ langs: [
+      'en',
+      'fr',
+      'es',
+      'kr'
+    ], lang, updateLang, getTranslation }}>
       {children}
     </LangContext.Provider>
   );

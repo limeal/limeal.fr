@@ -327,5 +327,89 @@
         "fr": "Aucun article pour ce filtre. Essayez un autre !",
         "es": "No hay artículos para este filtro. ¡Prueba otro !",
         "kr": "이 필터에 대한 기사가 없습니다. 다른 것을 시도하십시오!"
+    },
+    {
+        "id": "profilm--create-must-login",
+        "en": "You must be logged in to create a profile.",
+        "fr": "Vous devez être connecté pour créer un profil.",
+        "es": "Debe iniciar sesión para crear un perfil.",
+        "kr": "프로필을 만들려면 로그인해야합니다."
+    },
+    {
+        "id": "profilm--create-must-fill",
+        "en": "You must fill all the fields.",
+        "fr": "Vous devez remplir tous les champs.",
+        "es": "Debe completar todos los campos.",
+        "kr": "모든 필드를 입력해야합니다."
+    },
+    {
+        "id": "profilm--create-success",
+        "en": "Your profile has been created successfully !",
+        "fr": "Votre profil a été créé avec succès !",
+        "es": "¡Tu perfil ha sido creado con éxito!",
+        "kr": "프로필이 성공적으로 생성되었습니다!"
+    },
+    {
+        "id": "profilm--create-error",
+        "en": "An error occured, please try again later.",
+        "fr": "Une erreur s'est produite, veuillez réessayer plus tard.",
+        "es": "Se produjo un error, inténtelo de nuevo más tarde.",
+        "kr": "오류가 발생했습니다. 나중에 다시 시도하십시오."
+    },
+    {
+        "id": "profilm--edit-success",
+        "en": "Your profile has been edited successfully !",
+        "fr": "Votre profil a été modifié avec succès !",
+        "es": "¡Tu perfil ha sido editado con éxito!",
+        "kr": "프로필이 성공적으로 편집되었습니다!"
+    },
+    {
+        "id": "profilm--edit-error",
+        "en": "An error occured, please try again later.",
+        "fr": "Une erreur s'est produite, veuillez réessayer plus tard.",
+        "es": "Se produjo un error, inténtelo de nuevo más tarde.",
+        "kr": "오류가 발생했습니다. 나중에 다시 시도하십시오."
+    },
+    {
+        "id": "profilm--create-title",
+        "en": "Create your profile",
+        "fr": "Créez votre profil",
+        "es": "Crea tu perfil",
+        "kr": "프로필 만들기"
+    },
+    {
+        "id": "profilm--edit-title",
+        "en": "Edit your profile",
+        "fr": "Modifiez votre profil",
+        "es": "Editar tu perfil",
+        "kr": "프로필 수정"
+    },
+    {
+        "id": "profilm--lore",
+        "en": "your desired username and picture",
+        "fr": "votre nom d'utilisateur et votre photo souhaités",
+        "es": "su nombre de usuario y foto deseados",
+        "kr": "원하는 사용자 이름 및 사진"
+    },
+    {
+        "id": "profilm--create-button",
+        "en": "Create",
+        "fr": "Créer",
+        "es": "Crear",
+        "kr": "만들기"
+    },
+    {
+        "id": "profilm--edit-button",
+        "en": "Edit",
+        "fr": "Modifier",
+        "es": "Editar",
+        "kr": "편집"
+    },
+    {
+        "id": "profilm--username",
+        "en": "Username",
+        "fr": "Nom d'utilisateur",
+        "es": "Nombre de usuario",
+        "kr": "사용자 이름"
     }
 ]
