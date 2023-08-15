@@ -12,6 +12,7 @@ import { addArticle } from "@/firebase/store/article";
 import moment from "moment";
 
 import "./style.scss";
+import { useLangContext } from "@/contexts/LangContext";
 
 const AddArticleModal = ({
   setOpen,
@@ -20,21 +21,31 @@ const AddArticleModal = ({
   setOpen: (open: boolean) => void;
   refresh: () => void;
 }) => {
-  const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [images, setImages] = useState<Array<File> | null>(null);
-  const [lore, setLore] = useState("");
-  const [content, setContent] = useState("");
   const [creationDate, setCreationDate] = useState(
     moment().format("YYYY-MM-DD")
   );
   const [published, setPublished] = useState(false);
   const [geo, setGeo] = useState<any>(null);
 
+  const [title, setTitle] = useState<Map<string, string>>(new Map());
+  const [lore, setLore] = useState<Map<string, string>>(new Map());
+  const [content, setContent] = useState<Map<string, string>>(new Map());
+
+  const [editLang, setEditLang] = useState("");
+  const [defaultLang, setDefaultLang] = useState("");
+
+  const { lang, langs } = useLangContext();
+
   const [loading, setLoading] = useState(false);
   const [width, setWidth] = useState(0);
 
   const updateDimension = () => setWidth(window.innerWidth);
+
+  useEffect(() => {
+    setEditLang(lang);
+  }, [lang]);
 
   useEffect(() => {
     updateDimension();
@@ -49,16 +60,32 @@ const AddArticleModal = ({
 
     setLoading(true);
     try {
-      if (images) {
-        for (const image of images) {
-          await uploadFile(image, `articles/${image.name}`);
-        }
+      if (!images) throw new Error("You must add at least one image!");
+      for (const image of images) {
+        await uploadFile(image, `articles/${image.name}`);
+      }
+
+      if (!defaultLang) {
+        throw new Error("You must select a default language!");
       }
 
       await addArticle({
-        title,
+        translations: langs.reduce((acc, lang) => {
+          if (!title.get(lang) || !lore.get(lang) || !content.get(lang)) {
+            return acc;
+          }
+
+          return {
+            ...acc,
+            [lang]: {
+              title: title.get(lang) || "",
+              lore: lore.get(lang) || "",
+              content: content.get(lang) || "",
+            },
+          };
+        }, {}),
+        defaultLanguage: defaultLang,
         slug,
-        lore,
         images: images
           ? images.map((image) => ({
               ref: `articles/${image.name}`,
@@ -66,10 +93,12 @@ const AddArticleModal = ({
           : [],
         place: {
           country: geo.value.terms[geo.value.terms.length - 1].value,
-          city: geo.value.terms.length >= 2 ? geo.value.terms[geo.value.terms.length - 2].value : "",
+          city:
+            geo.value.terms.length >= 2
+              ? geo.value.terms[geo.value.terms.length - 2].value
+              : "",
           address: geo.value.description,
         },
-        content,
         created_at: creationDate,
         published,
       });
@@ -107,18 +136,17 @@ const AddArticleModal = ({
           <InputContainer>
             <ImageDrop
               width={width < 1280 ? width - 80 : 500}
-              height={width < 1280 ? 200 : 250}
+              height={200}
               images={images}
               setImages={setImages}
             />
           </InputContainer>
           <div>
-            <InputContainer label="Name">
+            <InputContainer label="Date">
               <input
-                type="text"
-                name="title"
-                value={title}
-                onChange={(e) => setTitle(e.currentTarget.value)}
+                type="date"
+                value={creationDate || new Date().toISOString().split("T")[0]}
+                onChange={(e) => setCreationDate(e.target.value)}
                 required
               />
             </InputContainer>
@@ -142,42 +170,77 @@ const AddArticleModal = ({
             </InputContainer>
           </div>
         </div>,
-        <div key={1} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div
+          key={1}
+          style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+        >
+          <div className="languages-row">
+            <ul className="languages">
+              {langs.map((name, index) => (
+                <li
+                  key={index}
+                  className={editLang === name ? "active" : ""}
+                  onClick={() => setEditLang(editLang === name ? "" : name)}
+                >
+                  {name.replace("_", " ")}
+                </li>
+              ))}
+            </ul>
+            <InputContainer label="Default Language ?">
+              <input
+                type="checkbox"
+                checked={defaultLang === editLang}
+                onChange={(e) => setDefaultLang(editLang)}
+              />
+            </InputContainer>
+          </div>
+          <div className="third-row">
+            <InputContainer label="Name" style={{ flex: 1 }}>
+              <input
+                type="text"
+                name="title"
+                value={title.get(editLang) || ""}
+                onChange={(e) =>
+                  setTitle(
+                    new Map([...title, [editLang, e.currentTarget.value]])
+                  )
+                }
+                required
+              />
+            </InputContainer>
+            <InputContainer label="Geo" style={{ flex: 1 }}>
+              <GooglePlacesAutocomplete
+                apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}
+                apiOptions={{ language: editLang }}
+                selectProps={{
+                  value: geo,
+                  onChange: setGeo,
+                }}
+              />
+            </InputContainer>
+          </div>
           <InputContainer label="Lore">
             <input
               type="text"
               name="lore"
-              value={lore}
-              onChange={(e) => setLore(e.currentTarget.value)}
+              value={lore.get(editLang) || ""}
+              onChange={(e) =>
+                setLore(new Map([...lore, [editLang, e.currentTarget.value]]))
+              }
               required
             />
           </InputContainer>
           <InputContainer label="Content">
             <textarea
               name="content"
-              value={content}
-              onChange={(e) => setContent(e.currentTarget.value)}
+              value={content.get(editLang) || ""}
+              onChange={(e) =>
+                setContent(
+                  new Map([...content, [editLang, e.currentTarget.value]])
+                )
+              }
               style={{ height: width < 1280 ? "100px" : "300px" }}
               required
-            />
-          </InputContainer>
-        </div>,
-        <div key={2} className="third-row">
-          <InputContainer label="Date" style={{ flex: 1 }}>
-            <input
-              type="date"
-              value={creationDate || new Date().toISOString().split("T")[0]}
-              onChange={(e) => setCreationDate(e.target.value)}
-              required
-            />
-          </InputContainer>
-          <InputContainer label="Geo" style={{ flex: 1 }}>
-            <GooglePlacesAutocomplete
-              apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY}
-              selectProps={{
-                value: geo,
-                onChange: setGeo,
-              }}
             />
           </InputContainer>
         </div>,

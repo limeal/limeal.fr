@@ -5,21 +5,30 @@ import { toast } from "react-toastify";
 import { InputContainer } from "../../InputContainer";
 import Modal from "../..";
 
-import { updateProfile } from "@/firebase/store/profile";
+import { createProfile, getProfileFromId, updateProfile } from "@/firebase/store/profile";
+import { useAuthContext } from "@/contexts/AuthContext";
 import { uploadFile } from "@/firebase/storage";
 import ImageDrop from "@/components/atomes/ImageDrop";
 import Profile from "@/interfaces/profile";
+import { useLangContext } from "@/contexts/LangContext";
 
-const EditProfileModal = ({
+const ProfileModal = ({
+  mode,
   profile,
+  setProfile,
   setOpen,
 }: {
-  profile: Profile | null;
+  mode: "create" | "edit";
+  profile?: Profile | null;
+  setProfile: (profile: any) => void;
   setOpen: (open: boolean) => void;
 }) => {
   const [username, setUsername] = useState("");
   const [picture, setPicture] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const { user } = useAuthContext();
+  const { getTranslation } = useLangContext();
 
   const [width, setWidth] = useState(0);
 
@@ -32,9 +41,47 @@ const EditProfileModal = ({
     return () => window.removeEventListener("resize", updateDimension);
   }, []);
 
-
-  const update = async (e: React.FormEvent<HTMLFormElement>) => {
+  const create = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!user) {
+      toast.error(getTranslation("profilm--create-must-login"));
+      return;
+    }
+    if (!picture || !username) {
+      toast.error(getTranslation("profilm--create-must-fill"));
+      return;
+    }
+    setLoading(true);
+    try {
+      let picturePath = `profiles/${user?.uid}.${picture?.name
+        .split(".")
+        .pop()}`;
+
+      await uploadFile(picture, picturePath);
+
+      await createProfile({
+        id: user?.uid,
+        username: username,
+        picture: {
+          ref: picturePath || "",
+        },
+      });
+
+      const profile = await getProfileFromId(user?.uid);
+      setProfile(profile);
+
+      toast.success(getTranslation("profilm--create-success"));
+    } catch (error) {
+      toast.error(getTranslation("profilm--create-error"));
+    }
+    setLoading(false);
+  };
+
+  const edit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!profile) return;
 
     setLoading(true);
     try {
@@ -55,10 +102,13 @@ const EditProfileModal = ({
         },
       });
 
-      toast.success("Profile updated successfully!");
+      const newProfile = await getProfileFromId(user?.uid || '');
+      setProfile(newProfile);
+
+      toast.success(getTranslation("profilm--edit-success"));
       setOpen(false);
     } catch (error) {
-      toast.error("Failed to update profile!");
+      toast.error(getTranslation("profilm--edit-error"));
     }
     setLoading(false);
   };
@@ -71,13 +121,13 @@ const EditProfileModal = ({
 
   return (
     <Modal
-      title="Update profile"
-      lore="new values"
-      buttonText="Update"
+      title={mode === "create" ? getTranslation("profilm--create-title") : getTranslation("profilm--edit-title")}
+      lore={getTranslation("profilm--lore")}
+      buttonText={mode === "create" ? getTranslation("profilm--create-button") : getTranslation("profilm--edit-button")}
       loading={loading}
       setLoading={setLoading}
       setOpen={setOpen}
-      onSubmit={update}
+      onSubmit={mode === "create" ? create : edit}
       overrideStyle={{
         modal: {
           justifyContent: width >= 1280 ? "center" : "flex-start",
@@ -94,7 +144,7 @@ const EditProfileModal = ({
             setPicture(images ? images[0] : null)
           }
         />,
-        <InputContainer key={1} label="Username">
+        <InputContainer key={1} label={getTranslation("profilm--username")}>
           <input
             type="text"
             name="username"
@@ -108,4 +158,4 @@ const EditProfileModal = ({
   );
 };
 
-export default EditProfileModal;
+export default ProfileModal;

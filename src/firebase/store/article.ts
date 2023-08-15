@@ -24,12 +24,10 @@ const getArticles = async (query?: Query<DocumentData, DocumentData>) => {
 
         articles.push(<Article>{
             id: document.id,
-            title: data.title,
+            translations: data.translations,
+            defaultLanguage: data.defaultLanguage,
             slug: data.slug,
-            lore: data.lore,
             images: urls.map((url, index) => { return { ref: data.images[index].ref, url } }),
-            content: data.content,
-            place: data.place,
             created_at: getCurrentTimeInLetter(data.created_at),
             published: data.published,
             comments,

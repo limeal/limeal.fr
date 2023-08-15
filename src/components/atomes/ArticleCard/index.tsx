@@ -13,6 +13,7 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { deleteArticle, publishArticle } from "@/firebase/store/article";
 import Article from "@/interfaces/article";
 import Link from "next/link";
+import { useLangContext } from "@/contexts/LangContext";
 
 interface ArticleCardProps {
   article: Article;
@@ -23,6 +24,7 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
   const [width, setWidth] = useState(0);
 
   const updateDimension = () => setWidth(window.innerWidth);
+  const { lang } = useLangContext();
 
   useEffect(() => {
     updateDimension();
@@ -37,7 +39,7 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
     e.preventDefault();
     deleteArticle(article)
       .then(() => {
-        toast.success(`Article ${article.title} deleted !`);
+        toast.success(`Article ${article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title} deleted !`);
         refresh();
       })
       .catch((err) => {
@@ -49,7 +51,7 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
     e.preventDefault();
     publishArticle(article, state)
       .then(() => {
-        toast.success(`Article ${article.title} published !`);
+        toast.success(`Article ${article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title} published !`);
         refresh();
       })
       .catch((err) => {
@@ -64,7 +66,7 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
       <div className="thumbnail">
         <Image
           src={article.images[0].url || "/assets/images/no-image.png"}
-          alt={article.title}
+          alt={article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title}
           width={width < 728 ? 345 : 588}
           height={width < 728 ? 297 : 400}
           style={{
@@ -93,15 +95,22 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
           </div>
         )}
       </div>
+      <ul>
+        {Object.keys(article.translations).map((key) => (
+          <li key={key} className={lang === key ? "active" : ""}>
+            <a>{key}</a>
+          </li>
+        ))}
+      </ul>
       <div
         className="content"
       >
         <div className="metadata">
           <span>{article.created_at}</span>
-          <h2>{article.title}</h2>
+          <h2>{article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title}</h2>
         </div>
       </div>
-      <p>{article.lore}</p>
+      <p>{article.translations[lang] ? article.translations[lang].lore : article.translations[article.defaultLanguage].lore}</p>
     </div>
   );
 };
