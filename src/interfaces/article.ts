@@ -12,6 +12,11 @@ interface Article {
             title: string;
             lore: string;
             content: string; // In HTML
+            place?: {
+                address?: string;
+                city?: string;
+                country: string;
+            };
         };
     }
 
@@ -22,12 +27,6 @@ interface Article {
         ref: string;
         url?: string;
     }[]; // List of images reference
-
-    place?: {
-        address?: string;
-        city?: string;
-        country: string;
-    };
 
     published: boolean;
 
