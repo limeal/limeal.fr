@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { render } from "@react-email/render";
 
 import ContactEmail from "../../../../emails/ContactEmail";
+import NewArticle from "../../../../emails/NewArticle";
 
 export async function POST(request: Request) {
 
@@ -10,23 +11,32 @@ export async function POST(request: Request) {
     // Veriy the request body (type of document, name, service, from)
     // Create another path for sending mail + link firebase
 
-    const {
-        to,
-        name,
-        service,
-        content
-    } = await request.json();
+    const data = await request.json();
+
+    if (!data || !data.type || !data.to || !data.name) {
+        return NextResponse.json({ message: "Bad Request" }, { status: 500 });
+    }
+
+    if (data.type === "contact" && (!data.service || !data.content)) {
+        return NextResponse.json({ message: "Bad Request" }, { status: 500 });
+    }
+
+    if (data.type === "new-article" && (!data.slug)) {
+        return NextResponse.json({ message: "Bad Request" }, { status: 500 });
+    }
 
     try {
     await sendEmail({
-        html: render(ContactEmail({
-            name,
-            service,
-            content
+        html: render(data.type === "contact" ? ContactEmail({
+            name: data.name,
+            service: data.service,
+            content: data.content
+        }) : NewArticle({
+            slug: data.slug,
         })),
-        to,
+        to: data.to,
         bcc: process.env.SMTP_EMAIL_RECEIVER || "",
-        subject: `Website (${service}) - ${name}`,
+        subject: (data.type === "contact" ? `Website (${data.service}) - ${data.name}` : `New article - ${data.name}`),
     })
 
     return NextResponse.json({ message: "The mail has been sent !" }, { status: 200 });

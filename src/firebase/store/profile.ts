@@ -19,7 +19,8 @@ const getProfiles = async (query?: Query<DocumentData, DocumentData>) => {
             picture: {
                 ref: data.picture.ref,
                 url: images[0],
-            }
+            },
+            email: data.email,
         });
     }
 

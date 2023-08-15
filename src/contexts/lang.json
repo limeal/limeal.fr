@@ -266,6 +266,13 @@
         "kr": "메시지가 성공적으로 전송되었습니다!"
     },
     {
+        "id": "contact-me--pending",
+        "en": "Sending message...",
+        "fr": "Envoi du message...",
+        "es": "Enviando mensaje...",
+        "kr": "메시지 보내는 중..."
+    },
+    {
         "id": "contact-me--error",
         "en": "An error occured, please try again later.",
         "fr": "Une erreur s'est produite, veuillez réessayer plus tard.",
