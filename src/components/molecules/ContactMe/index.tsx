@@ -37,28 +37,26 @@ const ContactMe = () => {
     if (loading) return;
 
     setLoading(true);
-    fetch("/api/send-mail", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: email,
-        name,
-        service: type,
-        content,
-      }),
-    }).then((res) => {
-      if (res.status === 200) {
-        toast.success(getTranslation("contact-me--success"));
-      } else {
-        toast.error(getTranslation("contact-me--error"));
+    toast.promise(
+      fetch("/api/send-mail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "contact",
+          to: email,
+          name,
+          service: type,
+          content,
+        }),
+      }).finally(() => setLoading(false)),
+      {
+        pending: getTranslation("contact-me--pending"),
+        success: getTranslation("contact-me--success"),
+        error: getTranslation("contact-me--error"),
       }
-      setLoading(false);
-    }).catch(() => {
-      toast.error(getTranslation("contact-me--error"));
-      setLoading(false);
-    });
+    );
   };
 
   return (

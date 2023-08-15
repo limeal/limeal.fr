@@ -1,6 +1,5 @@
 import {
   Body,
-  Button,
   Container,
   Head,
   Hr,
@@ -15,18 +14,18 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-export const ContactEmail = ({
-  name,
-  service,
-  content,
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "";
+
+export const NewArticle = ({
+  slug,
 }: {
-  name: string;
-  service: string;
-  content: string;
+  slug: string;
 }) => (
   <Html>
     <Head />
-    <Preview>Thanks for contacting me!</Preview>
+    <Preview>Un nouvel article à été publié!</Preview>
     <Body style={main}>
       <Container style={container}>
         <Section style={box}>
@@ -37,17 +36,9 @@ export const ContactEmail = ({
             alt="Logo"
           />
           <Hr style={hr} />
-          <Text style={paragraph}>Hi {name},</Text>
           <Text style={paragraph}>
-            Thanks to contacting me to be part of you're future project,
-            concerning {service}.
+            Un nouvel article à été publié sur le blog: {baseUrl + "/blog/" + slug}
           </Text>
-          <Hr style={hr} />
-          <Text style={paragraph}>Recapitulation of your message:</Text>
-          <Text style={paragraph}>{content}</Text>
-          <Hr style={hr} />
-          <Text style={paragraph}>I will contact you as soon as possible.</Text>
-          <Text style={paragraph}>— Limeal</Text>
           <Hr style={hr} />
           <Row>
             <Column>
@@ -67,7 +58,7 @@ export const ContactEmail = ({
   </Html>
 );
 
-export default ContactEmail;
+export default NewArticle;
 
 const main = {
   backgroundColor: "#f6f9fc",

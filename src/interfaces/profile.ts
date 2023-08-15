@@ -5,6 +5,7 @@ interface Profile {
         ref: string;
         url?: string;
     };
+    email: string;
 }
 
 export default Profile;

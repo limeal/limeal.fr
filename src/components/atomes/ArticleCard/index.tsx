@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useLangContext } from "@/contexts/LangContext";
 import ArticleModal from "../Modal/variants/CAModal";
 import { BsFillPencilFill } from "react-icons/bs";
+import { sendEmailNewArticle } from "@/utils/article";
 
 interface ArticleCardProps {
   article: Article;
@@ -42,7 +43,13 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
     e.preventDefault();
     deleteArticle(article)
       .then(() => {
-        toast.success(`Article ${article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title} deleted !`);
+        toast.success(
+          `Article ${
+            article.translations[lang]
+              ? article.translations[lang].title
+              : article.translations[article.defaultLanguage].title
+          } deleted !`
+        );
         refresh();
       })
       .catch((err) => {
@@ -53,8 +60,26 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
   const handlePublish = (e: any, state: boolean) => {
     e.preventDefault();
     publishArticle(article, state)
-      .then(() => {
-        toast.success(`Article ${article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title} published !`);
+      .then(async () => {
+        if (state)
+          toast.promise(
+            sendEmailNewArticle(
+              article.translations[article.defaultLanguage].title || "",
+              article.slug
+            ),
+            {
+              pending: "Sending email to subscribers...",
+              success: "Email sent!",
+              error: "Failed to send email!",
+            }
+          );
+        toast.success(
+          `Article ${
+            article.translations[lang]
+              ? article.translations[lang].title
+              : article.translations[article.defaultLanguage].title
+          } ${state == false ? "un" : ""}published !`
+        );
         refresh();
       })
       .catch((err) => {
@@ -69,13 +94,24 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
 
   return (
     <div className="article-card">
-      {openEdit && <ArticleModal mode="edit" article={article} setOpen={setOpenEdit} refresh={refresh} />}
+      {openEdit && (
+        <ArticleModal
+          mode="edit"
+          article={article}
+          setOpen={setOpenEdit}
+          refresh={refresh}
+        />
+      )}
       <Link href={`/blog/${article.slug}`} />
       {!article.published && <p className="unpublished">Unpublished</p>}
       <div className="thumbnail">
         <Image
           src={article.images[0].url || "/assets/images/no-image.png"}
-          alt={article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title}
+          alt={
+            article.translations[lang]
+              ? article.translations[lang].title
+              : article.translations[article.defaultLanguage].title
+          }
           width={width < 728 ? 345 : 588}
           height={width < 728 ? 297 : 400}
           style={{
@@ -119,15 +155,21 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
           </li>
         ))}
       </ul>
-      <div
-        className="content"
-      >
+      <div className="content">
         <div className="metadata">
           <span>{article.created_at}</span>
-          <h2>{article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title}</h2>
+          <h2>
+            {article.translations[lang]
+              ? article.translations[lang].title
+              : article.translations[article.defaultLanguage].title}
+          </h2>
         </div>
       </div>
-      <p>{article.translations[lang] ? article.translations[lang].lore : article.translations[article.defaultLanguage].lore}</p>
+      <p>
+        {article.translations[lang]
+          ? article.translations[lang].lore
+          : article.translations[article.defaultLanguage].lore}
+      </p>
     </div>
   );
 };

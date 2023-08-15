@@ -66,6 +66,7 @@ const ProfileModal = ({
         picture: {
           ref: picturePath || "",
         },
+        email: user?.email || "",
       });
 
       const profile = await getProfileFromId(user?.uid);
@@ -100,6 +101,7 @@ const ProfileModal = ({
         picture: {
           ref: picturePath || "",
         },
+        email: profile?.email || "",
       });
 
       const newProfile = await getProfileFromId(user?.uid || '');

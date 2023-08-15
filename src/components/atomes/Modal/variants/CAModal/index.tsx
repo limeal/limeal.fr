@@ -15,6 +15,7 @@ import "./style.scss";
 import { useLangContext } from "@/contexts/LangContext";
 import Article from "@/interfaces/article";
 import { getCurrentTimeInFormat } from "@/utils/time";
+import { sendEmailNewArticle } from "@/utils/article";
 
 const ArticleModal = ({
   mode,
@@ -120,6 +121,17 @@ const ArticleModal = ({
         created_at: creationDate,
         published,
       });
+
+      if (published) {
+        toast.promise(
+          sendEmailNewArticle(title.get(defaultLang) || "", slug),
+          {
+            pending: "Sending email to subscribers...",
+            success: "Email sent!",
+            error: "Failed to send email!",
+          }
+        );
+      }
 
       toast.success("You successfully added a new article to the blog!");
       setOpen(false);
