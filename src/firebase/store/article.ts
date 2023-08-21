@@ -15,12 +15,17 @@ const getArticles = async (query?: Query<DocumentData, DocumentData>) => {
     for (const document of docs.docs) {
         const data = document.data();
 
-        const urls = await getImagesURL(data.images);
-        const comments = await getCommentsFromParam("article_ref", document.id);
-        const likes = await getLikesFromParam("entity", {
-            type: "article",
-            ref: document.id,
-        });
+        let urls, comments, likes: any[] = [];
+        if (query) {
+            urls = await getImagesURL(data.images);
+            comments = await getCommentsFromParam("article_ref", document.id);
+            likes = await getLikesFromParam("entity", {
+                type: "article",
+                ref: document.id,
+            });
+        } else {
+            urls = await getImagesURL([data.images[0]]);
+        }
 
         articles.push(<Article>{
             id: document.id,
