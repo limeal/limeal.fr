@@ -7,8 +7,11 @@ import Article from "@/interfaces/article";
 import { getCurrentTimeInLetter } from "@/utils/time";
 import { deleteFile, getImagesURL } from "../storage";
 import { deleteLike, getLikesFromEntity, getLikesFromParam } from "./like";
+import moment from "moment";
 
-const getArticles = async (query?: Query<DocumentData, DocumentData>) => {
+const getArticles = async (
+    query?: Query<DocumentData, DocumentData>
+) => {
     const articles: Article[] = [];
     const docs = await getDocs(query ?? collection(firestore, "articles"));
 
@@ -33,20 +36,25 @@ const getArticles = async (query?: Query<DocumentData, DocumentData>) => {
             defaultLanguage: data.defaultLanguage,
             slug: data.slug,
             images: urls.map((url, index) => { return { ref: data.images[index].ref, url } }),
-            created_at: getCurrentTimeInLetter(data.created_at),
+            created_at: data.created_at,
             published: data.published,
             comments,
             likes,
         })
     }
 
-    return articles;
+    return articles.sort((
+        a: Article,
+        b: Article
+    ) => {
+        return moment(b.created_at, 'YYYY-MM-DD').diff(moment(a.created_at, 'YYYY-MM-DD'));
+    });
 }
 
 const getArticlesFromParam = async (key: string, value: string) => await getArticles(query(collection(firestore, "articles"), where(key, "==", value)));
 const addArticle = async (article: Article) => await addDoc(collection(firestore, "articles"), article);
 const publishArticle = async (article: Article, state: boolean) => await setDoc(doc(firestore, "articles", article.id || ''), { published: state }, { merge: true });
-const updateArticle = async (article: Article) => await setDoc(doc(firestore, "articles", article.id || ''), {...article});
+const updateArticle = async (article: Article) => await setDoc(doc(firestore, "articles", article.id || ''), { ...article });
 
 const deleteArticle = async (article: Article) => {
 
