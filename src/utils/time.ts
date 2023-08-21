@@ -1,16 +1,18 @@
 import moment from "moment";
 
-const getCurrentTimeInLetter = (time: string) => {
+import 'moment/locale/fr';
+import 'moment/locale/es';
+import 'moment/locale/ko';
+
+const getCurrentTimeInLetter = (time: string, lang?: string) => {
+    if (lang === "kr") lang = "ko";
     const date = moment(time, 'YYYY-MM-DD');
 
-    return date.format("DD") + " " + date.format("MMMM") + " " + date.format("YYYY");
-};
+    date.locale(lang ?? "fr");
+    const month = date.format("MMMM");
 
-const getCurrentTimeInFormat = (time: string) => {
-    const [day, month, year] = time.split(" ");
-
-    return moment(`${day} ${month} ${year}`, 'DD MMMM YYYY').format("YYYY-MM-DD");
+    return date.format("DD") + " " + (month[0].toUpperCase() + month.slice(1)) +  " " + date.format("YYYY");
 };
 
 
-export { getCurrentTimeInLetter, getCurrentTimeInFormat };
+export { getCurrentTimeInLetter };

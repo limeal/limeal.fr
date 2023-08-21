@@ -17,6 +17,7 @@ import { useLangContext } from "@/contexts/LangContext";
 import ArticleModal from "../Modal/variants/CAModal";
 import { BsFillPencilFill } from "react-icons/bs";
 import { sendEmailNewArticle } from "@/utils/article";
+import { getCurrentTimeInLetter } from "@/utils/time";
 
 interface ArticleCardProps {
   article: Article;
@@ -157,7 +158,7 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
       </ul>
       <div className="content">
         <div className="metadata">
-          <span>{article.created_at}</span>
+          <span>{getCurrentTimeInLetter(article.created_at, lang)}</span>
           <h2>
             {article.translations[lang]
               ? article.translations[lang].title

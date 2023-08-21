@@ -29,6 +29,7 @@ import Like from "@/interfaces/like";
 import { addLike, deleteLike, getLikesFromEntity } from "@/firebase/store/like";
 import BaseLoading from "../BaseLoading";
 import { useLangContext } from "@/contexts/LangContext";
+import { getCurrentTimeInLetter } from "@/utils/time";
 
 const Article = ({ slug }: { slug: string }) => {
   const [article, setArticle] = useState<Article | null>(null);
@@ -241,7 +242,7 @@ const Article = ({ slug }: { slug: string }) => {
         <div>
           <span>
             <BsFillCalendarDateFill />
-            {article.created_at}
+            {getCurrentTimeInLetter(article.created_at, lang)}
           </span>
           <span>
             <button

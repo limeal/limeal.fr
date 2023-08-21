@@ -14,7 +14,6 @@ import moment from "moment";
 import "./style.scss";
 import { useLangContext } from "@/contexts/LangContext";
 import Article from "@/interfaces/article";
-import { getCurrentTimeInFormat } from "@/utils/time";
 import { sendEmailNewArticle } from "@/utils/article";
 
 const ArticleModal = ({
@@ -216,7 +215,7 @@ const ArticleModal = ({
   useEffect(() => {
     if (article) {
       setSlug(article.slug);
-      setCreationDate(getCurrentTimeInFormat(article.created_at));
+      setCreationDate(article.created_at);
       setPublished(article.published);
       setImages([...article.images.map((image) => image.url || "")]);
 
