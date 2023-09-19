@@ -18,16 +18,10 @@ const getArticles = async (
     for (const document of docs.docs) {
         const data = document.data();
 
-        let urls, comments, likes: any[] = [];
-        if (query) {
-            urls = await getImagesURL(data.images);
-            comments = await getCommentsFromParam("article_ref", document.id);
-            likes = await getLikesFromParam("entity", {
-                type: "article",
-                ref: document.id,
-            });
-        } else {
-            urls = await getImagesURL([data.images[0]]);
+        let images: any = data.images;
+        if (!query) {
+            images = await getImagesURL([data.images[0]]);
+            images = images.map((url: string, index: any) => { return { ref: data.images[index].ref, url } })
         }
 
         articles.push(<Article>{
@@ -35,11 +29,11 @@ const getArticles = async (
             translations: data.translations,
             defaultLanguage: data.defaultLanguage,
             slug: data.slug,
-            images: urls.map((url, index) => { return { ref: data.images[index].ref, url } }),
+            images,
             created_at: data.created_at,
             published: data.published,
-            comments,
-            likes,
+            comments: [],
+            likes: [],
         })
     }
 

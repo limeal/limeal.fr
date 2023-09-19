@@ -30,10 +30,14 @@ import { addLike, deleteLike, getLikesFromEntity } from "@/firebase/store/like";
 import BaseLoading from "../BaseLoading";
 import { useLangContext } from "@/contexts/LangContext";
 import { getCurrentTimeInLetter } from "@/utils/time";
+import { getImagesURL } from "@/firebase/storage";
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "@/firebase/firebase";
 
 const Article = ({ slug }: { slug: string }) => {
   const [article, setArticle] = useState<Article | null>(null);
   const [error, setError] = useState(false);
+  const [images, setImages] = useState<string[]>([]);
   const [comments, setComments] = useState<Comment[]>([]);
   const [likes, setLikes] = useState<Like[]>([]);
 
@@ -59,7 +63,21 @@ const Article = ({ slug }: { slug: string }) => {
   useEffect(() => {
     refreshComments();
     refreshLikes();
+    // Load images
+    loadImages();
   }, [article]);
+
+  const loadImages = async () => {
+    if (!article?.images) return;
+
+    for (let i = 0; i < article?.images.length; i++) {
+        try {
+          // Replace the default image with the new
+            const imageURL = await getDownloadURL(ref(storage, article?.images[i].ref));
+            setImages((prev) => [...prev, imageURL]);
+        } catch (err) {}
+    }
+  }
 
   const refreshComments = (isClick?: boolean) => {
     getCommentsFromParam("article_ref", article?.id || "").then(
@@ -219,7 +237,7 @@ const Article = ({ slug }: { slug: string }) => {
             <AiOutlineArrowLeft />
           </button>
           <Image
-            src={article.images[currentImage].url || ""}
+            src={images[currentImage] || "/assets/images/loading_media.gif"}
             alt={article.translations[lang] ? article.translations[lang].title : article.translations[article.defaultLanguage].title}
             width={0}
             height={0}
