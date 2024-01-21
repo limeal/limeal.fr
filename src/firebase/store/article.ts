@@ -1,13 +1,14 @@
 import { getDocs, collection, query, where, DocumentData, Query, addDoc, deleteDoc, doc, setDoc } from "firebase/firestore"
 
-import { firestore } from "../firebase"
+import { firestore, storage } from "../firebase"
 import { deleteComment, getCommentsFromParam } from "./comment";
 
 import Article from "@/interfaces/article";
 import { getCurrentTimeInLetter } from "@/utils/time";
-import { deleteFile, getImagesURL } from "../storage";
+import { deleteFile, getFileFromUrl, getImagesURL, uploadFile } from "../storage";
 import { deleteLike, getLikesFromEntity, getLikesFromParam } from "./like";
 import moment from "moment";
+import { getDownloadURL, ref } from "firebase/storage";
 
 const getArticles = async (
     query?: Query<DocumentData, DocumentData>
@@ -78,6 +79,37 @@ const deleteArticle = async (article: Article) => {
     await deleteDoc(doc(firestore, "articles", article.id || ''));
 }
 
+const patchArticle = async (article: Article) => {
+
+    // Retrieve all images from the article
+    /* const images = [];
+
+    for (const image of article.images) {
+        images.push(await getFileFromUrl(image.ref, image.ref.split('/')[2]));
+    }
+
+    console.log(images);
+
+    // Delete all images from the article
+    for (const aimage of article.images) {
+        await deleteFile(aimage.ref);
+    }
+
+    article.images = [];
+
+    // Upload all images from the article
+    for (const image of images) {
+        const path = `articles/${article.id}/${image.name}`;
+        await uploadFile(image, path);
+    }
+
+    // Update article
+    for (const image of images) {
+        const p = `articles/${article.id}/${image.name}`;
+        article.images.push({ ref: p, url: await getDownloadURL(ref(storage, p)) });
+    } */
+}
+
 export {
     getArticles,
     getArticlesFromParam,
@@ -85,4 +117,5 @@ export {
     deleteArticle,
     updateArticle,
     publishArticle,
+    patchArticle,
 }

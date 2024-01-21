@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import { AiFillDelete } from "react-icons/ai";
 import { MdPublish, MdUnpublished } from "react-icons/md";
+import { FiAlertTriangle } from "react-icons/fi";
 
 import "./style.scss";
 import { useAuthContext } from "@/contexts/AuthContext";
-import { deleteArticle, publishArticle } from "@/firebase/store/article";
+import { deleteArticle, publishArticle, patchArticle } from "@/firebase/store/article";
 import Article from "@/interfaces/article";
 import Link from "next/link";
 import { useLangContext } from "@/contexts/LangContext";
@@ -32,6 +33,7 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
   const { lang } = useLangContext();
 
   useEffect(() => {
+    console.log(article);
     updateDimension();
     window.addEventListener("resize", updateDimension);
 
@@ -93,6 +95,23 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
     setOpenEdit(true);
   };
 
+  function handlePatch(e: any): void {
+    patchArticle(article)
+      .then(() => {
+        toast.success(
+          `Article ${
+            article.translations[lang]
+              ? article.translations[lang].title
+              : article.translations[article.defaultLanguage].title
+          } patched !`
+        );
+        refresh();
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  }
+
   return (
     <div className="article-card">
       {openEdit && (
@@ -122,6 +141,16 @@ const ArticleCard = ({ article, refresh }: ArticleCardProps) => {
         />
         {user && user.uid === process.env.NEXT_PUBLIC_ADMIN_USER_ID && (
           <div className="actions">
+            {!article.images[0].ref.includes(article.slug) && (
+              <button
+                onClick={(e) => handlePatch(e)}
+                style={{
+                  zIndex: 1,
+                }}
+              >
+                <FiAlertTriangle />
+              </button>
+            )}
             <button
               onClick={(e) => handleEdit(e)}
               style={{

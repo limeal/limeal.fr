@@ -69,7 +69,7 @@ const ArticleModal = ({
       if (!images) throw new Error("You must add at least one image!");
       for (const image of images) {
         if (typeof image === "string") continue;
-        await uploadFile(image, `articles/${image.name}`);
+        await uploadFile(image, `articles/${slug}/${image.name}`);
       }
 
       if (!defaultLang) {
@@ -113,7 +113,7 @@ const ArticleModal = ({
                 if (typeof image === "string") return { ref: image };
 
                 return {
-                  ref: `articles/${image.name}`,
+                  ref: `articles/${slug}/${image.name}`,
                 };
               })
           : [],
@@ -157,8 +157,8 @@ const ArticleModal = ({
         imagePath = [];
         for (const image of images) {
           if (typeof image === "string") continue;
-          await uploadFile(image, `articles/${image.name}`);
-          imagePath.push(`articles/${image.name}`);
+          await uploadFile(image, `articles/${slug}/${image.name}`);
+          imagePath.push(`articles/${slug}/${image.name}`);
         }
       }
 
