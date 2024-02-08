@@ -25,7 +25,8 @@ const Portfolio = () => {
     setCategories([
       ...new Set(projects.map((project: Project) => project.category)),
     ]);
-    setProjects(projects);
+
+    setProjects(projects.sort((a, b) => new Date(a.release_date).getTime() - new Date(b.release_date).getTime()))
 
     if (isClick) {
       toast.success(getTranslation("portfolio--refresh-success"));

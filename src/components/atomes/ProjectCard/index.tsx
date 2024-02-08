@@ -11,6 +11,7 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { deleteProject } from "@/firebase/store/project";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import { getCurrentTimeInLetter } from "@/utils/time";
 
 interface ProjectCardProps {
   project: Project;
@@ -64,10 +65,11 @@ const ProjectCard = ({ project, refresh }: ProjectCardProps) => {
       </div>
       <div className="content">
         <div className="metadata">
-          <span>{project.release_date}</span>
+          <span>{getCurrentTimeInLetter(project.release_date)}</span>
           <h2>
             {user ? project.name.replace("Limeal", "Paul") : project.name}
           </h2>
+          {project.price && project.price > 0 && <p>Prix: <strong>{project.price}</strong>€</p>}
         </div>
         {(project.github || project.external_link) && (
           <div className="links">
