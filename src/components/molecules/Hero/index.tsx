@@ -97,7 +97,7 @@ const Hero = () => {
                     sizes="100vw"
                   />
                   <div>
-                    <span>200+</span>
+                    <span>1+</span>
                     <p>
                       {getTranslation("hero--satisfied--title")}
                     </p>

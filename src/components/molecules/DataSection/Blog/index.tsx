@@ -40,7 +40,7 @@ const Blog = () => {
           })
       ),
     ]);
-    setArticles(filteredArticles);
+    setArticles(filteredArticles.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()))
 
     if (isClick) {
       toast.success("Portfolio refreshed !");

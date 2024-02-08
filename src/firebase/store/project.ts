@@ -1,7 +1,6 @@
 import { getDocs, collection, query, where, DocumentData, Query, addDoc, deleteDoc, doc } from "firebase/firestore"
 
 import { firestore } from "../firebase"
-import { getCurrentTimeInLetter } from "@/utils/time";
 import Project from "@/interfaces/project";
 import { deleteFile, getImagesURL } from "../storage";
 
@@ -17,11 +16,12 @@ const getProjects = async (query?: Query<DocumentData, DocumentData>) => {
         projects.push(<Project>{
             id: document.id,
             name: data.name,
+            price: data.price,
             description: data.description,
             category: data.category,
             external_link: data.external_link,
             github: data.github,
-            release_date: getCurrentTimeInLetter(data.release_date),
+            release_date: data.release_date,
             thumbnail: {
                 ref: data.thumbnail.ref,
                 url: urls[0],
