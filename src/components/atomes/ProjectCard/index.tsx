@@ -68,6 +68,7 @@ const ProjectCard = ({ project, refresh }: ProjectCardProps) => {
           <h2>
             {user ? project.name.replace("Limeal", "Paul") : project.name}
           </h2>
+          {project.price && project.price > 0 && <p>Prix: <strong>{project.price}</strong>€</p>}
         </div>
         {(project.github || project.external_link) && (
           <div className="links">

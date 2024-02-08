@@ -1,6 +1,7 @@
 interface Project {
     id?: string;
     name: string;
+    price?: number;
     thumbnail: {
         ref: string;
         url?: string;

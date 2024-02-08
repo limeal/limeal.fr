@@ -17,6 +17,7 @@ const getProjects = async (query?: Query<DocumentData, DocumentData>) => {
         projects.push(<Project>{
             id: document.id,
             name: data.name,
+            price: data.price,
             description: data.description,
             category: data.category,
             external_link: data.external_link,

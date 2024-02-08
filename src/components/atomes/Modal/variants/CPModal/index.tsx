@@ -20,6 +20,7 @@ const CreateProjectModal = ({
   refresh: () => void;
 }) => {
   const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [category, setCategory] = useState("Web_Development");
@@ -104,6 +105,15 @@ const CreateProjectModal = ({
             required
           />
         </InputContainer>,
+        <InputContainer label="Price" key={1}>
+        <input
+          type="number"
+          name="price"
+          value={price}
+          onChange={(e) => setPrice(Number(e.currentTarget.value))}
+          required
+        />
+      </InputContainer>,
         <InputContainer label="Description" key={2}>
           <textarea
             name="description"
