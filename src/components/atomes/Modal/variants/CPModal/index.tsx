@@ -152,7 +152,6 @@ const CreateProjectModal = ({
             name="href"
             value={extLink}
             onChange={(e) => setExternalLink(e.currentTarget.value)}
-            required
           />
         </InputContainer>,
         <InputContainer label="Github" key={6}>
