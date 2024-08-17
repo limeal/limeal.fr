@@ -35,7 +35,7 @@ const Skills = () => {
                     {Object.entries(data).filter(([key, value]) => key === category).map(([key, value]) => (
                         <ul key={key}>
                             {value.map((skill, index) => (
-                                <SkillCard key={index} name={skill.name} star={skill.stars} />
+                                <SkillCard key={index} name={skill.name} exp={skill.exp} />
                             ))}
                         </ul>
                     ))}

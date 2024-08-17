@@ -15,15 +15,8 @@ const firebaseConfig: FirebaseOptions = {
 };
 
 // Initialize Firebase
-let firebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+export const firebaseApp = initializeApp(firebaseConfig);
 
-const firestore = getFirestore(firebaseApp);
-const storage = getStorage(firebaseApp);
-const auth = getAuth(firebaseApp);
-
-export {
-    firebaseApp,
-    firestore,
-    storage,
-    auth
-};
+export const firestore = getFirestore(firebaseApp);
+export const storage = getStorage(firebaseApp);
+export const auth = getAuth(firebaseApp);
