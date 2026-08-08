@@ -13,18 +13,30 @@ type EmailPayload = {
   ccs?: string | string[];
 }
 
-// Replace with your SMTP credentials
+const port = parseInt(process.env.SMTP_PORT || "587")
+
+// iCloud (smtp.mail.me.com) uses STARTTLS on 587, implicit TLS on 465
 const smtpOptions: SMTPTransport.Options = {
   host: process.env.SMTP_HOST || "",
-  port: parseInt(process.env.SMTP_PORT || "587"),
-  secure: process.env.SMTP_SECURE === "true" || false,
+  port,
+  secure: process.env.SMTP_SECURE
+    ? process.env.SMTP_SECURE === "true"
+    : port === 465,
+  requireTLS: true,
   auth: {
-    user: process.env.SMTP_USER || "user",
-    pass: process.env.SMTP_PASSWORD || "password",
+    user: process.env.SMTP_USER || "",
+    pass: process.env.SMTP_PASSWORD || "",
   },
 }
 
 export const sendEmail = async (data: EmailPayload) => {
+  const missing = ["SMTP_HOST", "SMTP_USER", "SMTP_PASSWORD"].filter(
+    (key) => !process.env[key]
+  )
+
+  if (missing.length)
+    throw new Error(`Missing SMTP environment variables: ${missing.join(", ")}`)
+
   const transporter = nodemailer.createTransport({
     ...smtpOptions,
   })

@@ -50,7 +50,16 @@ const ContactMe = () => {
           service: type,
           content,
         }),
-      }).finally(() => setLoading(false)),
+      })
+        .then(async (res) => {
+          // fetch only rejects on network errors, so surface HTTP failures too
+          if (!res.ok) {
+            const { message } = await res.json().catch(() => ({}));
+            throw new Error(message || res.statusText);
+          }
+          return res;
+        })
+        .finally(() => setLoading(false)),
       {
         pending: getTranslation("contact-me--pending"),
         success: getTranslation("contact-me--success"),

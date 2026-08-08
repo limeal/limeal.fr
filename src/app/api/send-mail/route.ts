@@ -13,15 +13,15 @@ export async function POST(request: Request) {
   const data = await request.json();
 
   if (!data || !data.type || !data.to || !data.name) {
-    return NextResponse.json({ message: "Bad Request" }, { status: 500 });
+    return NextResponse.json({ message: "Bad Request" }, { status: 400 });
   }
 
   if (data.type === "contact" && (!data.service || !data.content)) {
-    return NextResponse.json({ message: "Bad Request" }, { status: 500 });
+    return NextResponse.json({ message: "Bad Request" }, { status: 400 });
   }
 
   if (data.type === "new-article" && !data.slug) {
-    return NextResponse.json({ message: "Bad Request" }, { status: 500 });
+    return NextResponse.json({ message: "Bad Request" }, { status: 400 });
   }
 
   try {
@@ -50,8 +50,16 @@ export async function POST(request: Request) {
       { status: 200 },
     );
   } catch (err: any) {
+    // Surfaces the SMTP failure (auth, rejected sender, timeout) in the Vercel logs
+    console.error("[send-mail] failed to send", {
+      code: err?.code,
+      responseCode: err?.responseCode,
+      response: err?.response,
+      message: err?.message,
+    });
+
     return NextResponse.json(
-      { message: "message" in err ? err.message : "An error occured" },
+      { message: err?.message || "An error occured" },
       { status: 500 },
     );
   }
