@@ -1,22 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-import { useAuthContext } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import Error from "next/error";
-import Navigation from "@/components/atomes/Navigation";
+import { Container } from "@chakra-ui/react";
 
-import "./style.scss";
-import Blog from "@/components/molecules/DataSection/Blog";
-import Article from "@/components/atomes/Article";
-import Credits from "@/components/atomes/Credits";
 import IProfile from "@/interfaces/profile";
-import CPFModal from "@/components/atomes/Modal/variants/PFModal";
+import { useAuthContext } from "@/contexts/AuthContext";
 import { getProfileFromId } from "@/firebase/store/profile";
-import Profile from "@/components/atomes/Profile";
-import { Loading } from "@/components/molecules/Loading";
-import ProfileModal from "@/components/atomes/Modal/variants/PFModal";
+import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
+import BlogSection from "@/components/features/blog/BlogSection";
+import ArticleView from "@/components/features/blog/ArticleView";
+import ProfileBadge from "@/components/features/blog/ProfileBadge";
+import ProfileModal from "@/components/features/blog/ProfileModal";
 
 const Page = ({
   params,
@@ -27,51 +24,40 @@ const Page = ({
   const router = useRouter();
   const { user } = useAuthContext();
 
-  const [profileLoading, setProfileLoading] = useState<boolean>(true); // == Loading profile [boolean
-  const [profile, setProfile] = useState<IProfile | any>(null); // == User profile [object
+  const [profileLoading, setProfileLoading] = useState<boolean>(true);
+  const [profile, setProfile] = useState<IProfile | any>(null);
 
-  const [slug, setSlug] = useState<string>(""); // == Article slug
+  const slug = params.slug ? params.slug[0] || "" : "";
 
   useEffect(() => {
     if (user == null) router.push("/");
   }, [user, router]);
 
   useEffect(() => {
-    if (params.slug) {
-      setSlug(params.slug[0] || "");
-    }
-  }, [params]);
-
-  useEffect(() => {
     if (!user) return;
     setProfileLoading(true);
-    getProfileFromId(user?.uid)
-      .then((profile) => {
-        setProfile(profile);
-      })
+    getProfileFromId(user.uid)
+      .then(setProfile)
       .finally(() => setProfileLoading(false));
   }, [user]);
 
-  if (!user)
-    return <Error statusCode={401} title="Unauthorized. Redirecting..." />;
+  if (!user) return <Error statusCode={401} title="Unauthorized. Redirecting..." />;
 
   if (!profileLoading && !profile)
-    return (
-      <ProfileModal mode="create" setProfile={setProfile} setOpen={() => router.push("/")} />
-    );
+    return <ProfileModal mode="create" setProfile={setProfile} onClose={() => router.push("/")} />;
 
   return (
     <>
-      <header>
-        <Navigation hideContact={true} />
-      </header>
+      <Navigation hideContact />
       <main>
-        <Profile setProfile={setProfile} profile={profile} />
-        {slug !== "" ? <Article slug={slug} /> : <Blog />}
+        {profile && (
+          <Container maxW="7xl" px={{ base: 4, md: 8, xl: 12 }} pt="6">
+            <ProfileBadge profile={profile} setProfile={setProfile} />
+          </Container>
+        )}
+        {slug !== "" ? <ArticleView slug={slug} /> : <BlogSection />}
       </main>
-      <footer>
-        <Credits />
-      </footer>
+      <Footer />
     </>
   );
 };

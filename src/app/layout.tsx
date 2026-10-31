@@ -1,16 +1,28 @@
-import "./globals.css";
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
-import { AuthContextProvider } from "@/contexts/AuthContext";
-import { ToastContainer } from "react-toastify";
 
-import "react-toastify/dist/ReactToastify.css";
-import { LangContextProvider } from "@/contexts/LangContext";
+import Providers from "./providers";
+
+const satoshi = localFont({
+  src: "../../public/assets/fonts/Satoshi.ttf",
+  weight: "300 900",
+  variable: "--font-satoshi",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Limeal - Junior Developer",
-  description: "My personal portfolio, to show my skills and my projects.",
-  keywords: ["Limeal", "Portfolio", "Junior Developer"],
+  title: "Paul (Limeal) — Software & Product Engineer",
+  description:
+    "Software & product engineer : du besoin utilisateur à la prod, avec Go, React et Claude Code.",
+  keywords: [
+    "Limeal",
+    "Software Engineer",
+    "Product Engineer",
+    "Claude Code",
+    "Next.js",
+    "Go",
+  ],
   applicationName: "Limeal",
   category: "Portfolio",
   icons: [
@@ -20,7 +32,7 @@ export const metadata: Metadata = {
   ],
   authors: [
     {
-      name: "Limeal",
+      name: "Paul (Limeal)",
       url: "https://limeal.fr",
     },
   ],
@@ -32,19 +44,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${satoshi.variable} dark`} suppressHydrationWarning>
       <body>
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          closeOnClick={true}
-          pauseOnHover={false}
-        />
-        <LangContextProvider>
-          <AuthContextProvider>{children}</AuthContextProvider>
-        </LangContextProvider>
+        <Providers>{children}</Providers>
+        <Analytics />
       </body>
-      <Analytics />
     </html>
   );
 }

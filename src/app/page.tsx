@@ -1,29 +1,32 @@
-import Hero from "@/components/molecules/Hero";
-import Navigation from "@/components/atomes/Navigation";
-import Skills from "@/components/molecules/Skills";
-import Portfolio from "@/components/molecules/DataSection/Portfolio";
-import ContactMe from "@/components/molecules/ContactMe";
-import Credits from "@/components/atomes/Credits";
-import { defaultTabs } from "@/utils/constant";
+import Navigation from "@/components/layout/Navigation";
+import Footer from "@/components/layout/Footer";
+import ScrollProgress from "@/components/layout/ScrollProgress";
+import Hero from "@/components/sections/Hero";
+import Manifesto from "@/components/sections/Manifesto";
+import Skills from "@/components/sections/Skills";
+import Approach from "@/components/sections/Approach";
+import Portfolio from "@/components/sections/Portfolio";
+import Contact from "@/components/sections/Contact";
+import RecruiterChat from "@/components/features/recruiter-chat/RecruiterChat";
+import { homeLinks } from "@/data/navigation";
 
 const Page = () => {
-
   return (
     <>
-      <header>
-        <Navigation tabs={defaultTabs} />
-      </header>
+      <ScrollProgress />
+      <Navigation links={homeLinks} />
       <main>
         <Hero />
+        <Manifesto />
         <Skills />
+        <Approach />
         <Portfolio />
-        <ContactMe /> 
+        <Contact />
       </main>
-      <footer>
-        <Credits />
-      </footer>
+      <Footer />
+      <RecruiterChat />
     </>
   );
-}
+};
 
 export default Page;

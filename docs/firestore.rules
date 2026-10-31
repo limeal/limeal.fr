@@ -1,0 +1,78 @@
+// Firestore rules for limeal.fr — paste into Firebase console → Firestore Database → Rules.
+//
+// There is deliberately no catch-all `match /{document=**}`: rules only ever
+// grant access, so a catch-all read would expose the recruiter code (`admin`)
+// and every confidential project (`vault`) to any signed-in account.
+// A new collection therefore needs its own `match` block below.
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.uid == "6XQlxMCOhNMrRK3cYIQIKrFUoxF2";
+    }
+
+    function isAuthor() {
+      return signedIn()
+        && resource.data.keys().hasAny(['author_id'])
+        && request.auth.uid == resource.data.author_id;
+    }
+
+    // Public portfolio
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Blog (signed-in readers only)
+    match /articles/{articleId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    match /profiles/{profileId} {
+      allow read: if signedIn();
+      allow write: if isAdmin() || (signedIn() && request.auth.uid == profileId);
+    }
+
+    match /comments/{commentId} {
+      allow read, create, update: if signedIn();
+      allow delete: if isAdmin() || isAuthor();
+    }
+
+    match /likes/{likeId} {
+      allow read, create, update: if signedIn();
+      allow delete: if isAdmin() || isAuthor();
+    }
+
+    // Confidential projects: the path contains the recruiter code, so only
+    // someone who knows the code can address them. Listing `vault` itself
+    // is impossible (no rule matches it).
+    match /vault/{code}/confidential_projects/{projectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Private notes of the recruiter assistant: same capability as above
+    match /vault/{code}/assistant/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // The current recruiter code
+    match /admin/{docId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Public counter shown on the "confidential projects" teaser card
+    match /public_meta/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
