@@ -149,3 +149,8 @@ export const heroStack: Skill[] = [
   { name: "Product management", icon: LuKanbanSquare },
   { name: "Claude Code", icon: LuTerminal, accent: true },
 ];
+
+// Every skill by name, to show a project's stack with the same icons
+export const skillsByName = new Map(
+  skillCategories.flatMap((category) => category.skills).map((skill) => [skill.name, skill])
+);

@@ -3,6 +3,7 @@ import { skillCategories } from "@/data/skills";
 import { mindNodes } from "@/data/approach";
 import { socials } from "@/data/navigation";
 import Project from "@/interfaces/project";
+import AssistantProfile, { toAssistantProfile } from "@/interfaces/assistantProfile";
 import { byMostRecent, projectPeriod, withDetails } from "@/utils/project";
 
 // Server-only: everything the recruiter assistant knows, gathered from the same
@@ -16,15 +17,17 @@ type FirestoreValue = {
     stringValue?: string;
     booleanValue?: boolean;
     mapValue?: { fields?: Record<string, FirestoreValue> };
+    arrayValue?: { values?: FirestoreValue[] };
 };
 type FirestoreDocument = { fields?: Record<string, FirestoreValue> };
 
 const text = (id: string) => langs.find((l) => l.id === id)?.en ?? "";
 
+const fromValue = (v: FirestoreValue): unknown =>
+    v.arrayValue ? (v.arrayValue.values ?? []).map(fromValue) : v.stringValue ?? v.booleanValue ?? null;
+
 const fromFirestore = (fields: Record<string, FirestoreValue> = {}) =>
-    Object.fromEntries(
-        Object.entries(fields).map(([key, v]) => [key, v.stringValue ?? v.booleanValue ?? null])
-    );
+    Object.fromEntries(Object.entries(fields).map(([key, v]) => [key, fromValue(v)]));
 
 const fetchFirestore = (path: string, idToken: string) =>
     fetch(`${FIRESTORE}/${path}`, { cache: "no-store", headers: { Authorization: `Bearer ${idToken}` } });
@@ -58,7 +61,7 @@ export const readDocument = async (path: string, idToken: string) => {
 const fields = (doc: FirestoreDocument) => fromFirestore(doc.fields) as Record<string, any>;
 const docId = (doc: FirestoreDocument & { name?: string }) => doc.name?.split("/").pop() ?? "";
 
-export type RecruiterVault = { projects: Project[]; notes: string };
+export type RecruiterVault = { projects: Project[]; profile: AssistantProfile };
 
 // Null unless the token belongs to the admin or an approved recruiter: the
 // rules only let them read the vault code
@@ -86,11 +89,10 @@ export const loadRecruiterVault = async (idToken: string): Promise<RecruiterVaul
         }),
     ];
 
-    const notes = notesDocs.map((d) => fields(d).notes).find(Boolean);
 
     return {
         projects: projects.sort(byMostRecent),
-        notes: typeof notes === "string" ? notes : "",
+        profile: toAssistantProfile(notesDocs.length ? fields(notesDocs[0]) : null),
     };
 };
 
@@ -99,6 +101,7 @@ const describeProject = (p: Project) => {
     const lines = [
         `- ${shown.name} (${p.kind === "pro" ? "professional" : "personal"}, ${projectPeriod(p, "present")}, ${(p.category ?? "").replace(/_/g, " ")})`,
         p.role && `  Role: ${p.role}`,
+        p.stack?.length && `  Stack: ${p.stack.join(", ")}`,
         p.details?.company && `  Company: ${p.details.company}`,
         `  ${p.description}`,
         shown.external_link && shown.external_link !== "/" && `  Link: ${shown.external_link}`,
@@ -107,7 +110,19 @@ const describeProject = (p: Project) => {
     return lines.filter(Boolean).join("\n");
 };
 
-export const buildInstructions = ({ projects, notes }: RecruiterVault) => `
+const describeProfile = (p: AssistantProfile) =>
+    [
+        `Availability: ${p.availability || "unknown"}`,
+        `Location / remote: ${p.location || "unknown"}`,
+        `Languages: ${p.languages || "unknown"}`,
+        `Looking for: ${p.lookingFor || "unknown"}`,
+        `Salary expectations: ${p.salary || "unknown"}`,
+        p.notes && `Other notes: ${p.notes}`,
+    ]
+        .filter(Boolean)
+        .join("\n");
+
+export const buildInstructions = ({ projects, profile }: RecruiterVault) => `
 You are the recruiter assistant of limeal.fr, the portfolio of Paul (pseudonym "Limeal").
 You talk to recruiters whose access to the private area of the site was approved.
 Your job: answer their questions about Paul's professional profile, accurately and briefly.
@@ -137,8 +152,8 @@ ${mindNodes.map((n) => `- ${text(`approach--${n.id}-title`)}: ${text(`approach--
 ## Projects (most recent first)
 ${projects.map(describeProject).join("\n")}
 
-## Notes from Paul
-${notes || "(none)"}
+## Availability and expectations (from Paul)
+${describeProfile(profile)}
 
 ## Contact
 Contact form on limeal.fr (section "Contact"), GitHub ${socials.github}, Discord "${socials.discord}".

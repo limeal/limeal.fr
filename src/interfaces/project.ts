@@ -25,6 +25,8 @@ interface Project {
     // Absent on older documents: treated as "personal"
     kind?: "personal" | "pro";
     role?: string;
+    // Skill names (see data/skills.ts), shown as icons on the card
+    stack?: string[];
     github?: string;
     external_link?: string;
     // Start date for projects spanning a period (YYYY-MM-DD)

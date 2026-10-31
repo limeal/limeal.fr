@@ -16,6 +16,7 @@ import Card from "@/components/ui/Card";
 import { toast } from "@/components/ui/Toaster";
 import { hasThumbnail, projectPeriod, withDetails } from "@/utils/project";
 import ProjectFormModal from "./ProjectFormModal";
+import StackIcons from "./StackIcons";
 
 type ProjectCardProps = {
   project: Project;
@@ -74,7 +75,7 @@ const Thumbnail = ({ project, sizes }: { project: Project; sizes: string }) => (
           fontWeight="black"
           textTransform="uppercase"
           textAlign="center"
-          lineHeight="0.95"
+          lineHeight="1.1"
           letterSpacing="-0.03em"
           fontSize={{ base: "3xl", md: "4xl" }}
           lineClamp={3}
@@ -145,13 +146,13 @@ const ProjectCard = ({ project: raw, refresh, vaultCode, variant = "compact" }: 
     return (
       <Card interactive>
         {editModal}
-        {/* Fixed height on desktop: long descriptions are clamped instead of stretching the card */}
-        <Grid templateColumns={{ base: "1fr", lg: "minmax(0, 1.4fr) minmax(0, 1fr)" }} h={{ lg: "420px" }}>
-          <Box position="relative" aspectRatio={{ base: "16 / 10", lg: "auto" }} overflow="hidden">
+        {/* Height follows the text; the image fills it, never below 340px */}
+        <Grid templateColumns={{ base: "1fr", lg: "minmax(0, 1.4fr) minmax(0, 1fr)" }}>
+          <Box position="relative" aspectRatio={{ base: "16 / 10", lg: "auto" }} minH={{ lg: "340px" }} overflow="hidden">
             <Thumbnail project={project} sizes="(min-width: 1024px) 60vw, 100vw" />
             {adminActions}
           </Box>
-          <Stack p={{ base: 6, md: 10 }} gap="4" justify="center" overflow="hidden">
+          <Stack p={{ base: 6, md: 8 }} gap="3.5" justify="center">
             <HStack gap="3" wrap="wrap">
               <Text
                 as="span"
@@ -174,21 +175,23 @@ const ProjectCard = ({ project: raw, refresh, vaultCode, variant = "compact" }: 
             </HStack>
             <Heading
               as="h3"
-              fontSize={{ base: "3xl", md: "4xl" }}
+              fontSize={{ base: "2xl", md: "3xl" }}
               fontWeight="black"
               textTransform="uppercase"
               letterSpacing="-0.02em"
-              lineHeight="1"
+              // Room for Satoshi's tall glyphs, which a tighter line box clips
+              lineHeight="1.15"
               lineClamp={2}
             >
               {project.name}
             </Heading>
             {credit && (
-              <Text fontWeight="bold" color="white" lineClamp={1}>
+              <Text fontWeight="bold" color="white" lineHeight="1.5" truncate>
                 {credit}
               </Text>
             )}
-            <Text color="muted" fontSize={{ base: "md", md: "lg" }} lineHeight="tall" lineClamp={4}>
+            <StackIcons stack={project.stack} max={12} size="xl" />
+            <Text color="muted" lineHeight="tall" lineClamp={3}>
               {project.description}
             </Text>
             <Flex gap="3" wrap="wrap" pt="2">
@@ -224,7 +227,7 @@ const ProjectCard = ({ project: raw, refresh, vaultCode, variant = "compact" }: 
 
       <Stack p="5" gap="2" flex="1">
         <Flex justify="space-between" align="flex-start" gap="3">
-          <Heading as="h3" fontSize="xl" fontWeight="black" lineClamp={2}>
+          <Heading as="h3" fontSize="xl" fontWeight="black" lineHeight="1.3" lineClamp={2}>
             {project.name}
           </Heading>
           <HStack gap="2" flexShrink="0">
@@ -251,10 +254,11 @@ const ProjectCard = ({ project: raw, refresh, vaultCode, variant = "compact" }: 
           </Text>
         </HStack>
         {credit && (
-          <Text fontSize="sm" fontWeight="bold" lineClamp={1}>
+          <Text fontSize="sm" fontWeight="bold" lineHeight="1.5" truncate>
             {credit}
           </Text>
         )}
+        <StackIcons stack={project.stack} />
         <Text color="muted" fontSize="sm" lineHeight="tall" lineClamp={3}>
           {project.description}
         </Text>

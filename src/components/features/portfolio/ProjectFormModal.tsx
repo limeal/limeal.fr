@@ -17,6 +17,7 @@ import Button from "@/components/ui/Button";
 import Pill from "@/components/ui/Pill";
 import { toast } from "@/components/ui/Toaster";
 import { captureWebsite } from "@/utils/screenshot";
+import { skillCategories } from "@/data/skills";
 
 const CATEGORIES = [
   { value: "Web_Development", label: "Web" },
@@ -64,6 +65,40 @@ const Choice = <T extends string>({
   </Flex>
 );
 
+// Technologies used, picked from the skills shown on the site
+const StackPicker = ({ value, onChange }: { value: string[]; onChange: (stack: string[]) => void }) => {
+  const { getTranslation } = useLangContext();
+  const toggle = (name: string) =>
+    onChange(value.includes(name) ? value.filter((n) => n !== name) : [...value, name]);
+
+  return (
+    <Stack gap="3" w="full">
+      {skillCategories.map((c) => (
+        <Box key={c.id}>
+          <Text color="muted" fontSize="xs" mb="1.5">
+            {getTranslation(c.tid)}
+          </Text>
+          <Flex gap="1.5" wrap="wrap">
+            {c.skills.map((skill) => (
+              <Pill
+                key={skill.name}
+                icon={skill.icon}
+                active={value.includes(skill.name)}
+                onClick={() => toggle(skill.name)}
+                fontSize="xs"
+                px="2.5"
+                py="1"
+              >
+                {skill.tid ? getTranslation(skill.tid) : skill.name}
+              </Pill>
+            ))}
+          </Flex>
+        </Box>
+      ))}
+    </Stack>
+  );
+};
+
 const SectionTitle = ({ icon, children }: { icon?: React.ReactNode; children: React.ReactNode }) => (
   <Flex align="center" gap="2" pt="2" color="muted" fontSize="xs" fontWeight="bold" textTransform="uppercase" letterSpacing="0.15em">
     {icon}
@@ -92,6 +127,7 @@ const ProjectFormModal = ({
   const [name, setName] = useState(project?.name ?? "");
   const [description, setDescription] = useState(project?.description ?? "");
   const [category, setCategory] = useState(project?.category ?? CATEGORIES[0].value);
+  const [stack, setStack] = useState<string[]>(project?.stack ?? []);
   const [role, setRole] = useState(project?.role ?? "");
   const [company, setCompany] = useState(details?.company ?? "");
   const [realName, setRealName] = useState(details?.name ?? "");
@@ -156,6 +192,7 @@ const ProjectFormModal = ({
         name,
         description,
         category,
+        stack,
         kind,
         role: isPro ? role : "",
         release_date: fromMonth(start),
@@ -232,6 +269,9 @@ const ProjectFormModal = ({
           rows={3}
           css={fieldStyles}
         />
+      </FormField>
+      <FormField label="Stack">
+        <StackPicker value={stack} onChange={setStack} />
       </FormField>
       <FormField label="Category">
         <Choice id="category" value={category} onChange={setCategory} options={CATEGORIES} />

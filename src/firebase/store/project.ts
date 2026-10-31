@@ -2,6 +2,7 @@ import { getDocs, collection, DocumentData, addDoc, deleteDoc, doc, updateDoc, g
 
 import { firestore } from "../firebase"
 import Project, { ProjectDetails } from "@/interfaces/project";
+import AssistantProfile, { toAssistantProfile } from "@/interfaces/assistantProfile";
 import { deleteFile, getImagesURL } from "../storage";
 
 // Public projects live in `projects`. What identifies a pro project lives under
@@ -21,6 +22,7 @@ const toProject = async (id: string, data: DocumentData): Promise<Project> => ({
     category: data.category,
     kind: data.kind ?? "personal",
     role: data.role,
+    stack: data.stack ?? [],
     external_link: data.external_link,
     github: data.github,
     release_date: data.release_date,
@@ -154,13 +156,13 @@ const ensureVaultMarker = (vaultCode: string) => setDoc(markerDoc(vaultCode), { 
 // Private notes the recruiter assistant answers from (availability, contract…)
 const assistantNotesDoc = (vaultCode: string) => doc(firestore, "vault", vaultCode, "assistant", "profile");
 
-const getAssistantNotes = async (vaultCode: string): Promise<string> => {
+const getAssistantNotes = async (vaultCode: string): Promise<AssistantProfile> => {
     const snapshot = await getDoc(assistantNotesDoc(vaultCode)).catch(() => null);
-    return snapshot?.data()?.notes ?? "";
+    return toAssistantProfile(snapshot?.data());
 }
 
-const setAssistantNotes = (vaultCode: string, notes: string) =>
-    setDoc(assistantNotesDoc(vaultCode), { notes });
+const setAssistantNotes = (vaultCode: string, profile: AssistantProfile) =>
+    setDoc(assistantNotesDoc(vaultCode), toAssistantProfile(profile as unknown as Record<string, unknown>));
 
 // Copies the whole vault under a new code and deletes the old one. The access
 // links are re-pointed by the caller (see access.ts).
