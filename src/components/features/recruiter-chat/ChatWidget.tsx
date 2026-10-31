@@ -8,7 +8,9 @@ import { Box, chakra, Flex, HStack, IconButton, Input, Stack, Text } from "@chak
 import { AnimatePresence, motion } from "framer-motion";
 import { LuArrowUp, LuMessageCircle, LuRotateCcw, LuSquare, LuX } from "react-icons/lu";
 
+import { auth } from "@/firebase/firebase";
 import { useLangContext } from "@/contexts/LangContext";
+import { useRecruiterAccess } from "@/contexts/RecruiterAccessContext";
 import { fieldStyles } from "@/components/ui/FormField";
 import { EASE_OUT } from "@/components/ui/Reveal";
 
@@ -35,11 +37,12 @@ const Bubble = ({ fromUser, children }: { fromUser: boolean; children: React.Rea
   </Box>
 );
 
-const ChatWidget = ({ code }: { code: string }) => {
+const ChatWidget = () => {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
   const { getTranslation } = useLangContext();
+  const { logChat } = useRecruiterAccess();
 
   const { messages, sendMessage, status, stop, error, setMessages, clearError } = useChat({ transport });
   const busy = status === "submitted" || status === "streaming";
@@ -48,11 +51,15 @@ const ChatWidget = ({ code }: { code: string }) => {
     endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, status]);
 
-  const send = (text: string) => {
+  const send = async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || busy) return;
-    // The code travels with each request; the server checks it before calling the model
-    sendMessage({ text: trimmed }, { body: { code } });
+    // The server checks the visitor's access with this token before calling the model
+    const idToken = await auth.currentUser?.getIdToken();
+    if (!idToken) return;
+    sendMessage({ text: trimmed }, { body: { idToken } });
+    // Recorded under the access link, so the admin sees what interests recruiters
+    logChat(trimmed);
     setInput("");
   };
 

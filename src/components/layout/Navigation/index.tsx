@@ -14,6 +14,7 @@ import { LuArrowUpRight, LuBookOpen, LuLogOut, LuMenu, LuX } from "react-icons/l
 
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLangContext } from "@/contexts/LangContext";
+import { useRecruiterAccess } from "@/contexts/RecruiterAccessContext";
 import { signOut } from "@/firebase/authentication";
 import type { NavLink } from "@/data/navigation";
 import useActiveSection from "@/hooks/useActiveSection";
@@ -34,6 +35,7 @@ const Navigation = ({ links, hideContact }: NavigationProps) => {
   const [scrolled, setScrolled] = useState(false);
 
   const { user } = useAuthContext();
+  const { isRecruiter } = useRecruiterAccess();
   const { getTranslation } = useLangContext();
   const activeId = useActiveSection(links?.map((l) => l.href.replace("#", "")) ?? []);
 
@@ -104,16 +106,19 @@ const Navigation = ({ links, hideContact }: NavigationProps) => {
               <LanguageSelect />
               {user && (
                 <>
-                  <Button
-                    href="/blog"
-                    variant="ghost"
-                    h="10"
-                    px="4"
-                    display={{ base: "none", md: "inline-flex" }}
-                    icon={<LuBookOpen />}
-                  >
-                    Blog
-                  </Button>
+                  {/* The blog is for friends' accounts, not recruiters */}
+                  {!isRecruiter && (
+                    <Button
+                      href="/blog"
+                      variant="ghost"
+                      h="10"
+                      px="4"
+                      display={{ base: "none", md: "inline-flex" }}
+                      icon={<LuBookOpen />}
+                    >
+                      Blog
+                    </Button>
+                  )}
                   <IconButton
                     aria-label={getTranslation("logout")}
                     title={getTranslation("logout")}
@@ -145,7 +150,7 @@ const Navigation = ({ links, hideContact }: NavigationProps) => {
                 >
                   <Box px="6" py="8">
                     <NavLinks links={links} activeId={activeId} direction="column" onNavigate={() => setMenuOpen(false)} />
-                    {user && (
+                    {user && !isRecruiter && (
                       <Button href="/blog" variant="outline" mt="8" icon={<LuBookOpen />}>
                         Blog
                       </Button>

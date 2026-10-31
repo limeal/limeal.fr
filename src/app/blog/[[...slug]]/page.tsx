@@ -7,6 +7,7 @@ import { Container } from "@chakra-ui/react";
 
 import IProfile from "@/interfaces/profile";
 import { useAuthContext } from "@/contexts/AuthContext";
+import { useRecruiterAccess } from "@/contexts/RecruiterAccessContext";
 import { getProfileFromId } from "@/firebase/store/profile";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
@@ -23,6 +24,7 @@ const Page = ({
 }) => {
   const router = useRouter();
   const { user } = useAuthContext();
+  const { isRecruiter } = useRecruiterAccess();
 
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
   const [profile, setProfile] = useState<IProfile | any>(null);
@@ -30,8 +32,9 @@ const Page = ({
   const slug = params.slug ? params.slug[0] || "" : "";
 
   useEffect(() => {
-    if (user == null) router.push("/");
-  }, [user, router]);
+    // Recruiter accounts only exist for the portfolio
+    if (user == null || isRecruiter) router.push("/");
+  }, [user, isRecruiter, router]);
 
   useEffect(() => {
     if (!user) return;

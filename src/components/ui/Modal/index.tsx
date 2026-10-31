@@ -8,8 +8,9 @@ type ModalProps = {
   title: string;
   subtitle?: React.ReactNode;
   onClose: () => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  submitText: string;
+  // Both omitted for a read-only dialog (no footer button)
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  submitText?: string;
   loading?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
   children: React.ReactNode;
@@ -56,11 +57,13 @@ export const Modal = ({
             <Dialog.Body>
               <Stack gap="5">{children}</Stack>
             </Dialog.Body>
-            <Dialog.Footer>
-              <Button type="submit" loading={loading} w={{ base: "full", md: "auto" }}>
-                {submitText}
-              </Button>
-            </Dialog.Footer>
+            {submitText && (
+              <Dialog.Footer>
+                <Button type="submit" loading={loading} w={{ base: "full", md: "auto" }}>
+                  {submitText}
+                </Button>
+              </Dialog.Footer>
+            )}
           </chakra.form>
           <Dialog.CloseTrigger asChild>
             <CloseButton size="sm" color="muted" _hover={{ color: "white" }} />

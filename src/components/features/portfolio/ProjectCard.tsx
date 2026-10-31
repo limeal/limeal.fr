@@ -14,13 +14,13 @@ import useIsAdmin from "@/hooks/useIsAdmin";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import { toast } from "@/components/ui/Toaster";
-import { hasThumbnail, projectPeriod } from "@/utils/project";
+import { hasThumbnail, projectPeriod, withDetails } from "@/utils/project";
 import ProjectFormModal from "./ProjectFormModal";
 
 type ProjectCardProps = {
   project: Project;
   refresh: () => void;
-  // Admin's recruiter code: where confidential projects are stored
+  // Admin's vault code: where the private details of pro projects are stored
   vaultCode: string | null;
   // "featured": large horizontal card for the latest project
   variant?: "featured" | "compact";
@@ -86,14 +86,16 @@ const Thumbnail = ({ project, sizes }: { project: Project; sizes: string }) => (
   </Box>
 );
 
-const ProjectCard = ({ project, refresh, vaultCode, variant = "compact" }: ProjectCardProps) => {
+const ProjectCard = ({ project: raw, refresh, vaultCode, variant = "compact" }: ProjectCardProps) => {
+  // Displayed values: the real name, links and screenshot replace the anonymous ones with access
+  const project = withDetails(raw);
   const [editing, setEditing] = useState(false);
   const isAdmin = useIsAdmin();
   const { getTranslation } = useLangContext();
 
   const isPro = project.kind === "pro";
   // "Lead dev · Company", each part only when filled in
-  const credit = isPro ? [project.role, project.company].filter(Boolean).join(" · ") : "";
+  const credit = isPro ? [project.role, project.details?.company].filter(Boolean).join(" · ") : "";
 
   const kindBadge = (
     <Text
@@ -116,7 +118,7 @@ const ProjectCard = ({ project, refresh, vaultCode, variant = "compact" }: Proje
   const meta = `${projectPeriod(project, getTranslation("portfolio--today"))} · ${project.category.replace(/_/g, " ")}`;
 
   const handleDelete = () => {
-    deleteProject(project, project.confidential ? vaultCode ?? undefined : undefined)
+    deleteProject(raw, vaultCode)
       .then(() => {
         toast.success(`Project ${project.name} deleted !`);
         refresh();
@@ -136,7 +138,7 @@ const ProjectCard = ({ project, refresh, vaultCode, variant = "compact" }: Proje
   );
 
   const editModal = editing && (
-    <ProjectFormModal project={project} vaultCode={vaultCode} onClose={() => setEditing(false)} refresh={refresh} />
+    <ProjectFormModal project={raw} vaultCode={vaultCode} onClose={() => setEditing(false)} refresh={refresh} />
   );
 
   if (variant === "featured") {

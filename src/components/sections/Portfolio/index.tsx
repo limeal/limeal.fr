@@ -2,15 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Box, IconButton } from "@chakra-ui/react";
-import { LuBot, LuKeyRound, LuUnlock, LuX } from "react-icons/lu";
+import { LuBot, LuBarChart3, LuUnlock, LuX } from "react-icons/lu";
 
 import Project from "@/interfaces/project";
-import {
-  getConfidentialCount,
-  getConfidentialProjects,
-  getProjects,
-  setConfidentialCount,
-} from "@/firebase/store/project";
+import { getProjects } from "@/firebase/store/project";
 import { byMostRecent } from "@/utils/project";
 import { useLangContext } from "@/contexts/LangContext";
 import { useRecruiterAccess } from "@/contexts/RecruiterAccessContext";
@@ -20,8 +15,7 @@ import Pill from "@/components/ui/Pill";
 import CollectionSection from "@/components/features/collection/CollectionSection";
 import ProjectCard from "@/components/features/portfolio/ProjectCard";
 import ProjectFormModal from "@/components/features/portfolio/ProjectFormModal";
-import ConfidentialTeaser from "@/components/features/portfolio/ConfidentialTeaser";
-import RecruiterCodeModal from "@/components/features/portfolio/RecruiterCodeModal";
+import AccessDashboardModal from "@/components/features/portfolio/AccessDashboardModal";
 import AssistantNotesModal from "@/components/features/recruiter-chat/AssistantNotesModal";
 
 const KINDS = [
@@ -35,31 +29,16 @@ const Portfolio = () => {
   const [category, setCategory] = useState<string>("");
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
-  // Recruiters unlock confidential projects with a code; the admin reads it from Firestore
-  const { recruiterCode, adminCode, setAdminCode, vaultCode, ready: codeReady, unlock, lock } =
-    useRecruiterAccess();
-  const [confidentialTotal, setConfidentialTotal] = useState(0);
-  const [editingCode, setEditingCode] = useState(false);
+  const [dashboardOpen, setDashboardOpen] = useState(false);
   const [editingNotes, setEditingNotes] = useState(false);
 
+  // Pro projects are public but anonymous; an approved access adds their identifying details
+  const { request, adminCode, setAdminCode, vaultCode, ready, leave } = useRecruiterAccess();
   const { getTranslation } = useLangContext();
 
   const refreshProjects = async (isClick: boolean) => {
     setLoading(true);
-    const [publicProjects, confidential, total] = await Promise.all([
-      getProjects(),
-      vaultCode ? getConfidentialProjects(vaultCode) : Promise.resolve([]),
-      getConfidentialCount(),
-    ]);
-
-    // The admin view keeps the public counter of the teaser card in sync
-    if (adminCode && confidential.length !== total) {
-      await setConfidentialCount(confidential.length).catch(() => undefined);
-    }
-
-    setConfidentialTotal(adminCode ? confidential.length : total);
-    setProjects([...publicProjects, ...confidential].sort(byMostRecent));
+    setProjects((await getProjects(vaultCode)).sort(byMostRecent));
 
     if (isClick) {
       toast.success(getTranslation("portfolio--refresh-success"));
@@ -68,23 +47,22 @@ const Portfolio = () => {
   };
 
   useEffect(() => {
-    if (codeReady) refreshProjects(false);
+    if (ready) refreshProjects(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [codeReady, vaultCode]);
+  }, [ready, vaultCode]);
 
   const categories = [...new Set(projects.map((project) => project.category))];
-  const showTeaser = !vaultCode && confidentialTotal > 0 && kind !== "personal";
-
+  // Never shown to blocked channels (e.g. Discord): not even the existence of an access
   return (
     <>
       {editingNotes && adminCode && (
         <AssistantNotesModal vaultCode={adminCode} onClose={() => setEditingNotes(false)} />
       )}
-      {editingCode && (
-        <RecruiterCodeModal
-          currentCode={adminCode}
-          onChanged={setAdminCode}
-          onClose={() => setEditingCode(false)}
+      {dashboardOpen && (
+        <AccessDashboardModal
+          vaultCode={adminCode}
+          onVaultChanged={setAdminCode}
+          onClose={() => setDashboardOpen(false)}
         />
       )}
       <CollectionSection
@@ -113,7 +91,7 @@ const Portfolio = () => {
                 {getTranslation(k.tid)}
               </Pill>
             ))}
-            {recruiterCode && !adminCode && (
+            {request?.status === "approved" && (
               <Pill accent icon={LuUnlock} pr="1.5">
                 {getTranslation("portfolio--access-active")}
                 <IconButton
@@ -123,7 +101,7 @@ const Portfolio = () => {
                   variant="plain"
                   color="muted"
                   _hover={{ color: "white" }}
-                  onClick={lock}
+                  onClick={leave}
                 >
                   <LuX />
                 </IconButton>
@@ -134,9 +112,9 @@ const Portfolio = () => {
         }
         adminActions={
           <>
-            <Button variant="ghost" h="9" px="3" fontSize="sm" onClick={() => setEditingCode(true)}>
-              <LuKeyRound />
-              {adminCode ? "Recruiter code" : "Set recruiter code"}
+            <Button variant="ghost" h="9" px="3" fontSize="sm" onClick={() => setDashboardOpen(true)}>
+              <LuBarChart3 />
+              Access & tracking
             </Button>
             {adminCode && (
               <Button variant="ghost" h="9" px="3" fontSize="sm" onClick={() => setEditingNotes(true)}>
@@ -145,9 +123,6 @@ const Portfolio = () => {
               </Button>
             )}
           </>
-        }
-        after={
-          showTeaser && <ConfidentialTeaser count={confidentialTotal} onUnlock={unlock} />
         }
         getKey={(project) => project.id ?? project.name}
         onRefresh={() => refreshProjects(true)}

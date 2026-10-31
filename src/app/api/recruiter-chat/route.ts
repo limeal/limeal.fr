@@ -8,7 +8,7 @@ import {
 import { openai } from "@ai-sdk/openai";
 import { NextResponse } from "next/server";
 
-import { buildInstructions, isWellFormedCode, loadRecruiterVault } from "@/utils/recruiterAssistant";
+import { buildInstructions, isWellFormedIdToken, loadRecruiterVault } from "@/utils/recruiterAssistant";
 
 // Keeps a conversation (and its cost) bounded
 const MAX_MESSAGES = 30;
@@ -19,11 +19,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Chat disabled" }, { status: 503 });
   }
 
-  const { messages, code }: { messages?: UIMessage[]; code?: unknown } = await request
+  const { messages, idToken }: { messages?: UIMessage[]; idToken?: unknown } = await request
     .json()
     .catch(() => ({}));
 
-  if (!Array.isArray(messages) || !isWellFormedCode(code)) {
+  if (!Array.isArray(messages) || !isWellFormedIdToken(idToken)) {
     return NextResponse.json({ message: "Bad Request" }, { status: 400 });
   }
 
@@ -37,8 +37,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Conversation too long" }, { status: 413 });
   }
 
-  // The recruiter code is checked on every call, so the endpoint costs nothing without it
-  const vault = await loadRecruiterVault(code);
+  // Access is checked on every call (Firestore rules, with the visitor's token),
+  // so the endpoint costs nothing to anyone who is not approved
+  const vault = await loadRecruiterVault(idToken);
   if (!vault) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }

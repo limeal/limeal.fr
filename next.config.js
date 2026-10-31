@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // Lets a verification build (NEXT_DIST_DIR=.next-check) run next to `next dev`
+    // without overwriting its files
+    distDir: process.env.NEXT_DIST_DIR || '.next',
     images: {
         domains: ['firebasestorage.googleapis.com'],
     },

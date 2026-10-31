@@ -3,11 +3,12 @@ import { skillCategories } from "@/data/skills";
 import { mindNodes } from "@/data/approach";
 import { socials } from "@/data/navigation";
 import Project from "@/interfaces/project";
-import { byMostRecent, projectPeriod } from "@/utils/project";
+import { byMostRecent, projectPeriod, withDetails } from "@/utils/project";
 
 // Server-only: everything the recruiter assistant knows, gathered from the same
-// sources as the site. Firestore is read through its REST API with no
-// credentials, so the published security rules apply exactly as for a visitor.
+// sources as the site. Firestore is read through its REST API with the
+// visitor's own Firebase ID token, so the published security rules decide:
+// only the admin and approved recruiters get through.
 
 const FIRESTORE = `https://firestore.googleapis.com/v1/projects/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/databases/(default)/documents`;
 
@@ -25,55 +26,90 @@ const fromFirestore = (fields: Record<string, FirestoreValue> = {}) =>
         Object.entries(fields).map(([key, v]) => [key, v.stringValue ?? v.booleanValue ?? null])
     );
 
-const fetchDocuments = async (path: string): Promise<FirestoreDocument[]> => {
-    const res = await fetch(`${FIRESTORE}/${path}?pageSize=300`, { cache: "no-store" });
+const fetchFirestore = (path: string, idToken: string) =>
+    fetch(`${FIRESTORE}/${path}`, { cache: "no-store", headers: { Authorization: `Bearer ${idToken}` } });
+
+const fetchDocuments = async (path: string, idToken: string): Promise<FirestoreDocument[]> => {
+    const res = await fetchFirestore(`${path}?pageSize=300`, idToken);
     if (!res.ok) return [];
     const data = await res.json();
     return data.documents ?? [];
 };
 
-const toProject = (doc: FirestoreDocument) => fromFirestore(doc.fields) as unknown as Project;
+// Firebase ID tokens are JWTs; Firestore verifies them on every call above
+export const isWellFormedIdToken = (token: unknown): token is string =>
+    typeof token === "string" && token.length < 4096 && /^[\w-]+\.[\w-]+\.[\w-]+$/.test(token);
 
-// The code ends up in a URL path: refuse anything that could walk out of the vault
-export const isWellFormedCode = (code: unknown): code is string =>
-    typeof code === "string" && /^[A-Za-z0-9_-]{12,128}$/.test(code);
+// Uid inside an ID token. Not verified here: only use it to address documents
+// that Firestore will then check against the same token.
+export const uidOf = (idToken: string) => {
+    try {
+        return JSON.parse(Buffer.from(idToken.split(".")[1], "base64url").toString()).user_id as string;
+    } catch {
+        return null;
+    }
+};
+
+export const readDocument = async (path: string, idToken: string) => {
+    const res = await fetchFirestore(path, idToken);
+    return res.ok ? fields(await res.json()) : null;
+};
+
+const fields = (doc: FirestoreDocument) => fromFirestore(doc.fields) as Record<string, any>;
+const docId = (doc: FirestoreDocument & { name?: string }) => doc.name?.split("/").pop() ?? "";
 
 export type RecruiterVault = { projects: Project[]; notes: string };
 
-// Null when the code opens nothing, which is how a wrong code is detected
-export const loadRecruiterVault = async (code: string): Promise<RecruiterVault | null> => {
+// Null unless the token belongs to the admin or an approved recruiter: the
+// rules only let them read the vault code
+export const loadRecruiterVault = async (idToken: string): Promise<RecruiterVault | null> => {
+    const code = (await readDocument("admin/recruiter", idToken))?.code;
+    if (typeof code !== "string" || !code) return null;
+
     const vault = `vault/${encodeURIComponent(code)}`;
-    const [confidential, publicProjects, notesDocs] = await Promise.all([
-        fetchDocuments(`${vault}/confidential_projects`),
-        fetchDocuments("projects"),
-        fetchDocuments(`${vault}/assistant`),
+    const [publicDocs, detailDocs, legacyDocs, notesDocs] = await Promise.all([
+        fetchDocuments("projects", idToken),
+        fetchDocuments(`${vault}/project_details`, idToken),
+        fetchDocuments(`${vault}/confidential_projects`, idToken),
+        fetchDocuments(`${vault}/assistant`, idToken),
     ]);
 
-    if (confidential.length === 0) return null;
+    const details = new Map(detailDocs.map((d) => [docId(d), fields(d)]));
 
-    const notes = notesDocs.map((d) => fromFirestore(d.fields).notes).find(Boolean);
+    // Public card + private details: the assistant may name the companies
+    const projects: Project[] = [
+        ...publicDocs.map((d) => ({ ...fields(d), details: details.get(docId(d)) }) as Project),
+        // Previous model: the whole project was stored in the vault
+        ...legacyDocs.map((d) => {
+            const data = fields(d);
+            return { ...data, details: { company: data.company, name: data.name } } as Project;
+        }),
+    ];
+
+    const notes = notesDocs.map((d) => fields(d).notes).find(Boolean);
 
     return {
-        projects: [...publicProjects, ...confidential].map(toProject).sort(byMostRecent),
+        projects: projects.sort(byMostRecent),
         notes: typeof notes === "string" ? notes : "",
     };
 };
 
 const describeProject = (p: Project) => {
+    const shown = withDetails(p);
     const lines = [
-        `- ${p.name} (${p.kind === "pro" ? "professional" : "personal"}, ${projectPeriod(p, "present")}, ${p.category.replace(/_/g, " ")})`,
+        `- ${shown.name} (${p.kind === "pro" ? "professional" : "personal"}, ${projectPeriod(p, "present")}, ${(p.category ?? "").replace(/_/g, " ")})`,
         p.role && `  Role: ${p.role}`,
-        p.company && `  Company: ${p.company}`,
+        p.details?.company && `  Company: ${p.details.company}`,
         `  ${p.description}`,
-        p.external_link && p.external_link !== "/" && `  Link: ${p.external_link}`,
-        p.github && `  GitHub: ${p.github}`,
+        shown.external_link && shown.external_link !== "/" && `  Link: ${shown.external_link}`,
+        shown.github && `  GitHub: ${shown.github}`,
     ];
     return lines.filter(Boolean).join("\n");
 };
 
 export const buildInstructions = ({ projects, notes }: RecruiterVault) => `
 You are the recruiter assistant of limeal.fr, the portfolio of Paul (pseudonym "Limeal").
-You talk to recruiters who unlocked the private area of the site with an access code.
+You talk to recruiters whose access to the private area of the site was approved.
 Your job: answer their questions about Paul's professional profile, accurately and briefly.
 
 Rules:

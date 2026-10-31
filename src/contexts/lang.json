@@ -308,74 +308,11 @@
         "kr": "업무"
     },
     {
-        "id": "portfolio--teaser-title-one",
-        "en": "confidential pro project",
-        "fr": "projet pro confidentiel",
-        "es": "proyecto profesional confidencial",
-        "kr": "개의 기밀 업무 프로젝트"
-    },
-    {
-        "id": "portfolio--teaser-title-many",
-        "en": "confidential pro projects",
-        "fr": "projets pro confidentiels",
-        "es": "proyectos profesionales confidenciales",
-        "kr": "개의 기밀 업무 프로젝트"
-    },
-    {
-        "id": "portfolio--teaser-text",
-        "en": "My professional experience is reserved for recruiters. Do you have an access code?",
-        "fr": "Mon expérience professionnelle est réservée aux recruteurs. Vous avez un code d'accès ?",
-        "es": "Mi experiencia profesional está reservada a reclutadores. ¿Tiene un código de acceso?",
-        "kr": "업무 경력은 채용 담당자에게만 공개됩니다. 액세스 코드가 있으신가요?"
-    },
-    {
-        "id": "portfolio--teaser-code",
-        "en": "I have a code",
-        "fr": "J'ai un code",
-        "es": "Tengo un código",
-        "kr": "코드가 있어요"
-    },
-    {
         "id": "portfolio--teaser-request",
         "en": "Request access",
         "fr": "Demander l'accès",
         "es": "Solicitar acceso",
         "kr": "액세스 요청"
-    },
-    {
-        "id": "portfolio--access-title",
-        "en": "Recruiter access",
-        "fr": "Accès recruteur",
-        "es": "Acceso reclutador",
-        "kr": "채용 담당자 액세스"
-    },
-    {
-        "id": "portfolio--access-subtitle",
-        "en": "Enter the code you received.",
-        "fr": "Saisissez le code que vous avez reçu.",
-        "es": "Introduzca el código que recibió.",
-        "kr": "받으신 코드를 입력하세요."
-    },
-    {
-        "id": "portfolio--access-code",
-        "en": "Access code",
-        "fr": "Code d'accès",
-        "es": "Código de acceso",
-        "kr": "액세스 코드"
-    },
-    {
-        "id": "portfolio--access-submit",
-        "en": "Unlock",
-        "fr": "Déverrouiller",
-        "es": "Desbloquear",
-        "kr": "잠금 해제"
-    },
-    {
-        "id": "portfolio--access-invalid",
-        "en": "This code is not valid.",
-        "fr": "Ce code n'est pas valide.",
-        "es": "Este código no es válido.",
-        "kr": "유효하지 않은 코드입니다."
     },
     {
         "id": "portfolio--access-granted",
@@ -397,6 +334,20 @@
         "fr": "Quitter l'accès recruteur",
         "es": "Salir del acceso reclutador",
         "kr": "채용 담당자 액세스 종료"
+    },
+    {
+        "id": "portfolio--banner-title",
+        "en": "Are you a recruiter?",
+        "fr": "Vous êtes recruteur ?",
+        "es": "¿Es usted reclutador?",
+        "kr": "채용 담당자이신가요?"
+    },
+    {
+        "id": "portfolio--banner-text",
+        "en": "See the companies and links behind my pro projects, and ask my assistant your questions.",
+        "fr": "Accédez aux entreprises et aux liens de mes projets pro, et posez vos questions à mon assistant.",
+        "es": "Vea las empresas y los enlaces de mis proyectos profesionales y haga sus preguntas a mi asistente.",
+        "kr": "업무 프로젝트의 회사명과 링크를 확인하고 어시스턴트에게 질문해 보세요."
     },
     {
         "id": "contact-me--title",
@@ -887,5 +838,117 @@
         "fr": "Réponses générées par IA, elles peuvent contenir des erreurs.",
         "es": "Respuestas generadas por IA, pueden contener errores.",
         "kr": "AI가 생성한 답변으로 오류가 있을 수 있습니다."
+    },
+    {
+        "id": "access--form-title",
+        "en": "Request access",
+        "fr": "Demander l'accès",
+        "es": "Solicitar acceso",
+        "kr": "액세스 요청"
+    },
+    {
+        "id": "access--form-subtitle",
+        "en": "You'll receive a link by e-mail to confirm your address.",
+        "fr": "Vous recevrez un lien par e-mail pour confirmer votre adresse.",
+        "es": "Recibirá un enlace por correo para confirmar su dirección.",
+        "kr": "주소 확인을 위한 링크를 이메일로 보내드립니다."
+    },
+    {
+        "id": "access--form-submit",
+        "en": "Send me the link",
+        "fr": "Recevoir le lien",
+        "es": "Recibir el enlace",
+        "kr": "링크 받기"
+    },
+    {
+        "id": "access--form-email",
+        "en": "Professional e-mail",
+        "fr": "E-mail professionnel",
+        "es": "Correo profesional",
+        "kr": "업무용 이메일"
+    },
+    {
+        "id": "access--form-name",
+        "en": "Name",
+        "fr": "Nom",
+        "es": "Nombre",
+        "kr": "이름"
+    },
+    {
+        "id": "access--form-company",
+        "en": "Company",
+        "fr": "Entreprise",
+        "es": "Empresa",
+        "kr": "회사"
+    },
+    {
+        "id": "access--form-privacy",
+        "en": "Your details are only used to answer your request and to know who viewed the profile.",
+        "fr": "Vos informations servent uniquement à traiter votre demande et à savoir qui a consulté le profil.",
+        "es": "Sus datos solo se usan para tramitar su solicitud y saber quién consultó el perfil.",
+        "kr": "입력하신 정보는 요청 처리와 프로필 열람자 확인에만 사용됩니다."
+    },
+    {
+        "id": "access--send-error",
+        "en": "The e-mail could not be sent. Check the address and try again.",
+        "fr": "L'e-mail n'a pas pu être envoyé. Vérifiez l'adresse et réessayez.",
+        "es": "No se pudo enviar el correo. Compruebe la dirección e inténtelo de nuevo.",
+        "kr": "이메일을 보낼 수 없습니다. 주소를 확인하고 다시 시도하세요."
+    },
+    {
+        "id": "access--sent-title",
+        "en": "Check your inbox",
+        "fr": "Vérifiez votre boîte mail",
+        "es": "Revise su correo",
+        "kr": "메일함을 확인하세요"
+    },
+    {
+        "id": "access--sent-text",
+        "en": "Click the link we just sent to",
+        "fr": "Cliquez sur le lien que nous venons d'envoyer à",
+        "es": "Haga clic en el enlace que acabamos de enviar a",
+        "kr": "방금 보낸 링크를 클릭하세요:"
+    },
+    {
+        "id": "access--pending-title",
+        "en": "Request sent",
+        "fr": "Demande envoyée",
+        "es": "Solicitud enviada",
+        "kr": "요청이 전송되었습니다"
+    },
+    {
+        "id": "access--pending-text",
+        "en": "Your e-mail is confirmed. Paul will review your request shortly; come back to this page once it's approved.",
+        "fr": "Votre e-mail est confirmé. Paul va examiner votre demande ; revenez sur cette page une fois qu'elle sera acceptée.",
+        "es": "Su correo está confirmado. Paul revisará su solicitud; vuelva a esta página cuando sea aceptada.",
+        "kr": "이메일이 확인되었습니다. Paul이 곧 요청을 검토합니다. 승인되면 이 페이지로 다시 방문해 주세요."
+    },
+    {
+        "id": "access--refused-title",
+        "en": "Access not granted",
+        "fr": "Accès non accordé",
+        "es": "Acceso no concedido",
+        "kr": "액세스가 승인되지 않았습니다"
+    },
+    {
+        "id": "access--refused-text",
+        "en": "You can still reach Paul through the contact form below.",
+        "fr": "Vous pouvez toujours contacter Paul via le formulaire de contact ci-dessous.",
+        "es": "Puede contactar a Paul a través del formulario de contacto.",
+        "kr": "아래 문의 양식으로 Paul에게 연락하실 수 있습니다."
+    },
+    {
+        "id": "access--confirm-email",
+        "en": "Confirm your e-mail to finish signing in",
+        "fr": "Confirmez votre e-mail pour terminer la connexion",
+        "es": "Confirme su correo para terminar el acceso",
+        "kr": "로그인을 완료하려면 이메일을 확인하세요"
+    },
+    {
+        "id": "access--link-error",
+        "en": "This link is invalid or expired. Request a new one.",
+        "fr": "Ce lien est invalide ou expiré. Faites une nouvelle demande.",
+        "es": "Este enlace no es válido o ha caducado. Solicite uno nuevo.",
+        "kr": "링크가 유효하지 않거나 만료되었습니다. 다시 요청하세요."
     }
 ]

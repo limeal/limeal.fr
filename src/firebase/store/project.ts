@@ -1,91 +1,155 @@
-import { getDocs, collection, DocumentData, addDoc, deleteDoc, doc, updateDoc, getDoc, setDoc, CollectionReference } from "firebase/firestore"
+import { getDocs, collection, DocumentData, addDoc, deleteDoc, doc, updateDoc, getDoc, setDoc, CollectionReference, deleteField } from "firebase/firestore"
 
 import { firestore } from "../firebase"
-import Project from "@/interfaces/project";
+import Project, { ProjectDetails } from "@/interfaces/project";
 import { deleteFile, getImagesURL } from "../storage";
 
-// Confidential projects live under a path containing the recruiter code:
-// without the code there is no way to address them (see docs/firestore.rules).
-const projectsCollection = (vaultCode?: string) =>
-    vaultCode
-        ? collection(firestore, "vault", vaultCode, "confidential_projects")
-        : collection(firestore, "projects");
+// Public projects live in `projects`. What identifies a pro project lives under
+// `vault/{code}/…`: without the code there is no way to address it (see docs/firestore.rules).
+const projectsCollection = () => collection(firestore, "projects");
+const vaultCollection = (vaultCode: string, name: string) => collection(firestore, "vault", vaultCode, name);
+const detailsDoc = (vaultCode: string, projectId: string) => doc(vaultCollection(vaultCode, "project_details"), projectId);
+// Marks a code as valid even before any project is stored under it
+const markerDoc = (vaultCode: string) => doc(firestore, "vault", vaultCode, "meta", "info");
 
-const readProjects = async (ref: CollectionReference<DocumentData>, confidential: boolean) => {
-    const projects: Project[] = [];
-    const docs = await getDocs(ref);
+const imageURL = async (ref?: string) => (ref ? (await getImagesURL([{ ref }]))[0] : undefined);
 
-    for (const document of docs.docs) {
-        const data = document.data();
+const toProject = async (id: string, data: DocumentData): Promise<Project> => ({
+    id,
+    name: data.name,
+    description: data.description,
+    category: data.category,
+    kind: data.kind ?? "personal",
+    role: data.role,
+    external_link: data.external_link,
+    github: data.github,
+    release_date: data.release_date,
+    end_date: data.end_date,
+    ongoing: data.ongoing,
+    thumbnail: {
+        ref: data.thumbnail?.ref ?? "",
+        url: await imageURL(data.thumbnail?.ref) ?? "/assets/images/no-image.png",
+    },
+});
 
-        const urls = await getImagesURL([data.thumbnail]);
+const readDocs = async (ref: CollectionReference<DocumentData>) => (await getDocs(ref)).docs;
 
-        projects.push(<Project>{
-            id: document.id,
-            name: data.name,
-            description: data.description,
-            category: data.category,
-            kind: data.kind ?? "personal",
+// Public projects, completed with their private details when a vault code is given
+const getProjects = async (vaultCode?: string | null) => {
+    const publicDocs = await readDocs(projectsCollection());
+    const projects = await Promise.all(publicDocs.map((d) => toProject(d.id, d.data())));
+
+    if (!vaultCode) return projects;
+
+    const [detailDocs, legacyDocs] = await Promise.all([
+        readDocs(vaultCollection(vaultCode, "project_details")),
+        readDocs(vaultCollection(vaultCode, "confidential_projects")),
+    ]);
+
+    const details = new Map<string, ProjectDetails>();
+    for (const d of detailDocs) {
+        const data = d.data();
+        details.set(d.id, {
             company: data.company,
-            role: data.role,
+            name: data.name,
             external_link: data.external_link,
             github: data.github,
-            release_date: data.release_date,
-            end_date: data.end_date,
-            ongoing: data.ongoing,
-            confidential,
-            thumbnail: {
-                ref: data.thumbnail.ref,
-                url: urls[0],
-            }
-        })
+            thumbnail: data.thumbnail?.ref
+                ? { ref: data.thumbnail.ref, url: await imageURL(data.thumbnail.ref) }
+                : undefined,
+        });
     }
 
-    return projects;
+    // Previous model: the whole project was stored in the vault. Shown with
+    // its details until the admin saves it again in the new format.
+    const legacy = await Promise.all(
+        legacyDocs.map(async (d) => {
+            const data = d.data();
+            const project = await toProject(d.id, data);
+            return {
+                ...project,
+                name: data.role || "Professional project",
+                external_link: "",
+                github: "",
+                legacyVault: true,
+                details: {
+                    company: data.company,
+                    name: data.name,
+                    external_link: data.external_link,
+                    github: data.github,
+                    thumbnail: project.thumbnail.ref ? project.thumbnail : undefined,
+                },
+            } as Project;
+        })
+    );
+
+    return [...projects.map((p) => ({ ...p, details: p.id ? details.get(p.id) : undefined })), ...legacy];
 }
 
-const getProjects = () => readProjects(projectsCollection(), false);
-
-// Empty when the code is wrong: the path simply holds nothing
-const getConfidentialProjects = (vaultCode: string) => readProjects(projectsCollection(vaultCode), true);
-
-// Firestore rejects undefined values; `confidential` and the download URL are resolved on read
+// Firestore rejects undefined values; read-only fields are resolved on read
 const toDocument = (project: Project) => {
-    const { id, thumbnail, confidential, ...data } = project;
+    const { id, thumbnail, details, legacyVault, ...data } = project;
     const clean = Object.fromEntries(Object.entries(data).filter(([, v]) => v !== undefined));
     return { ...clean, thumbnail: { ref: thumbnail.ref } };
 }
 
-const addProject = async (project: Project, vaultCode?: string) =>
-    await addDoc(projectsCollection(vaultCode), toDocument(project));
+const toDetailsDocument = (details: ProjectDetails) => ({
+    company: details.company ?? "",
+    name: details.name ?? "",
+    external_link: details.external_link ?? "",
+    github: details.github ?? "",
+    thumbnail: { ref: details.thumbnail?.ref ?? "" },
+});
 
-const updateProject = async (project: Project, vaultCode?: string) =>
-    await updateDoc(doc(projectsCollection(vaultCode), project.id || ''), toDocument(project));
+const hasDetails = (details?: ProjectDetails) =>
+    !!details && Object.values(toDetailsDocument(details)).some((v) => (typeof v === "string" ? v : v.ref));
 
-const deleteProject = async (project: Project, vaultCode?: string, keepImage = false) => {
-    if (!keepImage) {
-        try {
-            await deleteFile(project.thumbnail.ref);
-        } catch (err) { }
+// Saves the public card and, for pro projects, its private details.
+// Returns the project id.
+const saveProject = async (project: Project, details: ProjectDetails | null, vaultCode: string | null) => {
+    let id = project.id;
+
+    if (id && !project.legacyVault) {
+        // `company` used to be stored publicly: make sure it is gone
+        await updateDoc(doc(projectsCollection(), id), { ...toDocument(project), company: deleteField() });
+    } else {
+        id = (await addDoc(projectsCollection(), toDocument(project))).id;
+        // A legacy vault project now has a public card: remove the old copy
+        if (project.legacyVault && project.id && vaultCode) {
+            await deleteDoc(doc(vaultCollection(vaultCode, "confidential_projects"), project.id));
+        }
     }
 
-    await deleteDoc(doc(projectsCollection(vaultCode), project.id || ''));
+    if (vaultCode) {
+        if (details && hasDetails(details)) await setDoc(detailsDoc(vaultCode, id), toDetailsDocument(details));
+        else await deleteDoc(detailsDoc(vaultCode, id)).catch(() => undefined);
+    }
+
+    return id;
 }
 
-// Public: how many confidential projects exist, for the teaser card
-const getConfidentialCount = async (): Promise<number> => {
-    const snapshot = await getDoc(doc(firestore, "public_meta", "portfolio")).catch(() => null);
-    return snapshot?.data()?.confidentialCount ?? 0;
+const deleteProject = async (project: Project, vaultCode: string | null) => {
+    for (const ref of [project.thumbnail.ref, project.details?.thumbnail?.ref]) {
+        if (ref) await deleteFile(ref).catch(() => undefined);
+    }
+
+    if (project.legacyVault && vaultCode) {
+        await deleteDoc(doc(vaultCollection(vaultCode, "confidential_projects"), project.id || ''));
+        return;
+    }
+
+    await deleteDoc(doc(projectsCollection(), project.id || ''));
+    if (vaultCode && project.id) await deleteDoc(detailsDoc(vaultCode, project.id)).catch(() => undefined);
 }
 
-const setConfidentialCount = (count: number) =>
-    setDoc(doc(firestore, "public_meta", "portfolio"), { confidentialCount: count }, { merge: true });
-
-// Admin only (rules): the current recruiter code
+// Admin only (rules): the current vault code
 const getVaultCode = async (): Promise<string | null> => {
     const snapshot = await getDoc(doc(firestore, "admin", "recruiter")).catch(() => null);
     return snapshot?.data()?.code ?? null;
 }
+
+// Admin: older vaults predate the marker
+const ensureVaultMarker = (vaultCode: string) => setDoc(markerDoc(vaultCode), { createdAt: Date.now() }, { merge: true });
 
 // Private notes the recruiter assistant answers from (availability, contract…)
 const assistantNotesDoc = (vaultCode: string) => doc(firestore, "vault", vaultCode, "assistant", "profile");
@@ -98,34 +162,30 @@ const getAssistantNotes = async (vaultCode: string): Promise<string> => {
 const setAssistantNotes = (vaultCode: string, notes: string) =>
     setDoc(assistantNotesDoc(vaultCode), { notes });
 
-// Moves every confidential project and the assistant notes under the new code,
-// which revokes the old one
+// Copies the whole vault under a new code and deletes the old one. The access
+// links are re-pointed by the caller (see access.ts).
 const changeVaultCode = async (newCode: string, oldCode: string | null) => {
-    if (oldCode) {
-        const projects = await getConfidentialProjects(oldCode);
-        for (const project of projects) {
-            await setDoc(doc(projectsCollection(newCode), project.id || ''), toDocument(project));
-            await deleteProject(project, oldCode, true);
-        }
+    await ensureVaultMarker(newCode);
 
-        const notes = await getAssistantNotes(oldCode);
-        if (notes) {
-            await setAssistantNotes(newCode, notes);
-            await deleteDoc(assistantNotesDoc(oldCode));
+    if (oldCode) {
+        for (const name of ["project_details", "confidential_projects", "assistant"]) {
+            for (const d of await readDocs(vaultCollection(oldCode, name))) {
+                await setDoc(doc(vaultCollection(newCode, name), d.id), d.data());
+                await deleteDoc(d.ref);
+            }
         }
+        await deleteDoc(markerDoc(oldCode)).catch(() => undefined);
     }
+
     await setDoc(doc(firestore, "admin", "recruiter"), { code: newCode });
 }
 
 export {
     getProjects,
-    getConfidentialProjects,
-    addProject,
-    updateProject,
+    saveProject,
     deleteProject,
-    getConfidentialCount,
-    setConfidentialCount,
     getVaultCode,
+    ensureVaultMarker,
     changeVaultCode,
     getAssistantNotes,
     setAssistantNotes,

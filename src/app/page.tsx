@@ -8,6 +8,7 @@ import Approach from "@/components/sections/Approach";
 import Portfolio from "@/components/sections/Portfolio";
 import Contact from "@/components/sections/Contact";
 import RecruiterChat from "@/components/features/recruiter-chat/RecruiterChat";
+import RecruiterAccessBanner from "@/components/features/portfolio/RecruiterAccessBanner";
 import { homeLinks } from "@/data/navigation";
 
 const Page = () => {
@@ -25,6 +26,7 @@ const Page = () => {
       </main>
       <Footer />
       <RecruiterChat />
+      <RecruiterAccessBanner />
     </>
   );
 };

@@ -19,3 +19,16 @@ export const byMostRecent = (a: Project, b: Project) => {
 // Projects saved without an image resolve to the storage fallback
 export const hasThumbnail = (project: Project) =>
     !!project.thumbnail.url && !project.thumbnail.url.endsWith("/no-image.png");
+
+// What a card shows: the private details (real name, links, screenshot) win when loaded
+export const withDetails = (project: Project): Project => {
+    const details = project.details;
+    if (!details) return project;
+    return {
+        ...project,
+        name: details.name || project.name,
+        external_link: details.external_link || project.external_link,
+        github: details.github || project.github,
+        thumbnail: details.thumbnail?.url ? details.thumbnail : project.thumbnail,
+    };
+};

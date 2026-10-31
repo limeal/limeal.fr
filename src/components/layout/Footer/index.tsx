@@ -6,6 +6,7 @@ import { Box, Container, Flex, HStack, Text } from "@chakra-ui/react";
 
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLangContext } from "@/contexts/LangContext";
+import { useRecruiterAccess } from "@/contexts/RecruiterAccessContext";
 import { LuBookOpen } from "react-icons/lu";
 
 import Button from "@/components/ui/Button";
@@ -15,6 +16,7 @@ import AuthModal from "@/components/features/auth/AuthModal";
 const Footer = () => {
   const [authOpen, setAuthOpen] = useState(false);
   const { user } = useAuthContext();
+  const { isRecruiter } = useRecruiterAccess();
   const { getTranslation } = useLangContext();
 
   return (
@@ -29,7 +31,7 @@ const Footer = () => {
             </Text>
           </HStack>
           <HStack gap="6" wrap="wrap" justify="center">
-            {user && (
+            {user && !isRecruiter && (
               <Button href="/blog" variant="outline" h="9" px="4" fontSize="sm" icon={<LuBookOpen />}>
                 Blog
               </Button>
