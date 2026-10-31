@@ -105,53 +105,46 @@
         "kr": "포트폴리오"
     },
     {
-        "id": "tabs--testimonial",
-        "en": "Testimonial",
-        "fr": "Témoignage",
-        "es": "Testimonial",
-        "kr": "증언"
+        "id": "tabs--contact-me",
+        "en": "Contact",
+        "fr": "Contact",
+        "es": "Contacto",
+        "kr": "연락"
     },
     {
-        "id": "tabs--contact-me",
-        "en": "Contact Me",
-        "fr": "Contactez-Moi",
-        "es": "Contáctame",
-        "kr": "연락처"
+        "id": "tabs--approach",
+        "en": "Approach",
+        "fr": "Approche",
+        "es": "Enfoque",
+        "kr": "접근 방식"
     },
     {
         "id": "hero--job",
-        "en": "Software Developer / Product Engineer",
-        "fr": "Développeur Full-Stack / Product Engineer",
-        "es": "Desarrollador Full-Stack / Product Engineer",
-        "kr": "풀스택 개발자 / 프로덕트 엔지니어"
-    },
-    {
-        "id": "hero--satisfied--title",
-        "en": "Satisfied Clients",
-        "fr": "Clients satisfaits",
-        "es": "Clientes satisfechos",
-        "kr": "만족한 고객"
-    },
-    {
-        "id": "hero--satisfied--content",
-        "en": "Many clients are satisfied and happy with the results I provide.",
-        "fr": "De nombreux clients sont satisfaits et heureux des résultats que je fournis.",
-        "es": "Muchos clientes están satisfechos y felices con los resultados que brindo.",
-        "kr": "많은 고객이 제가 제공하는 결과에 만족하고 행복합니다."
+        "en": "Software Engineer / Product Engineer",
+        "fr": "Software Engineer / Product Engineer",
+        "es": "Software Engineer / Product Engineer",
+        "kr": "Software Engineer / Product Engineer"
     },
     {
         "id": "hero--image--description",
-        "en": "I have a passion for coding and technology, and I'm eager to learn and grow in the field of software development. I enjoy working on various projects, experimenting with new technologies, and collaborating with others to create innovative solutions.",
-        "fr": "J'ai une passion pour la programmation et la technologie, et je suis désireux d'apprendre et de grandir dans le domaine du développement de logiciels. J'aime travailler sur divers projets, expérimenter de nouvelles technologies et collaborer avec d'autres pour créer des solutions innovantes.",
-        "es": "Tengo pasión por la codificación y la tecnología, y estoy ansioso por aprender y crecer en el campo del desarrollo de software. Disfruto trabajando en varios proyectos, experimentando con nuevas tecnologías y colaborando con otros para crear soluciones innovadoras.",
-        "kr": "저는 코딩과 기술에 대한 열정이 있고 소프트웨어 개발 분야에서 배우고 성장하기를 간절히 원합니다. 저는 다양한 프로젝트에 참여하고, 새로운 기술을 실험하고, 다른 사람들과 협력하여 혁신적인 솔루션을 만드는 것을 즐깁니다"
+        "en": "Software & product engineer — I take ideas from user need to production: Go or Node back-ends, React interfaces, and Claude Code every day to ship faster without cutting corners. I care as much about low-level code as about UI details.",
+        "fr": "Software & product engineer, je pars du besoin utilisateur jusqu'à la mise en production : back-end en Go ou Node, interfaces React, et Claude Code au quotidien pour livrer plus vite sans sacrifier la qualité. J'aime autant le code bas niveau que le détail d'une UI.",
+        "es": "Software & product engineer: llevo las ideas desde la necesidad del usuario hasta producción, con back-ends en Go o Node, interfaces en React y Claude Code a diario para entregar más rápido sin sacrificar la calidad. Me importa tanto el código de bajo nivel como el detalle de una UI.",
+        "kr": "Software & product engineer로서 사용자의 필요에서 출발해 프로덕션까지 이어갑니다. Go 또는 Node 백엔드, React 인터페이스, 그리고 매일 Claude Code를 활용해 품질을 타협하지 않고 더 빠르게 출시합니다. 저수준 코드만큼 UI의 디테일도 중요하게 생각합니다."
     },
     {
-        "id": "hero--image--quote",
-        "en": "This man is beautiful",
-        "fr": "Cet homme est beau",
-        "es": "Este hombre es hermoso",
-        "kr": "이 남자는 아름답습니다"
+        "id": "hero--cta-projects",
+        "en": "See my projects",
+        "fr": "Voir mes projets",
+        "es": "Ver mis proyectos",
+        "kr": "프로젝트 보기"
+    },
+    {
+        "id": "hero--cta-contact",
+        "en": "Get in touch",
+        "fr": "Me contacter",
+        "es": "Contactarme",
+        "kr": "연락하기"
     },
     {
         "id": "skills--title",
@@ -162,10 +155,73 @@
     },
     {
         "id": "skills--description",
-        "en": "From the fundamentals to the most intricate concepts, I have honed my skills through countless hours of practice and real-world projects.",
-        "fr": "Des fondamentaux aux concepts les plus complexes, j'ai affiné mes compétences grâce à d'innombrables heures de pratique et de projets réels.",
-        "es": "Desde los fundamentos hasta los conceptos más intrincados, he perfeccionado mis habilidades a través de innumerables horas de práctica y proyectos del mundo real.",
-        "kr": "기본 원리부터 가장 복잡한 개념까지, 저는 끊임없는 연습과 실제 프로젝트를 통해 기술을 숙달했습니다."
+        "en": "My toolbox: from low-level fundamentals to modern frameworks, with AI and product thinking at the heart of how I work.",
+        "fr": "Ma boîte à outils : des fondamentaux bas niveau aux frameworks modernes, avec l'IA et la culture produit au cœur de ma façon de travailler.",
+        "es": "Mi caja de herramientas: de los fundamentos de bajo nivel a los frameworks modernos, con la IA y la cultura de producto en el centro de mi forma de trabajar.",
+        "kr": "저수준 기초부터 최신 프레임워크까지, AI와 제품 중심 사고를 작업 방식의 중심에 둔 저의 도구 상자입니다."
+    },
+    {
+        "id": "skills--cat--ai",
+        "en": "AI & tools",
+        "fr": "IA & outils",
+        "es": "IA y herramientas",
+        "kr": "AI & 도구"
+    },
+    {
+        "id": "skills--cat--product",
+        "en": "Product",
+        "fr": "Produit",
+        "es": "Producto",
+        "kr": "프로덕트"
+    },
+    {
+        "id": "skills--cat--languages",
+        "en": "Languages",
+        "fr": "Langages",
+        "es": "Lenguajes",
+        "kr": "언어"
+    },
+    {
+        "id": "skills--cat--frameworks",
+        "en": "Frameworks",
+        "fr": "Frameworks",
+        "es": "Frameworks",
+        "kr": "프레임워크"
+    },
+    {
+        "id": "skills--cat--databases",
+        "en": "Databases",
+        "fr": "Bases de données",
+        "es": "Bases de datos",
+        "kr": "데이터베이스"
+    },
+    {
+        "id": "skills--cat--cms",
+        "en": "CMS",
+        "fr": "CMS",
+        "es": "CMS",
+        "kr": "CMS"
+    },
+    {
+        "id": "skills--cat--apis",
+        "en": "APIs",
+        "fr": "APIs",
+        "es": "APIs",
+        "kr": "API"
+    },
+    {
+        "id": "skills--product--framing",
+        "en": "Problem framing",
+        "fr": "Cadrage du problème",
+        "es": "Encuadre del problema",
+        "kr": "문제 정의"
+    },
+    {
+        "id": "skills--product--roadmap",
+        "en": "Roadmap & prioritization",
+        "fr": "Roadmap & priorisation",
+        "es": "Roadmap y priorización",
+        "kr": "로드맵 & 우선순위"
     },
     {
         "id": "portfolio--title",
@@ -176,17 +232,17 @@
     },
     {
         "id": "portfolio--description",
-        "en": "Each project reflects the trust and collaboration with my clients, where we worked hand in hand to achieve remarkable results.",
-        "fr": "Chaque projet reflète la confiance et la collaboration avec mes clients, où nous avons travaillé main dans la main pour obtenir des résultats remarquables.",
-        "es": "Cada proyecto refleja la confianza y la colaboración con mis clientes, donde trabajamos codo a codo para lograr resultados notables.",
-        "kr": "각 프로젝트는 고객과의 신뢰와 협력을 반영합니다. 우리는 손에 손을 잡고 놀라운 결과를 얻기 위해 함께 일했습니다."
+        "en": "A selection of personal projects, team work and product experiments.",
+        "fr": "Une sélection de projets personnels, d'équipe et d'expérimentations produit.",
+        "es": "Una selección de proyectos personales, de equipo y experimentos de producto.",
+        "kr": "개인 프로젝트, 팀 프로젝트, 제품 실험 중에서 고른 작업들입니다."
     },
     {
         "id": "portfolio--error",
-        "en": "No projects in this category. Try another !",
-        "fr": "Aucun projet dans cette catégorie. Essayez une autre !",
-        "es": "No hay proyectos en esta categoría. ¡Prueba otro !",
-        "kr": "이 카테고리에 프로젝트가 없습니다. 다른 것을 시도하십시오!"
+        "en": "No projects in this category yet.",
+        "fr": "Aucun projet dans cette catégorie pour l'instant.",
+        "es": "Todavía no hay proyectos en esta categoría.",
+        "kr": "아직 이 카테고리에 프로젝트가 없습니다."
     },
     {
         "id": "portfolio--refresh-success",
@@ -210,46 +266,130 @@
         "kr": "프로젝트를 추가하는 중에 오류가 발생했습니다. 나중에 다시 시도하십시오."
     },
     {
+        "id": "portfolio--latest",
+        "en": "Latest project",
+        "fr": "Dernier projet",
+        "es": "Último proyecto",
+        "kr": "최신 프로젝트"
+    },
+    {
+        "id": "portfolio--view",
+        "en": "View project",
+        "fr": "Voir le projet",
+        "es": "Ver el proyecto",
+        "kr": "프로젝트 보기"
+    },
+    {
+        "id": "portfolio--today",
+        "en": "Today",
+        "fr": "Aujourd'hui",
+        "es": "Hoy",
+        "kr": "현재"
+    },
+    {
+        "id": "portfolio--kind-all",
+        "en": "All",
+        "fr": "Tous",
+        "es": "Todos",
+        "kr": "전체"
+    },
+    {
+        "id": "portfolio--kind-personal",
+        "en": "Personal",
+        "fr": "Perso",
+        "es": "Personal",
+        "kr": "개인"
+    },
+    {
+        "id": "portfolio--kind-pro",
+        "en": "Pro",
+        "fr": "Pro",
+        "es": "Pro",
+        "kr": "업무"
+    },
+    {
+        "id": "portfolio--teaser-request",
+        "en": "Request access",
+        "fr": "Demander l'accès",
+        "es": "Solicitar acceso",
+        "kr": "액세스 요청"
+    },
+    {
+        "id": "portfolio--access-granted",
+        "en": "Recruiter access enabled",
+        "fr": "Accès recruteur activé",
+        "es": "Acceso de reclutador activado",
+        "kr": "채용 담당자 액세스가 활성화되었습니다"
+    },
+    {
+        "id": "portfolio--access-active",
+        "en": "Recruiter access",
+        "fr": "Accès recruteur",
+        "es": "Acceso reclutador",
+        "kr": "채용 담당자 액세스"
+    },
+    {
+        "id": "portfolio--access-leave",
+        "en": "Leave recruiter access",
+        "fr": "Quitter l'accès recruteur",
+        "es": "Salir del acceso reclutador",
+        "kr": "채용 담당자 액세스 종료"
+    },
+    {
+        "id": "portfolio--banner-title",
+        "en": "Are you a recruiter?",
+        "fr": "Vous êtes recruteur ?",
+        "es": "¿Es usted reclutador?",
+        "kr": "채용 담당자이신가요?"
+    },
+    {
+        "id": "portfolio--banner-text",
+        "en": "See the companies and links behind my pro projects, and ask my assistant your questions.",
+        "fr": "Accédez aux entreprises et aux liens de mes projets pro, et posez vos questions à mon assistant.",
+        "es": "Vea las empresas y los enlaces de mis proyectos profesionales y haga sus preguntas a mi asistente.",
+        "kr": "업무 프로젝트의 회사명과 링크를 확인하고 어시스턴트에게 질문해 보세요."
+    },
+    {
         "id": "contact-me--title",
-        "en": "Let's work together",
-        "fr": "Travaillons ensemble",
-        "es": "Trabajemos juntos",
-        "kr": "함께 일해요"
+        "en": "Let's talk",
+        "fr": "Écrivez-moi",
+        "es": "Hablemos",
+        "kr": "이야기해요"
     },
     {
         "id": "contact-me--description",
-        "en": "Let us help you become even greater at what you do. Fill out the following form and we will get back to you in the next 24 hours",
-        "fr": "Laissez-nous vous aider à devenir encore plus grand dans ce que vous faites. Remplissez le formulaire suivant et nous vous répondrons dans les 24 heures",
-        "es": "Permítanos ayudarlo a ser aún mejor en lo que hace. Complete el siguiente formulario y nos pondremos en contacto con usted en las próximas 24 horas",
-        "kr": "당신이하는 일에 더욱 더 훌륭해지도록 도와 드리겠습니다. 다음 양식을 작성하시면 24 시간 이내에 연락 드리겠습니다"
+        "en": "An opportunity, a product idea or just a question? Leave a message, I'll get back to you quickly.",
+        "fr": "Une opportunité, une idée de produit ou juste une question ? Laisse un message, je réponds rapidement.",
+        "es": "¿Una oportunidad, una idea de producto o solo una pregunta? Deja un mensaje y te responderé rápido.",
+        "kr": "기회, 제품 아이디어, 혹은 간단한 질문이 있나요? 메시지를 남겨 주시면 빠르게 답장드릴게요."
     },
     {
         "id": "contact-me--q1",
-        "en": "What's your name ?",
-        "fr": "Quel est votre nom ?",
-        "es": "¿Cuál es tu nombre?",
-        "kr": "이름이 뭐니?"
+        "en": "What's your name?",
+        "fr": "Comment tu t'appelles ?",
+        "es": "¿Cómo te llamas?",
+        "kr": "이름이 무엇인가요?"
     },
     {
         "id": "contact-me--q2",
-        "en": "What's your email address?",
-        "fr": "Quelle est votre adresse e-mail ?",
-        "es": "¿Cuál es tu dirección de correo electrónico?",
-        "kr": "이메일 주소가 뭐니?"
+        "en": "Your email address?",
+        "fr": "Ton adresse e-mail ?",
+        "es": "¿Tu correo electrónico?",
+        "kr": "이메일 주소는요?"
     },
     {
         "id": "contact-me--q3",
-        "en": "What's service are you looking for ?",
-        "fr": "Quel service recherchez-vous ?",
-        "es": "¿Qué servicio estás buscando?",
-        "kr": "무슨 서비스를 찾고 있니?"
+        "en": "What is it about?",
+        "fr": "Quel est l'objet ?",
+        "es": "¿De qué se trata?",
+        "kr": "어떤 내용인가요?"
     },
     {
         "id": "contact-me--q4",
-        "en": "Tell us about your project",
-        "fr": "Parlez-nous de votre projet",
-        "es": "Cuéntanos sobre tu proyecto",
-        "kr": "프로젝트에 대해 말해봐"
+        "en": "Your message",
+        "fr": "Ton message",
+        "es": "Tu mensaje",
+        "kr": "메시지"
     },
     {
         "id": "contact-me--button",
@@ -287,18 +427,53 @@
         "kr": "디스코드 ID가 클립 보드에 복사되었습니다!"
     },
     {
+        "id": "contact-me--subject--opportunity",
+        "en": "Opportunity",
+        "fr": "Opportunité",
+        "es": "Oportunidad",
+        "kr": "기회"
+    },
+    {
+        "id": "contact-me--subject--collaboration",
+        "en": "Collaboration",
+        "fr": "Collaboration",
+        "es": "Colaboración",
+        "kr": "협업"
+    },
+    {
+        "id": "contact-me--subject--question",
+        "en": "Question",
+        "fr": "Question",
+        "es": "Pregunta",
+        "kr": "질문"
+    },
+    {
+        "id": "contact-me--subject--other",
+        "en": "Other",
+        "fr": "Autre",
+        "es": "Otro",
+        "kr": "기타"
+    },
+    {
+        "id": "contact-me--placeholder-name",
+        "en": "Your name",
+        "fr": "Ton nom",
+        "es": "Tu nombre",
+        "kr": "이름"
+    },
+    {
+        "id": "contact-me--placeholder-message",
+        "en": "Your message…",
+        "fr": "Ton message…",
+        "es": "Tu mensaje…",
+        "kr": "메시지…"
+    },
+    {
         "id": "credits--develop-by",
         "en": "Developed by",
         "fr": "Développé par",
         "es": "Desarrollado por",
         "kr": "개발자"
-    },
-    {
-        "id": "credits--design-by",
-        "en": "Designed by",
-        "fr": "Conçu par",
-        "es": "Diseñado por",
-        "kr": "디자이너"
     },
     {
         "id": "blog-tabs--edit-profile",
@@ -418,5 +593,362 @@
         "fr": "Nom d'utilisateur",
         "es": "Nombre de usuario",
         "kr": "사용자 이름"
+    },
+    {
+        "id": "approach--title",
+        "en": "How I work",
+        "fr": "Ma façon de travailler",
+        "es": "Cómo trabajo",
+        "kr": "일하는 방식"
+    },
+    {
+        "id": "approach--description",
+        "en": "Two networks wired together: the 4D framework to work well with AI, and the product reflexes to build what matters.",
+        "fr": "Deux réseaux connectés : le framework 4D pour bien travailler avec l'IA, et les réflexes produit pour construire ce qui compte.",
+        "es": "Dos redes conectadas: el framework 4D para trabajar bien con la IA y los reflejos de producto para construir lo que importa.",
+        "kr": "두 개의 네트워크가 연결되어 있습니다. AI와 잘 일하기 위한 4D 프레임워크, 그리고 중요한 것을 만들기 위한 프로덕트 감각."
+    },
+    {
+        "id": "approach--group-ai",
+        "en": "AI · 4D framework",
+        "fr": "IA · Framework 4D",
+        "es": "IA · Framework 4D",
+        "kr": "AI · 4D 프레임워크"
+    },
+    {
+        "id": "approach--group-product",
+        "en": "Product",
+        "fr": "Produit",
+        "es": "Producto",
+        "kr": "프로덕트"
+    },
+    {
+        "id": "approach--delegation-title",
+        "en": "Delegation",
+        "fr": "Délégation",
+        "es": "Delegación",
+        "kr": "위임"
+    },
+    {
+        "id": "approach--delegation-text",
+        "en": "Choosing what I hand to AI and what I keep: Claude Code takes the repetitive work and the exploration, I keep the architecture and the decisions.",
+        "fr": "Choisir ce que je confie à l'IA et ce que je garde : Claude Code prend le répétitif et l'exploration, je garde l'architecture et les décisions.",
+        "es": "Elegir qué le confío a la IA y qué me quedo: Claude Code se encarga de lo repetitivo y de la exploración, yo me quedo con la arquitectura y las decisiones.",
+        "kr": "AI에게 맡길 일과 내가 할 일을 구분합니다. 반복 작업과 탐색은 Claude Code가, 아키텍처와 의사결정은 제가 맡습니다."
+    },
+    {
+        "id": "approach--description-title",
+        "en": "Description",
+        "fr": "Description",
+        "es": "Descripción",
+        "kr": "설명"
+    },
+    {
+        "id": "approach--description-text",
+        "en": "Briefing the AI well: goal, context, constraints and expected output. A good prompt reads like a good spec.",
+        "fr": "Bien briefer l'IA : objectif, contexte, contraintes et format attendu. Un bon prompt ressemble à une bonne spec.",
+        "es": "Dar un buen brief a la IA: objetivo, contexto, restricciones y formato esperado. Un buen prompt se parece a una buena spec.",
+        "kr": "AI에게 목표, 맥락, 제약, 기대 결과를 명확히 전달합니다. 좋은 프롬프트는 좋은 스펙과 닮았습니다."
+    },
+    {
+        "id": "approach--discernment-title",
+        "en": "Discernment",
+        "fr": "Discernement",
+        "es": "Discernimiento",
+        "kr": "분별"
+    },
+    {
+        "id": "approach--discernment-text",
+        "en": "Reading every output with a critical eye: is it correct, maintainable, consistent with the rest of the code?",
+        "fr": "Relire chaque sortie avec un œil critique : est-ce juste, maintenable, cohérent avec le reste du code ?",
+        "es": "Revisar cada resultado con ojo crítico: ¿es correcto, mantenible, coherente con el resto del código?",
+        "kr": "모든 결과를 비판적으로 검토합니다. 정확한가, 유지보수 가능한가, 나머지 코드와 일관적인가?"
+    },
+    {
+        "id": "approach--diligence-title",
+        "en": "Diligence",
+        "fr": "Diligence",
+        "es": "Diligencia",
+        "kr": "책임감"
+    },
+    {
+        "id": "approach--diligence-text",
+        "en": "I stay accountable for what ships: tests, review, security, and transparency about how AI was used.",
+        "fr": "Je reste responsable de ce qui part en prod : tests, revue, sécurité, et transparence sur l'usage de l'IA.",
+        "es": "Sigo siendo responsable de lo que llega a producción: tests, revisión, seguridad y transparencia sobre el uso de la IA.",
+        "kr": "프로덕션에 나가는 결과에 책임을 집니다. 테스트, 리뷰, 보안, 그리고 AI 사용에 대한 투명성."
+    },
+    {
+        "id": "approach--framing-title",
+        "en": "Dig into the request",
+        "fr": "Creuser la demande",
+        "es": "Profundizar la petición",
+        "kr": "요청 파고들기"
+    },
+    {
+        "id": "approach--framing-text",
+        "en": "When someone asks me for a feature, I dig: what is the real problem, for whom, and why now. The right answer isn't always the one that was asked for.",
+        "fr": "Quand on me demande une fonctionnalité, je creuse : quel est le vrai problème, pour qui, et pourquoi maintenant. La bonne réponse n'est pas toujours celle qui était demandée.",
+        "es": "Cuando me piden una funcionalidad, profundizo: cuál es el problema real, para quién y por qué ahora. La respuesta correcta no siempre es la que se pidió.",
+        "kr": "기능 요청을 받으면 깊이 파고듭니다. 진짜 문제는 무엇인지, 누구를 위한 것인지, 왜 지금인지. 정답이 항상 요청된 것과 같지는 않습니다."
+    },
+    {
+        "id": "approach--value-title",
+        "en": "Value first",
+        "fr": "Valeur d'abord",
+        "es": "Valor primero",
+        "kr": "가치 우선"
+    },
+    {
+        "id": "approach--value-text",
+        "en": "Prioritizing what really changes something for the user, not what is the most fun to code.",
+        "fr": "Prioriser ce qui change vraiment quelque chose pour l'utilisateur, pas ce qui est le plus fun à coder.",
+        "es": "Priorizar lo que realmente cambia algo para el usuario, no lo más divertido de programar.",
+        "kr": "코딩하기 재미있는 것보다 사용자에게 실제로 변화를 주는 것을 우선합니다."
+    },
+    {
+        "id": "approach--scope-title",
+        "en": "Scope & trade-offs",
+        "fr": "Scope & arbitrages",
+        "es": "Alcance y compromisos",
+        "kr": "범위 & 트레이드오프"
+    },
+    {
+        "id": "approach--scope-text",
+        "en": "Slicing the work, shipping a first useful version, owning the compromises and explaining them.",
+        "fr": "Découper, livrer une première version utile, assumer les compromis et savoir les expliquer.",
+        "es": "Dividir el trabajo, entregar una primera versión útil, asumir los compromisos y saber explicarlos.",
+        "kr": "작업을 쪼개고, 쓸모 있는 첫 버전을 출시하고, 타협을 책임지고 설명합니다."
+    },
+    {
+        "id": "approach--iterate-title",
+        "en": "Ship & iterate",
+        "fr": "Livrer & itérer",
+        "es": "Entregar e iterar",
+        "kr": "출시 & 반복"
+    },
+    {
+        "id": "approach--iterate-text",
+        "en": "Ship, watch how it's used, adjust. A feature is never done at its first deploy.",
+        "fr": "Livrer, observer l'usage, ajuster. Une fonctionnalité n'est jamais finie à son premier déploiement.",
+        "es": "Entregar, observar el uso, ajustar. Una funcionalidad nunca está terminada en su primer despliegue.",
+        "kr": "출시하고, 사용을 관찰하고, 조정합니다. 기능은 첫 배포로 끝나지 않습니다."
+    },
+    {
+        "id": "collection--add",
+        "en": "Add",
+        "fr": "Ajouter",
+        "es": "Añadir",
+        "kr": "추가"
+    },
+    {
+        "id": "chat--open",
+        "en": "Ask a question",
+        "fr": "Poser une question",
+        "es": "Hacer una pregunta",
+        "kr": "질문하기"
+    },
+    {
+        "id": "chat--title",
+        "en": "Paul's assistant",
+        "fr": "L'assistant de Paul",
+        "es": "El asistente de Paul",
+        "kr": "Paul의 어시스턴트"
+    },
+    {
+        "id": "chat--subtitle",
+        "en": "AI · answers about Paul's profile",
+        "fr": "IA · répond sur le profil de Paul",
+        "es": "IA · responde sobre el perfil de Paul",
+        "kr": "AI · Paul의 프로필에 대해 답변"
+    },
+    {
+        "id": "chat--welcome",
+        "en": "Hello! I can answer your questions about Paul's experience, projects, skills and availability.",
+        "fr": "Bonjour ! Je peux répondre à vos questions sur l'expérience, les projets, les compétences et la disponibilité de Paul.",
+        "es": "¡Hola! Puedo responder a sus preguntas sobre la experiencia, los proyectos, las habilidades y la disponibilidad de Paul.",
+        "kr": "안녕하세요! Paul의 경력, 프로젝트, 역량, 가능 일정에 대한 질문에 답해 드릴 수 있어요."
+    },
+    {
+        "id": "chat--suggestion-1",
+        "en": "What is his professional experience?",
+        "fr": "Quelle est son expérience professionnelle ?",
+        "es": "¿Cuál es su experiencia profesional?",
+        "kr": "업무 경력은 어떻게 되나요?"
+    },
+    {
+        "id": "chat--suggestion-2",
+        "en": "Which stack does he master?",
+        "fr": "Quelle stack maîtrise-t-il ?",
+        "es": "¿Qué stack domina?",
+        "kr": "어떤 기술 스택을 다루나요?"
+    },
+    {
+        "id": "chat--suggestion-3",
+        "en": "Is he available, and for what kind of role?",
+        "fr": "Est-il disponible, et pour quel type de poste ?",
+        "es": "¿Está disponible y para qué tipo de puesto?",
+        "kr": "현재 가능한가요? 어떤 직무를 원하나요?"
+    },
+    {
+        "id": "chat--placeholder",
+        "en": "Your question…",
+        "fr": "Votre question…",
+        "es": "Su pregunta…",
+        "kr": "질문을 입력하세요…"
+    },
+    {
+        "id": "chat--send",
+        "en": "Send",
+        "fr": "Envoyer",
+        "es": "Enviar",
+        "kr": "보내기"
+    },
+    {
+        "id": "chat--stop",
+        "en": "Stop",
+        "fr": "Arrêter",
+        "es": "Detener",
+        "kr": "중지"
+    },
+    {
+        "id": "chat--reset",
+        "en": "New conversation",
+        "fr": "Nouvelle conversation",
+        "es": "Nueva conversación",
+        "kr": "새 대화"
+    },
+    {
+        "id": "chat--close",
+        "en": "Close",
+        "fr": "Fermer",
+        "es": "Cerrar",
+        "kr": "닫기"
+    },
+    {
+        "id": "chat--error",
+        "en": "Something went wrong. Try again, or use the contact form.",
+        "fr": "Une erreur est survenue. Réessayez ou utilisez le formulaire de contact.",
+        "es": "Se produjo un error. Inténtelo de nuevo o use el formulario de contacto.",
+        "kr": "오류가 발생했습니다. 다시 시도하거나 문의 양식을 이용해 주세요."
+    },
+    {
+        "id": "chat--disclaimer",
+        "en": "AI-generated answers, may contain mistakes.",
+        "fr": "Réponses générées par IA, elles peuvent contenir des erreurs.",
+        "es": "Respuestas generadas por IA, pueden contener errores.",
+        "kr": "AI가 생성한 답변으로 오류가 있을 수 있습니다."
+    },
+    {
+        "id": "access--form-title",
+        "en": "Request access",
+        "fr": "Demander l'accès",
+        "es": "Solicitar acceso",
+        "kr": "액세스 요청"
+    },
+    {
+        "id": "access--form-subtitle",
+        "en": "You'll receive a link by e-mail to confirm your address.",
+        "fr": "Vous recevrez un lien par e-mail pour confirmer votre adresse.",
+        "es": "Recibirá un enlace por correo para confirmar su dirección.",
+        "kr": "주소 확인을 위한 링크를 이메일로 보내드립니다."
+    },
+    {
+        "id": "access--form-submit",
+        "en": "Send me the link",
+        "fr": "Recevoir le lien",
+        "es": "Recibir el enlace",
+        "kr": "링크 받기"
+    },
+    {
+        "id": "access--form-email",
+        "en": "Professional e-mail",
+        "fr": "E-mail professionnel",
+        "es": "Correo profesional",
+        "kr": "업무용 이메일"
+    },
+    {
+        "id": "access--form-name",
+        "en": "Name",
+        "fr": "Nom",
+        "es": "Nombre",
+        "kr": "이름"
+    },
+    {
+        "id": "access--form-company",
+        "en": "Company",
+        "fr": "Entreprise",
+        "es": "Empresa",
+        "kr": "회사"
+    },
+    {
+        "id": "access--form-privacy",
+        "en": "Your details are only used to answer your request and to know who viewed the profile.",
+        "fr": "Vos informations servent uniquement à traiter votre demande et à savoir qui a consulté le profil.",
+        "es": "Sus datos solo se usan para tramitar su solicitud y saber quién consultó el perfil.",
+        "kr": "입력하신 정보는 요청 처리와 프로필 열람자 확인에만 사용됩니다."
+    },
+    {
+        "id": "access--send-error",
+        "en": "The e-mail could not be sent. Check the address and try again.",
+        "fr": "L'e-mail n'a pas pu être envoyé. Vérifiez l'adresse et réessayez.",
+        "es": "No se pudo enviar el correo. Compruebe la dirección e inténtelo de nuevo.",
+        "kr": "이메일을 보낼 수 없습니다. 주소를 확인하고 다시 시도하세요."
+    },
+    {
+        "id": "access--sent-title",
+        "en": "Check your inbox",
+        "fr": "Vérifiez votre boîte mail",
+        "es": "Revise su correo",
+        "kr": "메일함을 확인하세요"
+    },
+    {
+        "id": "access--sent-text",
+        "en": "Click the link we just sent to",
+        "fr": "Cliquez sur le lien que nous venons d'envoyer à",
+        "es": "Haga clic en el enlace que acabamos de enviar a",
+        "kr": "방금 보낸 링크를 클릭하세요:"
+    },
+    {
+        "id": "access--pending-title",
+        "en": "Request sent",
+        "fr": "Demande envoyée",
+        "es": "Solicitud enviada",
+        "kr": "요청이 전송되었습니다"
+    },
+    {
+        "id": "access--pending-text",
+        "en": "Your e-mail is confirmed. Paul will review your request shortly; come back to this page once it's approved.",
+        "fr": "Votre e-mail est confirmé. Paul va examiner votre demande ; revenez sur cette page une fois qu'elle sera acceptée.",
+        "es": "Su correo está confirmado. Paul revisará su solicitud; vuelva a esta página cuando sea aceptada.",
+        "kr": "이메일이 확인되었습니다. Paul이 곧 요청을 검토합니다. 승인되면 이 페이지로 다시 방문해 주세요."
+    },
+    {
+        "id": "access--refused-title",
+        "en": "Access not granted",
+        "fr": "Accès non accordé",
+        "es": "Acceso no concedido",
+        "kr": "액세스가 승인되지 않았습니다"
+    },
+    {
+        "id": "access--refused-text",
+        "en": "You can still reach Paul through the contact form below.",
+        "fr": "Vous pouvez toujours contacter Paul via le formulaire de contact ci-dessous.",
+        "es": "Puede contactar a Paul a través del formulario de contacto.",
+        "kr": "아래 문의 양식으로 Paul에게 연락하실 수 있습니다."
+    },
+    {
+        "id": "access--confirm-email",
+        "en": "Confirm your e-mail to finish signing in",
+        "fr": "Confirmez votre e-mail pour terminer la connexion",
+        "es": "Confirme su correo para terminar el acceso",
+        "kr": "로그인을 완료하려면 이메일을 확인하세요"
+    },
+    {
+        "id": "access--link-error",
+        "en": "This link is invalid or expired. Request a new one.",
+        "fr": "Ce lien est invalide ou expiré. Faites une nouvelle demande.",
+        "es": "Este enlace no es válido o ha caducado. Solicite uno nuevo.",
+        "kr": "링크가 유효하지 않거나 만료되었습니다. 다시 요청하세요."
     }
 ]

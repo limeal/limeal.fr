@@ -1,0 +1,130 @@
+// Firestore rules for limeal.fr — paste into Firebase console → Firestore Database → Rules.
+//
+// There is deliberately no catch-all `match /{document=**}`: rules only ever
+// grant access, so a catch-all read would expose the private space to any
+// signed-in account. A new collection therefore needs its own `match` block.
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.uid == "6XQlxMCOhNMrRK3cYIQIKrFUoxF2";
+    }
+
+    function isAuthor() {
+      return signedIn()
+        && resource.data.keys().hasAny(['author_id'])
+        && request.auth.uid == resource.data.author_id;
+    }
+
+    // Accounts created through an access request (verified e-mail link)
+    function isRecruiter() {
+      return signedIn() && exists(/databases/$(database)/documents/access_requests/$(request.auth.uid));
+    }
+
+    function isApprovedRecruiter() {
+      return isRecruiter()
+        && get(/databases/$(database)/documents/access_requests/$(request.auth.uid)).data.status == 'approved';
+    }
+
+    // Friends' accounts for the blog: signed in, but not through an access request
+    function isMember() {
+      return signedIn() && !isRecruiter();
+    }
+
+    // Public portfolio (pro projects are anonymous here)
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Blog
+    match /articles/{articleId} {
+      allow read: if isMember();
+      allow write: if isAdmin();
+    }
+
+    match /profiles/{profileId} {
+      allow read: if isMember();
+      allow write: if isAdmin() || (isMember() && request.auth.uid == profileId);
+    }
+
+    match /comments/{commentId} {
+      allow read, create, update: if isMember();
+      allow delete: if isAdmin() || isAuthor();
+    }
+
+    match /likes/{likeId} {
+      allow read, create, update: if isMember();
+      allow delete: if isAdmin() || isAuthor();
+    }
+
+    // Private space: identifying details of pro projects, assistant notes
+    match /vault/{code}/{section}/{docId} {
+      allow read: if isAdmin() || isApprovedRecruiter();
+      allow write: if isAdmin();
+    }
+
+    // Where the private space lives
+    match /admin/{docId} {
+      allow read: if isAdmin() || isApprovedRecruiter();
+      allow write: if isAdmin();
+    }
+
+    // Per channel: approved immediately (`autoApprove`) or never offered (`blocked`)
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // One access request per verified e-mail account
+    match /access_requests/{uid} {
+      allow get: if isAdmin() || (signedIn() && request.auth.uid == uid);
+      allow list, update, delete: if isAdmin();
+
+      // Filed by the visitor right after the e-mail link. It can only be created
+      // "approved" when its channel is set to immediate access (and not blocked);
+      // otherwise it waits for the admin.
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.auth.token.email_verified == true
+        && request.resource.data.keys().hasOnly(['email', 'name', 'company', 'ref', 'status', 'createdAt'])
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.name is string && request.resource.data.name.size() <= 100
+        && request.resource.data.company is string && request.resource.data.company.size() <= 100
+        && request.resource.data.ref is string && request.resource.data.ref.size() <= 40
+        && request.resource.data.createdAt == request.time
+        && (
+          request.resource.data.status == 'pending'
+          || (
+            request.resource.data.status == 'approved'
+            && request.resource.data.ref in get(/databases/$(database)/documents/settings/access).data.autoApprove
+            && !(request.resource.data.ref in get(/databases/$(database)/documents/settings/access).data.blocked)
+          )
+        );
+
+      // Activity journal, written by the recruiter's browser
+      match /events/{eventId} {
+        allow read: if isAdmin();
+        allow create: if signedIn() && request.auth.uid == uid
+          && request.resource.data.keys().hasOnly(['type', 'at', 'text'])
+          && request.resource.data.type in ['visit', 'chat']
+          && request.resource.data.at == request.time
+          && (!('text' in request.resource.data) || request.resource.data.text.size() <= 500);
+      }
+    }
+
+    // Where visitors come from (one entry per browser session)
+    match /traffic/{eventId} {
+      allow read, delete: if isAdmin();
+      allow create: if request.resource.data.keys().hasOnly(['source', 'path', 'at'])
+        && request.resource.data.source is string && request.resource.data.source.size() <= 100
+        && request.resource.data.path is string && request.resource.data.path.size() <= 100
+        && request.resource.data.at == request.time;
+    }
+  }
+}
