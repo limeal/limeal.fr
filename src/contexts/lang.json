@@ -120,10 +120,10 @@
     },
     {
         "id": "hero--job",
-        "en": "Junior Developer",
-        "fr": "Développeur Junior",
-        "es": "Desarrollador Junior",
-        "kr": "주니어 개발자"
+        "en": "Software Developer / Product Engineer",
+        "fr": "Développeur Full-Stack / Product Engineer",
+        "es": "Desarrollador Full-Stack / Product Engineer",
+        "kr": "풀스택 개발자 / 프로덕트 엔지니어"
     },
     {
         "id": "hero--satisfied--title",

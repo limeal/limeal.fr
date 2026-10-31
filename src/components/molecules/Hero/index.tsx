@@ -60,7 +60,7 @@ const Hero = () => {
         <div className="hero__content">
           <div className="hero__content__left">
             <div className="hero__content__left__title">
-              <h1>{user ? "Paul" : "Limeal"}</h1>
+              <h1>Paul (Limeal)</h1>
               <h2>{getTranslation("hero--job")}</h2>
             </div>
 
