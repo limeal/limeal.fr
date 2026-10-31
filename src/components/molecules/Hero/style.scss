@@ -47,7 +47,7 @@
 
           > h1 {
             color: var(--lime, #fbd52b);
-            font-size: 80px;
+            font-size: 56px;
             font-weight: 900;
             line-height: normal; /* 111.111% */
             text-transform: uppercase;
@@ -71,7 +71,7 @@
           > h2 {
             margin-top: 4px;
             color: var(--white, #fff);
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 900;
             text-transform: uppercase;
           }
@@ -243,7 +243,7 @@
 
           .hero__content__left__title {
             > h1 {
-              font-size: 105px;
+              font-size: 72px;
 
               &::after {
                 width: 60px;
@@ -253,7 +253,7 @@
 
             > h2 {
               margin-top: 16px;
-              font-size: 40px;
+              font-size: 24px;
             }
           }
 
@@ -358,8 +358,8 @@
           .hero__content__left__title {
             display: initial;
             > h1 {
-              font-size: 180px;
-              line-height: 200px;
+              font-size: 120px;
+              line-height: 130px;
 
               &::after {
                 width: 60px;
@@ -369,7 +369,7 @@
 
             > h2 {
               margin-top: 16px;
-              font-size: 60px;
+              font-size: 34px;
             }
           }
 
