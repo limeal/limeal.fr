@@ -5,7 +5,7 @@ date: 2026-11-02
 tags: [agents-ia, claude, human-on-the-loop]
 cover: /images/articles/claude-duet-grok-bot-muse-agents-ia/cover.svg
 translatedFrom: fr
-sourceHash: 6d2968e15e93
+sourceHash: dc961d6659df
 ---
 
 In ten weeks, xAI, Meta, OpenAI and Anthropic all shipped the same thing: an always-on
@@ -61,8 +61,8 @@ published in March 2026 on Martin Fowler's site:
 With the first assistants, we were in the loop. We split up the task, guided every step,
 reread every line produced. AI was a tool we held by the hand.
 
-With this year's models, we've entered the agentic era, and in the end almost every need
-we had can be turned into an agent. The method changes completely:
+With this year's models, we've entered the agentic era, and many of our needs can now be
+partly handled by an agent. The method changes:
 
 1. we define the need together;
 2. the developer sets the frame;
@@ -103,7 +103,7 @@ personal counterpart, which I'm going to build, will be called Yellow.
 
 I'll be honest: Blue wasn't good on the first try. I had to give it quite a lot of
 feedback on how it worked, and what I refined wasn't Blue itself, it was its harness, in
-other words the frame it works in. Once the harness is clean, the results follow.
+other words the frame it works in. When I improve that frame, the results often improve too.
 
 When I started this article, I thought I was behind, still human in the loop. Rereading
 these definitions, I realize I've already partly moved past it: when Blue gets it wrong,
@@ -216,7 +216,8 @@ experiences that have almost nothing in common.
 
 ## The developer's new role
 
-If AI writes the code, the developer's work moves to two places.
+If AI writes the code, the developer's work focuses on three moments: setting the frame,
+reviewing the work and following it in production.
 
 **Before: the frame.** What the agent is allowed to do, where it looks for information,
 how it should source it, what a clean result should look like. That's the harness, the
