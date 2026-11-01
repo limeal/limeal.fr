@@ -13,6 +13,10 @@ const satoshi = localFont({
   display: "swap",
 });
 
+// Every page depends on the request host (see brandFor), so none can be
+// prerendered once at build time
+export const dynamic = "force-dynamic";
+
 // Depends on the domain: pauldev.fr must not mention the pseudonym anywhere
 export async function generateMetadata(): Promise<Metadata> {
   const brand = brandFor(headers().get("host"));
