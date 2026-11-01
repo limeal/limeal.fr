@@ -13,7 +13,8 @@ export const HREFLANG: Record<PostLang, string> = { en: "en", fr: "fr", es: "es"
 
 // The site answers on two domains: every article points search engines to the
 // discreet one, so they never see the content twice
-export const CANONICAL_ORIGIN = "https://pauldev.fr";
+// (www: Vercel redirects the bare domain there, and a canonical URL must not redirect)
+export const CANONICAL_ORIGIN = "https://www.pauldev.fr";
 
 export const AUTHOR = "Paul";
 

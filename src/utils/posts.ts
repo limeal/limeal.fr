@@ -129,7 +129,10 @@ const compile = async (body: string) => {
         rehypePlugins: [
             rehypeSlug,
             [rehypeAutolinkHeadings, { behavior: "wrap" }],
-            [rehypeShiki, { theme: "github-dark-default" }],
+            // By default every grammar Shiki knows (200+) is loaded up front: ~2 s
+            // locally, past the function timeout on Vercel. Preload the usual
+            // ones, the rest load when an article uses them.
+            [rehypeShiki, { theme: "github-dark-default", langs: ["ts", "tsx", "js", "go", "bash", "json"], lazy: true }],
         ],
     });
     return Content;

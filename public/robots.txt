@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: /api/projects
 Disallow: /api/send-mail
-Sitemap: https://pauldev.fr/sitemap.xml
+Sitemap: https://www.pauldev.fr/sitemap.xml
