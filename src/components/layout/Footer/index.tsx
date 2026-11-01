@@ -7,6 +7,7 @@ import { Box, Container, Flex, HStack, Text } from "@chakra-ui/react";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLangContext } from "@/contexts/LangContext";
 import { useRecruiterAccess } from "@/contexts/RecruiterAccessContext";
+import { useBrand } from "@/contexts/BrandContext";
 import { LuBookOpen } from "react-icons/lu";
 
 import Button from "@/components/ui/Button";
@@ -17,6 +18,7 @@ const Footer = () => {
   const [authOpen, setAuthOpen] = useState(false);
   const { user } = useAuthContext();
   const { isRecruiter } = useRecruiterAccess();
+  const brand = useBrand();
   const { getTranslation } = useLangContext();
 
   return (
@@ -25,9 +27,9 @@ const Footer = () => {
       <Container maxW="7xl" px={{ base: 4, md: 8, xl: 12 }}>
         <Flex direction={{ base: "column", md: "row" }} justify="space-between" align="center" gap="6">
           <HStack gap="3">
-            <Image src="/assets/images/logo.png" alt="Limeal" width={28} height={28} />
+            <Image src={brand.logo} alt={brand.name} width={28} height={28} />
             <Text color="muted" fontSize="sm">
-              © {new Date().getFullYear()} · {getTranslation("credits--develop-by")} Paul (Limeal)
+              © {new Date().getFullYear()} · {getTranslation("credits--develop-by")} {brand.name}
             </Text>
           </HStack>
           <HStack gap="6" wrap="wrap" justify="center">

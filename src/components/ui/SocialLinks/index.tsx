@@ -7,6 +7,7 @@ import { BsDiscord } from "react-icons/bs";
 
 import { useLangContext } from "@/contexts/LangContext";
 import { socials } from "@/data/navigation";
+import { useBrand } from "@/contexts/BrandContext";
 import { toast } from "../Toaster";
 
 type SocialLinksProps = StackProps & { size?: "sm" | "md" | "lg" };
@@ -23,6 +24,10 @@ const iconStyle = {
 
 export const SocialLinks = ({ size = "md", ...rest }: SocialLinksProps) => {
   const { getTranslation } = useLangContext();
+  const brand = useBrand();
+
+  // Both accounts are named after the pseudonym
+  if (brand.discreet) return null;
 
   return (
     <HStack gap="3" {...rest}>

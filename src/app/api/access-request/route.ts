@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { sendEmail } from "@/utils/email";
+import { brandFor } from "@/data/brand";
 import { isWellFormedIdToken, readDocument, uidOf } from "@/utils/recruiterAssistant";
 
 const escape = (value: unknown) =>
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
       to: receiver,
       subject: `Access request (${filed.status}) - ${filed.name || filed.email}`,
       html: `
-        <p>New access request on limeal.fr</p>
+        <p>New access request on ${escape(brandFor(request.headers.get("host")).domain)}</p>
         <ul>
           <li><b>E-mail</b> (verified): ${escape(filed.email)}</li>
           <li><b>Name</b>: ${escape(filed.name) || "—"}</li>

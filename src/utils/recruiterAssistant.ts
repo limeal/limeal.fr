@@ -3,6 +3,7 @@ import { skillCategories } from "@/data/skills";
 import { mindNodes } from "@/data/approach";
 import { socials } from "@/data/navigation";
 import Project from "@/interfaces/project";
+import { Brand, brandProject } from "@/data/brand";
 import AssistantProfile, { toAssistantProfile } from "@/interfaces/assistantProfile";
 import { byMostRecent, projectPeriod, withDetails } from "@/utils/project";
 
@@ -122,8 +123,13 @@ const describeProfile = (p: AssistantProfile) =>
         .filter(Boolean)
         .join("\n");
 
-export const buildInstructions = ({ projects, profile }: RecruiterVault) => `
-You are the recruiter assistant of limeal.fr, the portfolio of Paul (pseudonym "Limeal").
+export const buildInstructions = ({ projects, profile }: RecruiterVault, brand: Brand) => `
+${
+    brand.discreet
+        ? `You are the recruiter assistant of ${brand.domain}, the portfolio of Paul.
+Never mention any pseudonym, nickname or other domain name for Paul.`
+        : `You are the recruiter assistant of ${brand.domain}, the portfolio of Paul (pseudonym "Limeal").`
+}
 You talk to recruiters whose access to the private area of the site was approved.
 Your job: answer their questions about Paul's professional profile, accurately and briefly.
 
@@ -150,11 +156,15 @@ ${skillCategories
 ${mindNodes.map((n) => `- ${text(`approach--${n.id}-title`)}: ${text(`approach--${n.id}-text`)}`).join("\n")}
 
 ## Projects (most recent first)
-${projects.map(describeProject).join("\n")}
+${projects.map((p) => describeProject(brandProject(p, brand))).join("\n")}
 
 ## Availability and expectations (from Paul)
 ${describeProfile(profile)}
 
 ## Contact
-Contact form on limeal.fr (section "Contact"), GitHub ${socials.github}, Discord "${socials.discord}".
+${
+    brand.discreet
+        ? `Contact form on ${brand.domain} (section "Contact").`
+        : `Contact form on ${brand.domain} (section "Contact"), GitHub ${socials.github}, Discord "${socials.discord}".`
+}
 `.trim();

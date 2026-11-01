@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } fr
 import { LuArrowRight } from "react-icons/lu";
 
 import { useLangContext } from "@/contexts/LangContext";
+import { useBrand } from "@/contexts/BrandContext";
 import { heroStack } from "@/data/skills";
 import Button from "@/components/ui/Button";
 import Pill from "@/components/ui/Pill";
@@ -22,13 +23,17 @@ const NAME_INTERVAL_MS = 3000;
 // the old name is erased towards the right, then the new one is drawn from the left
 const RotatingName = () => {
   const [index, setIndex] = useState(0);
+  // The discreet domain only ever shows the first name
+  const { discreet } = useBrand();
+  const names = discreet ? NAMES.slice(0, 1) : NAMES;
 
   useEffect(() => {
-    const interval = setInterval(() => setIndex((i) => (i + 1) % NAMES.length), NAME_INTERVAL_MS);
+    if (names.length < 2) return;
+    const interval = setInterval(() => setIndex((i) => (i + 1) % names.length), NAME_INTERVAL_MS);
     return () => clearInterval(interval);
-  }, []);
+  }, [names.length]);
 
-  const name = NAMES[index];
+  const name = names[index % names.length];
 
   return (
     <Box as="span" display="block" pb="0.08em" aria-hidden>
@@ -52,6 +57,7 @@ const Hero = () => {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { getTranslation } = useLangContext();
+  const brand = useBrand();
 
   // Parallax: the content drifts up, shrinks a little and fades as the page scrolls
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -85,7 +91,7 @@ const Hero = () => {
           <motion.div style={reduce ? undefined : { y, scale, opacity }}>
             <Heading
               as="h1"
-              aria-label="Paul (Limeal)"
+              aria-label={brand.name}
               fontSize={{ base: "56px", md: "112px", xl: "160px" }}
               lineHeight="0.92"
               fontWeight="black"

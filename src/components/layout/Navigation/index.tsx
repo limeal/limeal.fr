@@ -15,6 +15,7 @@ import { LuArrowUpRight, LuBookOpen, LuLogOut, LuMenu, LuX } from "react-icons/l
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLangContext } from "@/contexts/LangContext";
 import { useRecruiterAccess } from "@/contexts/RecruiterAccessContext";
+import { useBrand } from "@/contexts/BrandContext";
 import { signOut } from "@/firebase/authentication";
 import type { NavLink } from "@/data/navigation";
 import useActiveSection from "@/hooks/useActiveSection";
@@ -36,6 +37,7 @@ const Navigation = ({ links, hideContact }: NavigationProps) => {
 
   const { user } = useAuthContext();
   const { isRecruiter } = useRecruiterAccess();
+  const brand = useBrand();
   const { getTranslation } = useLangContext();
   const activeId = useActiveSection(links?.map((l) => l.href.replace("#", "")) ?? []);
 
@@ -87,12 +89,15 @@ const Navigation = ({ links, hideContact }: NavigationProps) => {
               )}
               <HStack asChild gap="2">
                 <NextLink href="/">
-                  <Image src="/assets/images/logo.png" alt="Limeal" width={32} height={32} />
+                  <Image src={brand.logo} alt={brand.name} width={32} height={32} />
                   <Text fontWeight="black" fontSize={{ base: "md", md: "xl" }} whiteSpace="nowrap">
-                    Paul{" "}
-                    <Text as="span" color="muted" fontWeight="bold">
-                      (Limeal)
-                    </Text>
+                    Paul
+                    {!brand.discreet && (
+                      <Text as="span" color="muted" fontWeight="bold">
+                        {" "}
+                        (Limeal)
+                      </Text>
+                    )}
                   </Text>
                 </NextLink>
               </HStack>

@@ -10,6 +10,8 @@ import { LuArrowUpRight, LuPencil, LuTrash2 } from "react-icons/lu";
 import Project from "@/interfaces/project";
 import { deleteProject } from "@/firebase/store/project";
 import { useLangContext } from "@/contexts/LangContext";
+import { useBrand } from "@/contexts/BrandContext";
+import { brandProject } from "@/data/brand";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
@@ -89,7 +91,8 @@ const Thumbnail = ({ project, sizes }: { project: Project; sizes: string }) => (
 
 const ProjectCard = ({ project: raw, refresh, vaultCode, variant = "compact" }: ProjectCardProps) => {
   // Displayed values: the real name, links and screenshot replace the anonymous ones with access
-  const project = withDetails(raw);
+  const brand = useBrand();
+  const project = brandProject(withDetails(raw), brand);
   const [editing, setEditing] = useState(false);
   const isAdmin = useIsAdmin();
   const { getTranslation } = useLangContext();

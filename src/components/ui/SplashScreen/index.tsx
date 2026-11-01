@@ -4,11 +4,15 @@ import Image from "next/image";
 import { Box, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
+import { useBrand } from "@/contexts/BrandContext";
 import { EASE_OUT } from "../Reveal";
 
 // Full-screen intro shown while Firebase resolves the auth state.
 // Mount it inside <AnimatePresence> so it can wipe away upwards.
-export const SplashScreen = () => (
+export const SplashScreen = () => {
+  const brand = useBrand();
+
+  return (
   <Box asChild position="fixed" inset="0" zIndex="2000" bg="ink" display="grid" placeItems="center">
     <motion.div
       initial={{ clipPath: "inset(0 0 0% 0)" }}
@@ -29,7 +33,7 @@ export const SplashScreen = () => (
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 180, damping: 16 }}
           >
-            <Image src="/assets/images/logo.png" alt="Limeal" width={88} height={88} priority />
+            <Image src={brand.logo} alt={brand.name} width={88} height={88} priority />
           </motion.div>
 
           <Box overflow="hidden">
@@ -41,8 +45,8 @@ export const SplashScreen = () => (
               <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="black" textTransform="uppercase" letterSpacing="-0.02em">
                 <Text as="span" color="lime">
                   Paul
-                </Text>{" "}
-                (Limeal)
+                </Text>
+                {!brand.discreet && " (Limeal)"}
               </Text>
             </motion.div>
           </Box>
@@ -67,5 +71,6 @@ export const SplashScreen = () => (
     </motion.div>
   </Box>
 );
+};
 
 export default SplashScreen;

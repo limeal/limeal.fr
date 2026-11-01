@@ -8,6 +8,7 @@ import {
 import { openai } from "@ai-sdk/openai";
 import { NextResponse } from "next/server";
 
+import { brandFor } from "@/data/brand";
 import { buildInstructions, isWellFormedIdToken, loadRecruiterVault } from "@/utils/recruiterAssistant";
 
 // Keeps a conversation (and its cost) bounded
@@ -46,7 +47,8 @@ export async function POST(request: Request) {
 
   const result = streamText({
     model: openai(process.env.OPENAI_MODEL ?? "gpt-5.4-mini"),
-    instructions: buildInstructions(vault),
+    // Same identity as the domain the visitor is on (pauldev.fr stays discreet)
+    instructions: buildInstructions(vault, brandFor(request.headers.get("host"))),
     messages: await convertToModelMessages(conversation),
     maxOutputTokens: 800,
   });
