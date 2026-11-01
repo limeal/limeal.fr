@@ -26,7 +26,8 @@ export async function POST(request: Request) {
 
   try {
     await sendEmail({
-      html: render(
+      // render() is asynchronous since @react-email/render 1.0
+      html: await render(
         data.type === "contact"
           ? ContactEmail({
               name: data.name,

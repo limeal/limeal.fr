@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Article from "@/interfaces/article";
-import { getArticles } from "@/firebase/store/article";
+import { useArticles } from "@/hooks/queries/blog";
 import { useLangContext } from "@/contexts/LangContext";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import { toast } from "@/components/ui/Toaster";
@@ -14,33 +14,12 @@ import { getTranslated } from "./translation";
 
 const BlogSection = () => {
   const [country, setCountry] = useState<string>("");
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
 
   const isAdmin = useIsAdmin();
   const { lang, getTranslation } = useLangContext();
+  const { data: articles = [], isPending, refetch } = useArticles(isAdmin);
 
   const countryOf = (article: Article) => getTranslated(article, lang).place?.country;
-
-  const refreshArticles = async (isClick: boolean) => {
-    setLoading(true);
-    const all = await getArticles();
-    const visible = isAdmin ? all : all.filter((article: Article) => article.published);
-
-    setArticles(
-      visible.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    );
-
-    if (isClick) {
-      toast.success("Blog refreshed !");
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    refreshArticles(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Derived from the articles so the filters follow the language switch
   const countries = [
@@ -56,15 +35,15 @@ const BlogSection = () => {
       filters={countries}
       selectedFilter={country}
       onFilterChange={setCountry}
-      loading={loading}
+      loading={isPending}
       items={country === "" ? articles : articles.filter((a) => countryOf(a) === country)}
       getKey={(article) => article.id ?? article.slug}
-      onRefresh={() => refreshArticles(true)}
+      onRefresh={() => refetch().then(() => toast.success("Blog refreshed !"))}
       renderItem={(article) => (
-        <ArticleCard article={article} refresh={() => refreshArticles(false)} />
+        <ArticleCard article={article} />
       )}
       renderAddModal={(close) => (
-        <ArticleFormModal mode="create" onClose={close} refresh={() => refreshArticles(false)} />
+        <ArticleFormModal mode="create" onClose={close} />
       )}
     />
   );

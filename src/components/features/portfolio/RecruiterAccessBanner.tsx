@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, Flex, IconButton, Input, SimpleGrid, Stack, Text } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { LuClock, LuLock, LuMailCheck, LuX } from "react-icons/lu";
@@ -20,7 +20,14 @@ const DISMISSED_KEY = "access-bar-dismissed";
 // what is hidden and lets a recruiter ask for access with a verified e-mail
 const RecruiterAccessBanner = () => {
   const [open, setOpen] = useState(false);
-  const [dismissed, setDismissed] = useState(true);
+  // Read once: the banner only renders in the browser, under the auth splash screen
+  const [dismissed, setDismissed] = useState(() => {
+    try {
+      return !!sessionStorage.getItem(DISMISSED_KEY);
+    } catch {
+      return false;
+    }
+  });
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
@@ -30,14 +37,6 @@ const RecruiterAccessBanner = () => {
   const { request, requestAccess, leave, vaultCode, channelBlocked, ready } = useRecruiterAccess();
   const isAdmin = useIsAdmin();
   const { getTranslation } = useLangContext();
-
-  useEffect(() => {
-    try {
-      setDismissed(!!sessionStorage.getItem(DISMISSED_KEY));
-    } catch {
-      setDismissed(false);
-    }
-  }, []);
 
   const dismiss = () => {
     setDismissed(true);

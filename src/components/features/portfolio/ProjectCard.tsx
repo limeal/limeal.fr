@@ -8,7 +8,7 @@ import { AiFillGithub } from "react-icons/ai";
 import { LuArrowUpRight, LuPencil, LuTrash2 } from "react-icons/lu";
 
 import Project from "@/interfaces/project";
-import { deleteProject } from "@/firebase/store/project";
+import { useDeleteProject } from "@/hooks/queries/portfolio";
 import { useLangContext } from "@/contexts/LangContext";
 import { useBrand } from "@/contexts/BrandContext";
 import { brandProject } from "@/data/brand";
@@ -22,7 +22,6 @@ import StackIcons from "./StackIcons";
 
 type ProjectCardProps = {
   project: Project;
-  refresh: () => void;
   // Admin's vault code: where the private details of pro projects are stored
   vaultCode: string | null;
   // "featured": large horizontal card for the latest project
@@ -89,11 +88,12 @@ const Thumbnail = ({ project, sizes }: { project: Project; sizes: string }) => (
   </Box>
 );
 
-const ProjectCard = ({ project: raw, refresh, vaultCode, variant = "compact" }: ProjectCardProps) => {
+const ProjectCard = ({ project: raw, vaultCode, variant = "compact" }: ProjectCardProps) => {
   // Displayed values: the real name, links and screenshot replace the anonymous ones with access
   const brand = useBrand();
   const project = brandProject(withDetails(raw), brand);
   const [editing, setEditing] = useState(false);
+  const removeProject = useDeleteProject();
   const isAdmin = useIsAdmin();
   const { getTranslation } = useLangContext();
 
@@ -122,12 +122,13 @@ const ProjectCard = ({ project: raw, refresh, vaultCode, variant = "compact" }: 
   const meta = `${projectPeriod(project, getTranslation("portfolio--today"))} · ${project.category.replace(/_/g, " ")}`;
 
   const handleDelete = () => {
-    deleteProject(raw, vaultCode)
-      .then(() => {
-        toast.success(`Project ${project.name} deleted !`);
-        refresh();
-      })
-      .catch((err) => toast.error(err.message));
+    removeProject.mutate(
+      { project: raw, vaultCode },
+      {
+        onSuccess: () => toast.success(`Project ${project.name} deleted !`),
+        onError: (err) => toast.error(err.message),
+      }
+    );
   };
 
   const adminActions = isAdmin && (
@@ -142,7 +143,7 @@ const ProjectCard = ({ project: raw, refresh, vaultCode, variant = "compact" }: 
   );
 
   const editModal = editing && (
-    <ProjectFormModal project={raw} vaultCode={vaultCode} onClose={() => setEditing(false)} refresh={refresh} />
+    <ProjectFormModal project={raw} vaultCode={vaultCode} onClose={() => setEditing(false)} />
   );
 
   if (variant === "featured") {

@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
 
 // Depends on the domain: pauldev.fr must not mention the pseudonym anywhere
 export async function generateMetadata(): Promise<Metadata> {
-  const brand = brandFor(headers().get("host"));
+  const brand = brandFor((await headers()).get("host"));
 
   return {
     title: `${brand.name} — Software & Product Engineer`,
@@ -40,15 +40,22 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const brand = brandFor(headers().get("host"));
+  const brand = brandFor((await headers()).get("host"));
 
   return (
     <html lang="en" className={`${satoshi.variable} dark`} suppressHydrationWarning>
+      <head>
+        {/* Chakra's cascade layers, declared before any style. The first mention
+            of a layer fixes its priority: if Emotion injects a component style
+            (layer "recipes") ahead of Chakra's global sheet, the reset layer
+            would win over the recipes (e.g. Container margins/padding lost). */}
+        <style>{"@layer reset, base, tokens, recipes;"}</style>
+      </head>
       <body>
         <Providers brand={brand}>{children}</Providers>
         <Analytics />

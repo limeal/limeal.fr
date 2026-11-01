@@ -2,12 +2,11 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 
-import { ensureVaultMarker, getVaultCode } from "@/firebase/store/project";
+import { useQueryClient } from "@tanstack/react-query";
+
 import {
   AccessRequest,
   completeAccessLink,
-  getAccessSettings,
-  getMyRequest,
   isAccessLink,
   logAccessEvent,
   logTraffic,
@@ -17,6 +16,8 @@ import { signOut } from "@/firebase/authentication";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLangContext } from "@/contexts/LangContext";
 import useIsAdmin from "@/hooks/useIsAdmin";
+import { queryKeys } from "@/hooks/queries/keys";
+import { useAccessSettings, useMyAccessRequest, useVaultCode } from "@/hooks/queries/access";
 import { toast } from "@/components/ui/Toaster";
 
 const VISIT_LOGGED_KEY = "visit-logged";
@@ -95,22 +96,51 @@ const referrerHost = () => {
 const referrerChannel = (host: string) =>
   Object.entries(REFERRER_CHANNELS).find(([domain]) => host === domain || host.endsWith(`.${domain}`))?.[1] ?? "";
 
+// Channel of this visit: ?ref= / utm_source, the referring site, or the one
+// remembered earlier in the session
+const detectChannel = () => {
+  const url = new URL(window.location.href);
+  return (
+    urlChannel(url) ||
+    referrerChannel(referrerHost()) ||
+    safe(() => sessionStorage.getItem(CHANNEL_KEY), null) ||
+    ""
+  );
+};
+
 const trafficSource = (url: URL) => {
   const host = referrerHost();
   return urlChannel(url) || referrerChannel(host) || host || "direct";
 };
 
 export const RecruiterAccessProvider = ({ children }: { children: React.ReactNode }) => {
-  const [request, setRequest] = useState<AccessRequest | null>(null);
-  const [adminCode, setAdminCode] = useState<string | null>(null);
-  const [recruiterCode, setRecruiterCode] = useState<string | null>(null);
-  const [ready, setReady] = useState(false);
-  const [channel, setChannel] = useState("");
-  const [channelBlocked, setChannelBlocked] = useState(false);
+  // This provider only renders in the browser (under the auth splash screen),
+  // so the URL and storage can be read while initialising state
+  const [channel] = useState(detectChannel);
+  // Back from an access e-mail: not ready until the sign-in link is processed
+  const [ready, setReady] = useState(() => !isAccessLink(window.location.href));
 
   const { user } = useAuthContext();
   const isAdmin = useIsAdmin();
   const { getTranslation } = useLangContext();
+  const queryClient = useQueryClient();
+
+  // Signed-in visitor: are they a recruiter, and approved?
+  const request = useMyAccessRequest(user, !isAdmin).data ?? null;
+  const approved = !isAdmin && request?.status === "approved";
+
+  // The vault code: rules let the admin and approved recruiters read it
+  const adminCode = useVaultCode("admin", user?.uid, isAdmin).data ?? null;
+  const recruiterCode = useVaultCode("recruiter", user?.uid, approved).data ?? null;
+  const setAdminCode = useCallback(
+    (code: string) => {
+      if (user) queryClient.setQueryData(queryKeys.vaultCode("admin", user.uid), code);
+    },
+    [queryClient, user]
+  );
+
+  const settings = useAccessSettings(!!channel).data;
+  const channelBlocked = !!channel && !!settings?.blocked.includes(channel);
 
   const requestAccess = useCallback(
     async (details: { email: string; name: string; company: string }) => {
@@ -140,21 +170,15 @@ export const RecruiterAccessProvider = ({ children }: { children: React.ReactNod
     if (firstVisitOfSession && !isAdmin) logTraffic(trafficSource(url));
 
     const fromUrl = urlChannel(url);
-    const detected = fromUrl || referrerChannel(referrerHost());
-    if (detected) safe(() => sessionStorage.setItem(CHANNEL_KEY, detected), undefined);
-    const current = detected || safe(() => sessionStorage.getItem(CHANNEL_KEY), null) || "";
-    setChannel(current);
-    if (current) getAccessSettings().then(({ blocked }) => setChannelBlocked(blocked.includes(current)));
+    // Remember this visit's channel for a later access request
+    if (channel) safe(() => sessionStorage.setItem(CHANNEL_KEY, channel), undefined);
 
-    if (!isAccessLink(window.location.href)) {
-      setReady(true);
-      return;
-    }
+    if (!isAccessLink(window.location.href)) return;
 
     completeAccessLink(window.location.href, () => window.prompt(getTranslation("access--confirm-email")))
       .then((filed) => {
         if (!filed) return;
-        setRequest(filed);
+        queryClient.setQueryData(queryKeys.accessRequest(filed.uid), filed);
         toast.success(
           getTranslation(filed.status === "approved" ? "portfolio--access-granted" : "access--pending-title")
         );
@@ -172,15 +196,6 @@ export const RecruiterAccessProvider = ({ children }: { children: React.ReactNod
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Signed-in visitor: are they a recruiter, and approved?
-  useEffect(() => {
-    if (!user || isAdmin) {
-      setRequest(null);
-      return;
-    }
-    getMyRequest(user).then(setRequest);
-  }, [user, isAdmin]);
-
   // One "visit" per session in the recruiter's journal
   useEffect(() => {
     if (!request) return;
@@ -189,20 +204,6 @@ export const RecruiterAccessProvider = ({ children }: { children: React.ReactNod
     safe(() => sessionStorage.setItem(key, "1"), undefined);
     logAccessEvent(request.uid, "visit");
   }, [request]);
-
-  // The vault code: rules let the admin and approved recruiters read it
-  useEffect(() => {
-    if (isAdmin) {
-      getVaultCode().then((code) => {
-        setAdminCode(code);
-        if (code) ensureVaultMarker(code).catch(() => undefined);
-      });
-      return;
-    }
-    setAdminCode(null);
-    if (request?.status === "approved") getVaultCode().then(setRecruiterCode);
-    else setRecruiterCode(null);
-  }, [isAdmin, request]);
 
   return (
     <RecruiterAccessContext.Provider

@@ -39,7 +39,7 @@ export const ContactEmail = ({
           <Hr style={hr} />
           <Text style={paragraph}>Hi {name},</Text>
           <Text style={paragraph}>
-            Thanks to contacting me to be part of you're future project,
+            Thanks for contacting me about your future project,
             concerning {service}.
           </Text>
           <Hr style={hr} />

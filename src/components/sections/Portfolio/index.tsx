@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, IconButton } from "@chakra-ui/react";
 import { LuBot, LuBarChart3, LuUnlock, LuX } from "react-icons/lu";
 
-import Project from "@/interfaces/project";
-import { getProjects } from "@/firebase/store/project";
-import { byMostRecent } from "@/utils/project";
+import { useProjects } from "@/hooks/queries/portfolio";
 import { useLangContext } from "@/contexts/LangContext";
 import { useRecruiterAccess } from "@/contexts/RecruiterAccessContext";
 import { toast } from "@/components/ui/Toaster";
@@ -27,8 +25,6 @@ const KINDS = [
 const Portfolio = () => {
   const [kind, setKind] = useState<string>("");
   const [category, setCategory] = useState<string>("");
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [dashboardOpen, setDashboardOpen] = useState(false);
   const [editingNotes, setEditingNotes] = useState(false);
 
@@ -36,23 +32,14 @@ const Portfolio = () => {
   const { request, adminCode, setAdminCode, vaultCode, ready, leave } = useRecruiterAccess();
   const { getTranslation } = useLangContext();
 
-  const refreshProjects = async (isClick: boolean) => {
-    setLoading(true);
-    setProjects((await getProjects(vaultCode)).sort(byMostRecent));
+  const { data: projects = [], isPending, isFetching, refetch } = useProjects(vaultCode, ready);
 
-    if (isClick) {
-      toast.success(getTranslation("portfolio--refresh-success"));
-    }
-    setLoading(false);
+  const refreshProjects = async () => {
+    await refetch();
+    toast.success(getTranslation("portfolio--refresh-success"));
   };
 
-  useEffect(() => {
-    if (ready) refreshProjects(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, vaultCode]);
-
   const categories = [...new Set(projects.map((project) => project.category))];
-  // Never shown to blocked channels (e.g. Discord): not even the existence of an access
   return (
     <>
       {editingNotes && adminCode && (
@@ -73,7 +60,7 @@ const Portfolio = () => {
         filters={categories}
         selectedFilter={category}
         onFilterChange={setCategory}
-        loading={loading}
+        loading={isPending || (isFetching && projects.length === 0)}
         items={projects.filter(
           (p) => (kind === "" || p.kind === kind) && (category === "" || p.category === category)
         )}
@@ -125,21 +112,20 @@ const Portfolio = () => {
           </>
         }
         getKey={(project) => project.id ?? project.name}
-        onRefresh={() => refreshProjects(true)}
+        onRefresh={refreshProjects}
         renderItem={(project) => (
-          <ProjectCard project={project} vaultCode={adminCode} refresh={() => refreshProjects(false)} />
+          <ProjectCard project={project} vaultCode={adminCode} />
         )}
         renderFeatured={(project) => (
           <ProjectCard
             project={project}
             vaultCode={adminCode}
             variant="featured"
-            refresh={() => refreshProjects(false)}
           />
         )}
         columns={{ base: 1, md: 2, xl: 3 }}
         renderAddModal={(close) => (
-          <ProjectFormModal vaultCode={adminCode} onClose={close} refresh={() => refreshProjects(false)} />
+          <ProjectFormModal vaultCode={adminCode} onClose={close} />
         )}
       />
     </>

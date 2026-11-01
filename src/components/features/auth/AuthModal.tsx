@@ -10,23 +10,27 @@ import Modal from "@/components/ui/Modal";
 import FormField, { fieldStyles } from "@/components/ui/FormField";
 import { toast } from "@/components/ui/Toaster";
 
+const rememberedEmail = () => {
+  try {
+    return localStorage.getItem("remember") ? localStorage.getItem("email") || "" : null;
+  } catch {
+    return null;
+  }
+};
+
 const AuthModal = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
-  const [email, setEmail] = useState("");
+  // "Remember me" only keeps the e-mail (read once, the modal mounts client-side)
+  const [email, setEmail] = useState(() => (rememberedEmail() ?? ""));
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [remember, setRemember] = useState(false);
+  const [remember, setRemember] = useState(() => rememberedEmail() !== null);
 
   const { getTranslation } = useLangContext();
 
   useEffect(() => {
     // Passwords used to be remembered in clear text: drop any leftover
     localStorage.removeItem("password");
-
-    if (localStorage.getItem("remember")) {
-      setEmail(localStorage.getItem("email") || "");
-      setRemember(true);
-    }
   }, []);
 
   const login = async (e: React.FormEvent<HTMLFormElement>) => {

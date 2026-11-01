@@ -1,23 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, Flex, HStack, IconButton, Input, Stack, Tabs, Text } from "@chakra-ui/react";
 import { LuChevronDown, LuCopy, LuEye, LuMessageCircle, LuPlus } from "react-icons/lu";
 
+import { AccessRequest, AccessSettings, AccessStatus, randomToken } from "@/firebase/store/access";
 import {
-  AccessEvent,
-  AccessRequest,
-  AccessSettings,
-  AccessStatus,
-  getAccessEvents,
-  getAccessRequests,
-  getAccessSettings,
-  getTraffic,
-  randomToken,
-  setAccessSettings,
-  setRequestStatus,
-  TrafficEvent,
-} from "@/firebase/store/access";
+  useAccessEvents,
+  useAccessRequests,
+  useAccessSettings,
+  useSaveAccessSettings,
+  useSetRequestStatus,
+  useTraffic,
+} from "@/hooks/queries/access";
 import { changeVaultCode } from "@/firebase/store/project";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
@@ -44,19 +39,17 @@ const DEFAULT_CHANNELS = ["linkedin", "github", "discord", "cv", "email", "malt"
 const trackingLink = (channel: string) => `${window.location.origin}/?ref=${encodeURIComponent(channel)}`;
 
 // One request and, on demand, the recruiter's activity
-const RequestRow = ({ request, onChanged }: { request: AccessRequest; onChanged: () => void }) => {
+const RequestRow = ({ request }: { request: AccessRequest }) => {
   const [open, setOpen] = useState(false);
-  const [events, setEvents] = useState<AccessEvent[] | null>(null);
+  // Activity is only fetched once the row is expanded
+  const { data: events, isError } = useAccessEvents(request.uid, open);
+  const updateStatus = useSetRequestStatus();
 
-  useEffect(() => {
-    if (open && !events) getAccessEvents(request.uid).then(setEvents).catch(() => setEvents([]));
-  }, [open, events, request.uid]);
-
-  const setStatus = async (status: AccessStatus) => {
-    await setRequestStatus(request.uid, status);
-    toast.success(status === "approved" ? "Access granted" : "Access refused");
-    onChanged();
-  };
+  const setStatus = (status: AccessStatus) =>
+    updateStatus.mutate(
+      { uid: request.uid, status },
+      { onSuccess: () => toast.success(status === "approved" ? "Access granted" : "Access refused") }
+    );
 
   const style = STATUS_STYLE[request.status];
   const who = [request.name, request.company].filter(Boolean).join(" · ");
@@ -93,9 +86,9 @@ const RequestRow = ({ request, onChanged }: { request: AccessRequest; onChanged:
 
       {open && (
         <Box borderTopWidth="1px" borderColor="line" p="3">
-          {!events ? (
+          {!events && !isError ? (
             <Loader py="4" />
-          ) : events.length === 0 ? (
+          ) : !events?.length ? (
             <Text color="muted" fontSize="sm">
               No activity yet.
             </Text>
@@ -134,26 +127,21 @@ const RequestRow = ({ request, onChanged }: { request: AccessRequest; onChanged:
 };
 
 const RequestsTab = () => {
-  const [requests, setRequests] = useState<AccessRequest[] | null>(null);
-  const load = () => getAccessRequests().then(setRequests).catch(() => setRequests([]));
+  const { data: requests, isError } = useAccessRequests();
 
-  useEffect(() => {
-    load();
-  }, []);
-
-  if (!requests) return <Loader py="6" />;
+  if (!requests && !isError) return <Loader py="6" />;
 
   return (
     <Stack gap="3">
       <Text color="muted" fontSize="sm">
         Recruiters ask for access with a verified e-mail. You get an e-mail for each new request.
       </Text>
-      {requests.length === 0 ? (
+      {!requests?.length ? (
         <Text color="muted" fontSize="sm">
           No request yet.
         </Text>
       ) : (
-        requests.map((request) => <RequestRow key={request.uid} request={request} onChanged={load} />)
+        requests.map((request) => <RequestRow key={request.uid} request={request} />)
       )}
     </Stack>
   );
@@ -162,16 +150,17 @@ const RequestsTab = () => {
 type Policy = "auto" | "manual" | "blocked";
 
 const ChannelsTab = () => {
-  const [settings, setSettings] = useState<AccessSettings | null>(null);
+  const { data, isError } = useAccessSettings();
+  if (!data && !isError) return <Loader py="6" />;
+  return <ChannelsForm initial={data ?? { autoApprove: [], blocked: [] }} />;
+};
+
+// Mounted once the settings are loaded, so the choices start from them
+const ChannelsForm = ({ initial }: { initial: AccessSettings }) => {
+  const [settings, setSettings] = useState(initial);
   const [extra, setExtra] = useState<string[]>([]);
   const [newChannel, setNewChannel] = useState("");
-  const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    getAccessSettings().then(setSettings);
-  }, []);
-
-  if (!settings) return <Loader py="6" />;
+  const saveSettings = useSaveAccessSettings();
 
   const channels = [...new Set([...DEFAULT_CHANNELS, ...settings.autoApprove, ...settings.blocked, ...extra])];
   const policy = (channel: string): Policy =>
@@ -191,12 +180,7 @@ const ChannelsTab = () => {
     setNewChannel("");
   };
 
-  const save = async () => {
-    setSaving(true);
-    await setAccessSettings(settings);
-    toast.success("Channels saved");
-    setSaving(false);
-  };
+  const save = () => saveSettings.mutate(settings, { onSuccess: () => toast.success("Channels saved") });
 
   return (
     <Stack gap="4">
@@ -261,7 +245,7 @@ const ChannelsTab = () => {
         </Button>
       </Flex>
       <Box>
-        <Button loading={saving} onClick={save}>
+        <Button loading={saveSettings.isPending} onClick={save}>
           Save
         </Button>
       </Box>
@@ -270,13 +254,9 @@ const ChannelsTab = () => {
 };
 
 const TrafficTab = () => {
-  const [events, setEvents] = useState<TrafficEvent[] | null>(null);
+  const { data: events = [], isPending } = useTraffic(30);
 
-  useEffect(() => {
-    getTraffic(30).then(setEvents).catch(() => setEvents([]));
-  }, []);
-
-  if (!events) return <Loader py="6" />;
+  if (isPending) return <Loader py="6" />;
 
   const bySource = Object.entries(
     events.reduce<Record<string, number>>((acc, e) => ({ ...acc, [e.source]: (acc[e.source] ?? 0) + 1 }), {})

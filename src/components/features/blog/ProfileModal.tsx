@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "@chakra-ui/react";
 
 import Profile from "@/interfaces/profile";
-import { createProfile, getProfileFromId, updateProfile } from "@/firebase/store/profile";
+import { createProfile, updateProfile } from "@/firebase/store/profile";
+import { useInvalidateProfile } from "@/hooks/queries/blog";
 import { uploadFile } from "@/firebase/storage";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLangContext } from "@/contexts/LangContext";
@@ -16,24 +17,19 @@ import { toast } from "@/components/ui/Toaster";
 const ProfileModal = ({
   mode,
   profile,
-  setProfile,
   onClose,
 }: {
   mode: "create" | "edit";
   profile?: Profile | null;
-  setProfile: (profile: any) => void;
   onClose: () => void;
 }) => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(profile?.username ?? "");
   const [picture, setPicture] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   const { user } = useAuthContext();
+  const refreshProfile = useInvalidateProfile();
   const { getTranslation } = useLangContext();
-
-  useEffect(() => {
-    if (profile) setUsername(profile.username);
-  }, [profile]);
 
   const picturePathFor = (id: string, file: File) => `profiles/${id}.${file.name.split(".").pop()}`;
 
@@ -60,7 +56,7 @@ const ProfileModal = ({
         email: user.email || "",
       });
 
-      setProfile(await getProfileFromId(user.uid));
+      await refreshProfile(user.uid);
       toast.success(getTranslation("profilm--create-success"));
     } catch (error) {
       toast.error(getTranslation("profilm--create-error"));
@@ -89,7 +85,7 @@ const ProfileModal = ({
         email: profile.email || "",
       });
 
-      setProfile(await getProfileFromId(user?.uid || ""));
+      if (user) await refreshProfile(user.uid);
       toast.success(getTranslation("profilm--edit-success"));
       onClose();
     } catch (error) {
