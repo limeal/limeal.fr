@@ -950,5 +950,75 @@
         "fr": "Ce lien est invalide ou expiré. Faites une nouvelle demande.",
         "es": "Este enlace no es válido o ha caducado. Solicite uno nuevo.",
         "kr": "링크가 유효하지 않거나 만료되었습니다. 다시 요청하세요."
+    },
+    {
+        "id": "tabs--articles",
+        "en": "Articles",
+        "fr": "Articles",
+        "es": "Artículos",
+        "kr": "아티클"
+    },
+    {
+        "id": "posts--eyebrow",
+        "en": "Writing",
+        "fr": "Écrits",
+        "es": "Escritos",
+        "kr": "글"
+    },
+    {
+        "id": "posts--description",
+        "en": "Notes on building software products: engineering, product, and developing with AI.",
+        "fr": "Notes sur la construction de produits logiciels : ingénierie, produit et développement avec l’IA.",
+        "es": "Notas sobre la construcción de productos de software: ingeniería, producto y desarrollo con IA.",
+        "kr": "소프트웨어 제품을 만드는 일에 대한 기록: 엔지니어링, 프로덕트, 그리고 AI와 함께하는 개발."
+    },
+    {
+        "id": "posts--min-read",
+        "en": "min read",
+        "fr": "min de lecture",
+        "es": "min de lectura",
+        "kr": "분 분량"
+    },
+    {
+        "id": "posts--updated",
+        "en": "Updated",
+        "fr": "Mis à jour le",
+        "es": "Actualizado el",
+        "kr": "업데이트"
+    },
+    {
+        "id": "posts--back",
+        "en": "All articles",
+        "fr": "Tous les articles",
+        "es": "Todos los artículos",
+        "kr": "모든 아티클"
+    },
+    {
+        "id": "posts--translated",
+        "en": "This article was translated automatically.",
+        "fr": "Cet article a été traduit automatiquement.",
+        "es": "Este artículo se tradujo automáticamente.",
+        "kr": "이 글은 자동으로 번역되었습니다."
+    },
+    {
+        "id": "posts--original",
+        "en": "Read the original",
+        "fr": "Lire la version originale",
+        "es": "Leer el original",
+        "kr": "원문 읽기"
+    },
+    {
+        "id": "posts--rss",
+        "en": "Subscribe (RSS)",
+        "fr": "S’abonner (RSS)",
+        "es": "Suscribirse (RSS)",
+        "kr": "구독하기 (RSS)"
+    },
+    {
+        "id": "posts--follow",
+        "en": "Want the next ones?",
+        "fr": "Envie de lire les suivants ?",
+        "es": "¿Quieres leer los próximos?",
+        "kr": "다음 글도 읽고 싶으신가요?"
     }
 ]

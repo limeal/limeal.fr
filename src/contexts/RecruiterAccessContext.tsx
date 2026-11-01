@@ -114,13 +114,15 @@ const trafficSource = (url: URL) => {
 };
 
 export const RecruiterAccessProvider = ({ children }: { children: React.ReactNode }) => {
-  // This provider only renders in the browser (under the auth splash screen),
-  // so the URL and storage can be read while initialising state
-  const [channel] = useState(detectChannel);
+  // Also rendered on the server, where there is no URL or storage
+  const onServer = typeof window === "undefined";
+  const [channel] = useState(() => (onServer ? "" : detectChannel()));
   // Back from an access e-mail: not ready until the sign-in link is processed
-  const [ready, setReady] = useState(() => !isAccessLink(window.location.href));
+  const [linkHandled, setReady] = useState(() => onServer || !isAccessLink(window.location.href));
 
-  const { user } = useAuthContext();
+  const { user, resolved } = useAuthContext();
+  // Nothing is known about the visitor before the auth state
+  const ready = linkHandled && resolved;
   const isAdmin = useIsAdmin();
   const { getTranslation } = useLangContext();
   const queryClient = useQueryClient();

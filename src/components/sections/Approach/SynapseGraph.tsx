@@ -21,9 +21,13 @@ export const groupColor: Record<MindGroup, string> = {
 
 type Point = { x: number; y: number };
 
+// Math.cos / Math.sin may differ in the last digit between Node and the
+// browser: rounded, the server-rendered svg matches the hydrated one
+const round = (n: number) => Math.round(n * 100) / 100;
+
 const position = (node: MindNode): Point => {
   const rad = (node.angle * Math.PI) / 180;
-  return { x: CORE.x + RX * Math.cos(rad), y: CORE.y - RY * Math.sin(rad) };
+  return { x: round(CORE.x + RX * Math.cos(rad)), y: round(CORE.y - RY * Math.sin(rad)) };
 };
 
 // Slightly bent link, like a dendrite rather than a ruler line
@@ -49,7 +53,10 @@ const neurons = (() => {
   return Array.from({ length: 34 }, () => {
     const angle = rand() * Math.PI * 2;
     const dist = 0.35 + rand() * 0.75;
-    const p = { x: CORE.x + Math.cos(angle) * (RX + 40) * dist, y: CORE.y + Math.sin(angle) * (RY + 40) * dist };
+    const p = {
+      x: round(CORE.x + Math.cos(angle) * (RX + 40) * dist),
+      y: round(CORE.y + Math.sin(angle) * (RY + 40) * dist),
+    };
     const nearest = anchors.reduce((best, a) =>
       Math.hypot(a.x - p.x, a.y - p.y) < Math.hypot(best.x - p.x, best.y - p.y) ? a : best
     );

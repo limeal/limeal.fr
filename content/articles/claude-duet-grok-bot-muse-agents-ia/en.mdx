@@ -1,0 +1,194 @@
+---
+title: "Claude Duet, Grok Bot, Muse: the end of micromanagement"
+description: "Grok Bot, Muse, Dots, Claude Duet: AI is turning into always-on agents. My take as a developer: we're moving from human in the loop to human on the loop."
+date: 2026-11-02
+tags: [agents-ia, claude, human-on-the-loop]
+cover: /images/articles/claude-duet-grok-bot-muse-agents-ia/cover.svg
+translatedFrom: fr
+sourceHash: 54d0d63c1533
+---
+
+In ten weeks, xAI, Meta, OpenAI and Anthropic all shipped the same thing: an always-on
+AI agent that works in the background on its own computer and comes back to you when it
+needs a decision. To me, this isn't a new chatbot feature, it's a real change of method:
+we stop micromanaging AI, we give it a frame and we judge its work.
+
+Let me say it right away: I haven't tested any of these products. What I have done is
+build an agent at work that already does part of what they promise, and that's where I'm
+writing from.
+
+## What came out this fall
+
+![Launch timeline: Grok Bot on August 11, Muse on September 8, Dots on September 29 and Claude Duet on October 21, 2026](/images/articles/claude-duet-grok-bot-muse-agents-ia/timeline.svg)
+
+| | Released | The idea | Access |
+| --- | --- | --- | --- |
+| [Grok Bot](https://x.ai/news/introducing-grok-bot) (xAI) | August 11, 2026, beta | A team of always-on agents that share a cloud computer and coordinate in group chats | Paid xAI and Cursor subscriptions (at launch) |
+| [Muse](https://techcrunch.com/2026/09/25/meta-is-putting-its-muscle-behind-muse-as-the-ai-app-takes-off/) (Meta) | September 8, 2026 | A consumer personal agent: video avatar, dedicated email address, Mac control announced in late September | United States and Canada |
+| [Dots](https://siliconangle.com/2026/09/29/openai-launches-dots-always-on-ai-agents-in-chatgpt-with-their-own-cloud-computers/) (OpenAI) | September 29, 2026 | Agents in ChatGPT that pursue a goal without step-by-step guidance, each on its own cloud computer | ChatGPT Pro and Business Premium |
+| [Claude Duet](https://claude.com/product/claude-duet) (Anthropic) | October 21, 2026, research preview | A brief in the morning, then silence until it needs you | Waitlist, US subscribers |
+
+And people are following. Muse passed 3.4 million downloads in under three weeks
+(according to Sensor Tower, cited by
+[TechCrunch](https://techcrunch.com/2026/09/25/meta-is-putting-its-muscle-behind-muse-as-the-ai-app-takes-off/)).
+A quick point of comparison: over its first days, its downloads grew 55% on average from
+one day to the next, versus 24% for ChatGPT at launch.
+
+![Average day-over-day download growth: 55% for Muse from September 8 to 17, 2026, 24% for ChatGPT over its first ten days](/images/articles/claude-duet-grok-bot-muse-agents-ia/muse-growth.svg)
+
+In France, though, we're watching all this from afar: Muse is limited to the United
+States and Canada, Claude Duet to US subscribers, and the Dots Pro plan excludes the
+European Economic Area.
+
+## From human in the loop to human on the loop
+
+To place the human relative to agents, I'm using the three positions described by Kief
+Morris (Thoughtworks) in
+[Humans and Agents in Software Engineering Loops](https://www.martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html),
+published in March 2026 on Martin Fowler's site:
+
+- **In the loop**: the human controls things inside the loop, for example by checking
+  every generated line, and fixes the result directly. That's micromanagement.
+- **On the loop**: the human builds and runs the loop, meaning the harness (specs,
+  quality checks, guidance). When the result isn't right, they change the harness that
+  produced it. As Morris puts it: "Rather than personally inspecting what the agents
+  produce, we can make them better at producing it."
+- **Outside the loop**: the human only keeps the "why" and leaves all of the "how" to
+  the agents. That's vibe coding.
+
+![Three diagrams: in the loop, the human checks every output of the agent; on the loop, they run the harness around the loop; outside the loop, they only set the goal](/images/articles/claude-duet-grok-bot-muse-agents-ia/loops.svg)
+
+With the first assistants, we were in the loop. We split up the task, guided every step,
+reread every line produced. AI was a tool we held by the hand.
+
+With this year's models, we've entered the agentic era, and in the end almost every need
+we had can be turned into an agent. The method changes completely:
+
+1. we define the need together;
+2. the developer sets the frame;
+3. the AI does the rest;
+4. the developer checks the result and gives feedback, no longer on the code, but ABOVE
+   ALL on the thinking: the analysis and the implementation the AI chose.
+
+That's the shift to human on the loop: the human no longer does the work, they build the
+frame it happens in, and they stay in control at the moments that matter.
+
+The four products don't put the human in the same place, by the way. Claude Duet keeps
+an approval step on sensitive actions (it asks before sending a message or paying).
+Grok Bot goes much further: its agents split the work among themselves and only come to
+you for judgment calls.
+
+## Blue, my agent at work
+
+I didn't wait for these products. At work, I use an agent I named Blue, which helps me
+with tickets every day. It's actually a whole team of sub-agents:
+
+- **PR Babysitter** watches my pull requests: it checks the content, talks with
+  CodeRabbit (the AI code review tool) and gives me its feedback;
+- one agent takes simple tickets and handles them from A to Z, all the way to opening a
+  draft PR: all that's left for me is the final review;
+- one agent gives me a briefing in the morning, and another in the evening;
+- one agent helps me write documentation, especially to explain the need in more detail;
+- one agent pulls information from Slack when a message concerns me.
+
+![Diagram of Blue: Paul sets the harness and reviews; Blue coordinates five sub-agents, PR Babysitter (which talks with CodeRabbit), Tickets, Briefing, Docs and Slack](/images/articles/claude-duet-grok-bot-muse-agents-ia/blue.svg)
+
+Why Blue? Simply because I wanted a color name, and blue is the professional one. Its
+personal counterpart, which I'm going to build, will be called Yellow.
+
+I'll be honest: Blue wasn't good on the first try. I had to give it quite a lot of
+feedback on how it worked, and what I refined wasn't Blue itself, it was its harness, in
+other words the frame it works in. Once the harness is clean, the results follow.
+
+When I started this article, I thought I was behind, still human in the loop. Rereading
+these definitions, I realize I've already partly moved past it: when Blue gets it wrong,
+I fix its harness, not its code. That's human on the loop, with a final approval step
+I'm deliberately keeping (the draft PR).
+
+The next step is the agent swarm: several agents that talk to each other, split the work
+and only come back to the human to decide. Grok Bot already does it in group chats, and
+all the big labs (Anthropic, OpenAI, xAI, Meta) now have their own always-on agent. It's
+a vision I haven't fully grasped yet, and I fully intend to take a closer look, because
+I'm convinced it's going to lead to something huge.
+
+Today, I see three groups:
+
+- a very small minority of people far ahead, already at the swarm stage, like the labs
+  themselves;
+- people like me, along with startups, SaaS companies and advanced tech teams, moving
+  from human in the loop to human on the loop;
+- and lots of developers still in the loop, whom I'm starting to see move with these new
+  agents.
+
+Everything is speeding up. Every year brings its own paradigm shift.
+
+## The developer's new role
+
+If AI writes the code, the developer's work moves to two places.
+
+**Before: the frame.** What the agent is allowed to do, where it looks for information,
+how it should source it, what a clean result should look like. That's the harness, the
+heart of human on the loop. A good harness looks like a good spec.
+
+**After: discernment.** Reviewing not line by line, but the approach: does the analysis
+hold up, is the chosen approach the right one, does it fit with the rest? My feedback to
+Blue is about that, and rarely about a line of code.
+
+## Why I'm still wary
+
+I'm enthusiastic, but not naive. My wariness comes down to two words: the frame and the
+safety net.
+
+**Without a frame, the agent overflows.** With a poorly built harness, an agent can go
+searching far beyond its context, dig up information about someone's private life and
+cross-reference it. If it isn't controlled and there's no safety net, things get
+complicated fast.
+
+And this isn't theoretical, not at all. The day before Dots launched, OpenAI decided not
+to release a new model, GPT-6.1 Astra: according to its head of safety systems, it didn't
+stay well enough within its scope and authorization. The same day, the company
+apologized for an incident from June: internal agents, running a model that wasn't meant
+to ship, had accessed nonpublic information on an Australian government website
+([NBC News](https://www.nbcnews.com/tech/tech-news/openai-launches-dots-ai-agents-safety-questions-rcna600338)).
+
+On the privacy side, Muse has already had two alerts. Two weeks after its launch, Amazon
+blocked it on its site, criticizing in particular that the agent browsed without
+identifying itself
+([SiliconANGLE](https://siliconangle.com/2026/09/21/amazon-blocks-metas-muse-agent-from-shopping-on-users-behalf/)).
+Then in October, researchers found around 6,800 links to shared conversations, and Meta
+suspended the feature on October 20
+([eWeek](https://www.eweek.com/news/meta-muse-chat-exposure/)).
+
+**Even with a frame, there will be silent errors.** Explaining clearly to the agent how
+to source information and what a clean result should look like reduces the risk, but
+doesn't remove it. The vendors admit it themselves: Anthropic writes that Claude Duet
+[may misread a thread or miscalibrate what's urgent](https://claude.com/product/claude-duet).
+
+These errors can be brought down to a minimal level, and in many fields, a small error
+isn't a big deal. As a developer, what's a small error? It's a bug that someone notices
+and fixes. In journalism, on the other hand, AI can't handle everything: facts will
+always need checking.
+
+Either way, you need an outside look at the analysis. Whether the human is *in* or *on*
+the loop doesn't matter, as long as someone is there to check. The day there's no one
+left, we enter a bubble where we accept silent errors.
+
+## Where to start?
+
+No need to wait for Duet or Dots to arrive in France to change your method. If you want
+an always-on agent right now,
+[Hermes Agent](https://portal.nousresearch.com/cloud), from Nous Research, is open source
+and self-hosted. But either way, the method matters more than the tool:
+
+1. **Pick a repetitive, well-bounded task**, like a morning briefing or watching your
+   PRs.
+2. **Write the frame before launching anything**: what the agent can access, how it
+   sources, what a good result looks like.
+3. **Keep an approval step at the end**, like a draft PR that you review.
+4. **Fix the harness, not the result.** When the agent gets it wrong, ask yourself what
+   was missing from the frame.
+
+Only then should you widen the scope.
+
+And that's it for this first article! Next time, I'll tell you about Yellow, my personal
+agent. Stay tuned.

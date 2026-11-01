@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" role="img" aria-labelledby="t d">
+  <title id="t">Blue and its sub-agents</title>
+  <desc id="d">Paul sets Blue's harness and reviews its work. Blue coordinates five sub-agents: PR Babysitter (which talks with CodeRabbit), tickets to draft pull requests, morning and evening briefings, documentation, and Slack.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="rgba(255,255,255,0.45)"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: Satoshi, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+    .pill { fill: #ffffff; font-size: 14px; font-weight: 700; }
+    .sub { fill: rgba(255,255,255,0.6); font-size: 12px; }
+    .edge { fill: rgba(255,255,255,0.6); font-size: 12px; font-style: italic; }
+    .hub { fill: #ffffff; font-size: 22px; font-weight: 900; letter-spacing: 0.04em; }
+    .human { fill: #111013; font-size: 15px; font-weight: 800; }
+  </style>
+  <rect width="800" height="420" rx="16" fill="#111013"/>
+
+  <!-- Paul ↔ Blue -->
+  <rect x="350" y="24" width="100" height="40" rx="20" fill="#fbd52b"/>
+  <text class="human" x="400" y="49" text-anchor="middle">Paul</text>
+  <line x1="385" y1="70" x2="385" y2="128" stroke="rgba(255,255,255,0.45)" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="415" y1="128" x2="415" y2="70" stroke="rgba(255,255,255,0.45)" stroke-width="2" marker-end="url(#arrow)"/>
+  <text class="edge" x="375" y="104" text-anchor="end">harness</text>
+  <text class="edge" x="425" y="104">review</text>
+
+  <!-- Blue -->
+  <rect x="330" y="136" width="140" height="56" rx="28" fill="#1d2a44" stroke="#4d8dff" stroke-width="2"/>
+  <text class="hub" x="400" y="172" text-anchor="middle">Blue</text>
+
+  <!-- Links to sub-agents -->
+  <g stroke="rgba(255,255,255,0.2)" stroke-width="2" fill="none">
+    <path d="M360 192 C300 240 120 250 90 290"/>
+    <path d="M380 192 C350 240 250 260 245 290"/>
+    <path d="M400 192 V290"/>
+    <path d="M420 192 C450 240 550 260 555 290"/>
+    <path d="M440 192 C500 240 680 250 710 290"/>
+  </g>
+
+  <!-- Sub-agents -->
+  <g fill="#1d1c1f" stroke="rgba(255,255,255,0.15)" stroke-width="1">
+    <rect x="20" y="290" width="140" height="56" rx="14"/>
+    <rect x="175" y="290" width="140" height="56" rx="14"/>
+    <rect x="330" y="290" width="140" height="56" rx="14"/>
+    <rect x="485" y="290" width="140" height="56" rx="14"/>
+    <rect x="640" y="290" width="140" height="56" rx="14"/>
+  </g>
+  <g text-anchor="middle">
+    <text class="pill" x="90" y="314">PR Babysitter</text>
+    <text class="sub" x="90" y="333">PR review</text>
+    <text class="pill" x="245" y="314">Tickets</text>
+    <text class="sub" x="245" y="333">A → Z, draft PR</text>
+    <text class="pill" x="400" y="314">Briefing</text>
+    <text class="sub" x="400" y="333">AM · PM</text>
+    <text class="pill" x="555" y="314">Docs</text>
+    <text class="sub" x="555" y="333">needs, specs</text>
+    <text class="pill" x="710" y="314">Slack</text>
+    <text class="sub" x="710" y="333">messages</text>
+  </g>
+
+  <!-- PR Babysitter ↔ CodeRabbit -->
+  <line x1="90" y1="352" x2="90" y2="372" stroke="rgba(255,255,255,0.45)" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <rect x="35" y="378" width="110" height="30" rx="15" fill="none" stroke="#ff007f" stroke-width="1.5"/>
+  <text class="sub" x="90" y="398" text-anchor="middle" style="fill:#ffffff">CodeRabbit</text>
+</svg>

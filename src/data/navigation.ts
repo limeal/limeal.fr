@@ -9,6 +9,7 @@ export const homeLinks: NavLink[] = [
   { href: "#skills", tid: "tabs--skills" },
   { href: "#approach", tid: "tabs--approach" },
   { href: "#portfolio", tid: "tabs--portfolio" },
+  { href: "#articles", tid: "tabs--articles" },
 ];
 
 export const socials = {

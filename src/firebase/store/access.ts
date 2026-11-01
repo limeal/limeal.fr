@@ -42,7 +42,8 @@ const PENDING_KEY = "access-request";
 type PendingRequest = { email: string; name: string; company: string; ref: string };
 
 const requestDoc = (uid: string) => doc(firestore, "access_requests", uid);
-const settingsDoc = doc(firestore, "settings", "access");
+// A function, like the other refs: never built while the module loads (also on the server)
+const settingsDoc = () => doc(firestore, "settings", "access");
 
 const toDate = (value: unknown) => (value instanceof Timestamp ? value.toDate() : null);
 
@@ -67,7 +68,7 @@ export interface AccessSettings {
 }
 
 export const getAccessSettings = async (): Promise<AccessSettings> => {
-    const snapshot = await getDoc(settingsDoc).catch(() => null);
+    const snapshot = await getDoc(settingsDoc()).catch(() => null);
     const data = snapshot?.data();
     return { autoApprove: data?.autoApprove ?? [], blocked: data?.blocked ?? [] };
 };
@@ -154,7 +155,7 @@ export const getAccessRequests = async (): Promise<AccessRequest[]> => {
 
 export const setRequestStatus = (uid: string, status: AccessStatus) => updateDoc(requestDoc(uid), { status });
 
-export const setAccessSettings = (settings: AccessSettings) => setDoc(settingsDoc, settings);
+export const setAccessSettings = (settings: AccessSettings) => setDoc(settingsDoc(), settings);
 
 export const getAccessEvents = async (uid: string): Promise<AccessEvent[]> => {
     const docs = await getDocs(query(collection(requestDoc(uid), "events"), orderBy("at", "desc"), limit(200)));

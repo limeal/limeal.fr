@@ -48,7 +48,8 @@ export default async function RootLayout({
   const brand = brandFor((await headers()).get("host"));
 
   return (
-    <html lang="en" className={`${satoshi.variable} dark`} suppressHydrationWarning>
+    // data-scroll-behavior: Next turns the smooth scrolling off during route changes
+    <html lang="en" className={`${satoshi.variable} dark`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         {/* Chakra's cascade layers, declared before any style. The first mention
             of a layer fixes its priority: if Emotion injects a component style

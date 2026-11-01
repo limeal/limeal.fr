@@ -72,16 +72,21 @@ export const Button = ({
     ...rest,
   };
 
+  // Outside the app (another site, a feed): a plain link in a new tab
+  if (href && external) {
+    return (
+      <ChakraButton asChild {...shared}>
+        <a href={href} target="_blank" rel="noreferrer">
+          {content}
+        </a>
+      </ChakraButton>
+    );
+  }
+
   if (href) {
     return (
       <ChakraButton asChild {...shared}>
-        <NextLink
-          href={href}
-          target={external ? "_blank" : undefined}
-          rel={external ? "noreferrer" : undefined}
-        >
-          {content}
-        </NextLink>
+        <NextLink href={href}>{content}</NextLink>
       </ChakraButton>
     );
   }

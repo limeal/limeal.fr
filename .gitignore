@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+/.pnpm-store/
 
 .env
 package-lock.json
@@ -12,9 +13,10 @@ pnpm-lock.yaml
 # testing
 /coverage
 
-# next.js
-/.next/
-/.next-check/
+# next.js (every build dir: .next, .next-check…)
+/.next*/
+# Re-created by `next dev` on every start
+AGENTS.md
 /out/
 
 # production

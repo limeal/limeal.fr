@@ -17,7 +17,7 @@ import ProfileModal from "@/components/features/blog/ProfileModal";
 
 const Page = () => {
   const router = useRouter();
-  const { user } = useAuthContext();
+  const { user, resolved } = useAuthContext();
   const { isRecruiter } = useRecruiterAccess();
 
   const { data: profile, isPending: profileLoading } = useProfile(user?.uid);
@@ -28,8 +28,11 @@ const Page = () => {
 
   useEffect(() => {
     // Recruiter accounts only exist for the portfolio
-    if (user == null || isRecruiter) router.push("/");
-  }, [user, isRecruiter, router]);
+    if (resolved && (user == null || isRecruiter)) router.push("/");
+  }, [resolved, user, isRecruiter, router]);
+
+  // The splash screen covers the page until the auth state is known
+  if (!resolved) return null;
 
   if (!user) return <Error statusCode={401} title="Unauthorized. Redirecting..." />;
 

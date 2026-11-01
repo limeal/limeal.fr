@@ -20,25 +20,46 @@ export const LangContext = React.createContext({
 
 export const useLangContext = () => React.useContext(LangContext);
 
+const LANG_EVENT = "lang-change";
+
+// Choice of this tab, for browsers refusing storage
+let chosen: string | null = null;
+
+const readLang = () => {
+  try {
+    return chosen ?? localStorage.getItem("lang") ?? "en";
+  } catch {
+    return chosen ?? "en";
+  }
+};
+
+const subscribe = (onChange: () => void) => {
+  window.addEventListener(LANG_EVENT, onChange);
+  return () => window.removeEventListener(LANG_EVENT, onChange);
+};
+
+// Calls `listener` with each language picked from now on
+export const onLangChange = (listener: (lang: string) => void) => {
+  const handler = (e: Event) => listener((e as CustomEvent<string>).detail);
+  window.addEventListener(LANG_EVENT, handler);
+  return () => window.removeEventListener(LANG_EVENT, handler);
+};
+
 export const LangContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  // Saved choice, read once. The server renders "en"; nothing it renders depends
-  // on the language (only the splash screen), so the client can differ.
-  const [lang, setLang] = React.useState<string>(() => {
-    if (typeof window === "undefined") return "en";
-    try {
-      return localStorage.getItem("lang") || "en";
-    } catch {
-      return "en";
-    }
-  });
+  // The server renders "en", and so does hydration; the saved choice is
+  // applied right after (under the splash screen)
+  const lang = React.useSyncExternalStore(subscribe, readLang, () => "en");
 
   const updateLang = useCallback((lang: string) => {
-    setLang(lang);
-    localStorage.setItem("lang", lang);
+    chosen = lang;
+    try {
+      localStorage.setItem("lang", lang);
+    } catch {}
+    window.dispatchEvent(new CustomEvent(LANG_EVENT, { detail: lang }));
   }, []);
 
   const getTranslation = useCallback((key: string) => {
