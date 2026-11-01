@@ -4,6 +4,7 @@ description: "Grok Bot, Muse, Dots, Claude Duet : les IA deviennent des agents t
 date: 2026-11-02
 tags: [agents-ia, claude, human-on-the-loop]
 cover: /images/articles/claude-duet-grok-bot-muse-agents-ia/cover.svg
+draft: true
 ---
 
 En dix semaines, xAI, Meta, OpenAI et Anthropic ont sorti la même chose : un agent IA
@@ -71,8 +72,9 @@ chaque besoin qu'on avait peut se traduire par un agent. La méthode change comp
 4. le développeur vérifie le résultat et fait ses retours, non plus sur le code, mais
    SURTOUT sur la réflexion : l'analyse et l'implémentation que l'IA a choisies.
 
-C'est ça, le passage au human on the loop : l'humain ne fait plus le travail, il
-construit le cadre dans lequel il se fait, et il garde la main aux moments qui comptent.
+C'est ça, le passage au human on the loop : l'humain ne fait plus tout lui-même. Il
+construit le cadre, il garde les décisions, et il reprend la main aux moments qui
+comptent.
 
 D'ailleurs, les quatre produits ne placent pas l'humain au même endroit. Claude Duet
 garde une validation sur les actions sensibles (il demande avant d'envoyer un message ou
@@ -82,17 +84,21 @@ eux et ne vous sollicitent que pour les arbitrages.
 ## Blue, mon agent au travail
 
 Je n'ai pas attendu ces produits. Au travail, j'utilise un agent que j'ai appelé Blue, qui
-m'assiste au quotidien sur les tickets. En réalité, c'est toute une équipe de
+m'épaule au quotidien sur les tickets. En réalité, c'est toute une équipe de
 sous-agents :
 
 - **PR Babysitter** surveille mes pull requests : il vérifie le contenu, échange avec
   CodeRabbit (l'outil de revue de code par IA) et me fait ses retours ;
-- un agent prend les tickets simples et les traite de A à Z, jusqu'à ouvrir une PR en
-  draft : il ne me reste que la revue finale ;
+- un agent prend les tickets simples (et je dis bien simples) et les traite de A à Z,
+  jusqu'à ouvrir une PR en draft, que je relis avant quoi que ce soit ;
 - un agent me fait un briefing le matin, et un autre le soir ;
 - un agent m'aide à écrire la documentation, notamment pour expliquer le besoin plus en
   détail ;
 - un agent récupère l'information sur Slack quand un message me concerne.
+
+Soyons clairs : Blue ne travaille pas à ma place. Les tickets complexes, l'architecture et
+les décisions, c'est toujours moi. Blue prend le répétitif et l'exploration, et ça me
+libère du temps pour ce qui demande vraiment de la réflexion.
 
 ![Schéma de Blue : Paul pose le harness et fait la revue ; Blue coordonne cinq sous-agents, PR Babysitter (qui échange avec CodeRabbit), Tickets, Briefing, Docs et Slack](/images/articles/claude-duet-grok-bot-muse-agents-ia/blue.svg)
 
@@ -115,6 +121,25 @@ déjà en conversation de groupe, et tous les grands labos (Anthropic, OpenAI, x
 ont maintenant leur agent toujours actif. C'est une vision que je n'ai pas encore
 totalement appréhendée, et je compte bien aller voir de plus près, parce que je suis
 convaincu que ça va donner quelque chose d'énorme.
+
+Alors, est-ce qu'on est prêts pour un essaim vraiment autonome ? Pour moi, pas encore,
+mais on s'en rapproche, et vite. Une expérience publiée en octobre 2026 par Y Combinator
+avec Olam Labs illustre très bien ce point
+([Agents in Games](https://labs.ycombinator.com/projects/games/index.html)). Ils ont
+lâché 50 agents pendant 3 heures dans Minecraft, avec un seul objectif : « construire une
+civilisation florissante ». Résultat : près de 5 900 messages échangés, et un leader qui
+a émergé tout seul (Ada, destinataire de 616 messages directs). Impressionnant ! Mais la
+colonie n'a jamais vraiment prospéré : 22 des 34 morts sont survenues dès la première
+nuit.
+
+Et dans les matchs qui opposent une équipe Claude à une équipe GPT, on retrouve
+exactement les failles dont je parle plus bas. L'équipe Claude ne change jamais de leader
+malgré les défaites, elle écrit ses leçons dans des fichiers mémoire… puis refait les
+mêmes erreurs, et plusieurs de ses agents se persuadent à tort qu'une action est
+impossible (là où GPT trouve un contournement).
+
+En clair : l'essaim sait déjà se coordonner, mais il ne sait pas encore bien se remettre
+en question. Et c'est justement là que l'humain on the loop reste indispensable.
 
 Aujourd'hui, je vois trois groupes :
 
@@ -139,6 +164,30 @@ spec.
 **Après : le discernement.** Relire, non pas ligne par ligne, mais la démarche : est-ce
 que l'analyse tient, est-ce que l'approche choisie est la bonne, est-ce que ça s'intègre
 au reste ? Mes retours à Blue portent sur ça, et rarement sur une ligne de code.
+
+## Et ce n'est pas propre au développement
+
+Ce passage du in au on the loop, je suis convaincu qu'il ne concerne pas que les
+développeurs. Prenons trois métiers.
+
+**Le marketing.** Un agent peut décliner une campagne en dizaines de variantes
+(accroches, visuels, formats par réseau). Mais le positionnement, la cible et le ton de
+la marque, c'est le marketeur qui les pose : c'est son harness. Et c'est encore lui qui
+valide avant que quoi que ce soit parte en ligne, parce qu'une erreur publiée, c'est
+l'image de la marque qui en prend un coup.
+
+**La vente.** L'agent peut préparer les rendez-vous, relancer les prospects, tenir le CRM
+à jour. Le commercial, lui, décide qui cibler et comment en parler, et garde ce qui ne se
+délègue pas : la relation, la négociation, la confiance. Personne n'a envie de signer
+avec quelqu'un qui n'a jamais vraiment compris son problème.
+
+**Le support client.** C'est peut-être l'exemple le plus parlant. Quand un agent répond
+mal à un client, corriger cette réponse-là, c'est du in the loop. Corriger la base de
+connaissances et les consignes qui l'ont produite, pour que ça ne se reproduise plus,
+c'est du on the loop. Exactement ce que je fais avec le harness de Blue.
+
+Dans les trois cas, le métier ne disparaît pas : il monte d'un étage. On passe moins de
+temps à exécuter, et beaucoup plus à poser le cadre et à juger le résultat.
 
 ## Pourquoi je reste méfiant
 

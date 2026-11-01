@@ -5,7 +5,7 @@ date: 2026-11-02
 tags: [agents-ia, claude, human-on-the-loop]
 cover: /images/articles/claude-duet-grok-bot-muse-agents-ia/cover.svg
 translatedFrom: fr
-sourceHash: 54d0d63c1533
+sourceHash: fe3e09878463
 ---
 
 In ten weeks, xAI, Meta, OpenAI and Anthropic all shipped the same thing: an always-on
@@ -70,8 +70,9 @@ we had can be turned into an agent. The method changes completely:
 4. the developer checks the result and gives feedback, no longer on the code, but ABOVE
    ALL on the thinking: the analysis and the implementation the AI chose.
 
-That's the shift to human on the loop: the human no longer does the work, they build the
-frame it happens in, and they stay in control at the moments that matter.
+That's the shift to human on the loop: the human no longer does everything themselves.
+They build the frame, keep the decisions, and take back control at the moments that
+matter.
 
 The four products don't put the human in the same place, by the way. Claude Duet keeps
 an approval step on sensitive actions (it asks before sending a message or paying).
@@ -80,16 +81,20 @@ you for judgment calls.
 
 ## Blue, my agent at work
 
-I didn't wait for these products. At work, I use an agent I named Blue, which helps me
-with tickets every day. It's actually a whole team of sub-agents:
+I didn't wait for these products. At work, I use an agent I named Blue, which backs me
+up on tickets every day. It's actually a whole team of sub-agents:
 
 - **PR Babysitter** watches my pull requests: it checks the content, talks with
   CodeRabbit (the AI code review tool) and gives me its feedback;
-- one agent takes simple tickets and handles them from A to Z, all the way to opening a
-  draft PR: all that's left for me is the final review;
+- one agent takes simple tickets (and I do mean simple) and handles them from A to Z,
+  all the way to opening a draft PR, which I review before anything else happens;
 - one agent gives me a briefing in the morning, and another in the evening;
 - one agent helps me write documentation, especially to explain the need in more detail;
 - one agent pulls information from Slack when a message concerns me.
+
+Let's be clear: Blue doesn't work in my place. Complex tickets, architecture and
+decisions are still mine. Blue takes the repetitive work and the exploration, which frees
+up time for what really takes thinking.
 
 ![Diagram of Blue: Paul sets the harness and reviews; Blue coordinates five sub-agents, PR Babysitter (which talks with CodeRabbit), Tickets, Briefing, Docs and Slack](/images/articles/claude-duet-grok-bot-muse-agents-ia/blue.svg)
 
@@ -110,6 +115,24 @@ and only come back to the human to decide. Grok Bot already does it in group cha
 all the big labs (Anthropic, OpenAI, xAI, Meta) now have their own always-on agent. It's
 a vision I haven't fully grasped yet, and I fully intend to take a closer look, because
 I'm convinced it's going to lead to something huge.
+
+So, are we ready for a truly autonomous swarm? In my view, not yet, but we're getting
+closer, and fast. An experiment published in October 2026 by Y Combinator with Olam Labs
+illustrates this really well
+([Agents in Games](https://labs.ycombinator.com/projects/games/index.html)). They set 50
+agents loose in Minecraft for 3 hours, with a single goal: "Build a thriving
+civilization". The result: around 5,900 messages exchanged, and a leader who emerged on
+their own (Ada, who received 616 direct messages). Impressive! But the colony never
+really thrived: 22 of the 34 deaths happened on the very first night.
+
+And in the matches pitting a Claude team against a GPT team, you find exactly the flaws
+I talk about below. The Claude team never changes its leader despite losing, it writes
+its lessons into memory files… then repeats the same mistakes, and several of its agents
+wrongly convince themselves that an action is impossible (where GPT finds a
+workaround).
+
+In short: the swarm already knows how to coordinate, but it doesn't yet know how to
+question itself. And that's exactly where the human on the loop remains essential.
 
 Today, I see three groups:
 
@@ -133,6 +156,29 @@ heart of human on the loop. A good harness looks like a good spec.
 **After: discernment.** Reviewing not line by line, but the approach: does the analysis
 hold up, is the chosen approach the right one, does it fit with the rest? My feedback to
 Blue is about that, and rarely about a line of code.
+
+## And it's not just about development
+
+I'm convinced this move from in to on the loop isn't limited to developers. Let's take
+three jobs.
+
+**Marketing.** An agent can turn a campaign into dozens of variants (hooks, visuals,
+formats for each network). But the positioning, the audience and the brand's tone are set
+by the marketer: that's their harness. And they're still the one who approves before
+anything goes live, because a published mistake is a hit to the brand's image.
+
+**Sales.** The agent can prepare meetings, follow up with prospects, keep the CRM up to
+date. The salesperson decides who to target and how to talk to them, and keeps what can't
+be delegated: the relationship, the negotiation, the trust. Nobody wants to sign with
+someone who never really understood their problem.
+
+**Customer support.** This may be the most telling example. When an agent gives a
+customer a bad answer, fixing that particular answer is in the loop. Fixing the knowledge
+base and the guidelines that produced it, so it doesn't happen again, is on the loop.
+Exactly what I do with Blue's harness.
+
+In all three cases, the job doesn't disappear: it moves up a level. Less time spent
+executing, and much more time setting the frame and judging the result.
 
 ## Why I'm still wary
 

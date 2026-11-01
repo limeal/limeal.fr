@@ -41,6 +41,9 @@ article is built on that. **Never invent** an anecdote, a client, a metric or a 
 when something is missing, ask or leave it out. No employer, city, surname or client names
 (see `docs/specs/refonte-vitrine.md`).
 
+**Verify everything, always**: your own claims and examples as much as his, and the
+rendered result (all languages, on a fresh server: production caches compiled articles).
+
 **Fact-check, and contradict him when needed.** Paul's experience and opinions are his to
 give; everything else gets checked before it goes in, with a web search on primary
 sources (official pages, docs, changelogs) rather than blogs:
