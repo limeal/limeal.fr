@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title">
+  <title id="title">Marketing / Ventas / Atención al cliente</title>
+  <rect width="1200" height="700" rx="28" fill="#111013"/>
+  <g font-family="Arial,sans-serif">
+  <rect x="50" y="34" width="1100" height="190" rx="22" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+  <text x="82" y="77" fill="#fbd52b" font-size="29" font-weight="700">Marketing</text>
+  <text x="82" y="134" fill="#fbd52b" font-size="22" font-weight="700">Agente</text>
+  <text x="240" y="134" fill="#fff" font-size="23">Prepara variantes de campaña</text>
+  <text x="82" y="184" fill="#fbd52b" font-size="22" font-weight="700">Persona</text>
+  <text x="240" y="184" fill="#fff" font-size="23">Define el tono y los mensajes permitidos</text>
+  <rect x="50" y="249" width="1100" height="190" rx="22" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+  <text x="82" y="292" fill="#fbd52b" font-size="29" font-weight="700">Ventas</text>
+  <text x="82" y="349" fill="#fbd52b" font-size="22" font-weight="700">Agente</text>
+  <text x="240" y="349" fill="#fff" font-size="23">Prepara el seguimiento y las comunicaciones</text>
+  <text x="82" y="399" fill="#fbd52b" font-size="22" font-weight="700">Persona</text>
+  <text x="240" y="399" fill="#fff" font-size="23">Define las reglas y gestiona los casos delicados</text>
+  <rect x="50" y="464" width="1100" height="190" rx="22" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+  <text x="82" y="507" fill="#fbd52b" font-size="29" font-weight="700">Atención al cliente</text>
+  <text x="82" y="564" fill="#fbd52b" font-size="22" font-weight="700">Agente</text>
+  <text x="240" y="564" fill="#fff" font-size="23">Responde a consultas sencillas</text>
+  <text x="82" y="614" fill="#fbd52b" font-size="22" font-weight="700">Persona</text>
+  <text x="240" y="614" fill="#fff" font-size="23">Gestiona las excepciones y los casos sensibles</text>
+  </g>
+</svg>

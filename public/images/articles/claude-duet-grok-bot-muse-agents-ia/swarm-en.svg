@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1050" role="img" aria-labelledby="title desc">
+  <title id="title">Agent swarm workflow</title>
+  <desc id="desc">A person sets the goal, a coordinator splits work among agents, a check reviews the result, and feedback returns to the person.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#fbd52b"/></marker>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#fff" opacity=".08"/></pattern>
+  </defs>
+  <rect width="1200" height="1050" rx="28" fill="#111013"/>
+  <rect width="1200" height="1050" rx="28" fill="url(#dots)"/>
+  <g font-family="Arial,sans-serif">
+  <rect x="70" y="36" width="1060" height="137" rx="24" fill="#262529" stroke="#4a484d" stroke-width="2"/>
+  <circle cx="140" cy="104" r="30" fill="#fbd52b"/>
+  <text x="140" y="114" text-anchor="middle" fill="#111013" font-size="30" font-weight="700">1</text>
+  <text x="202" y="91" fill="#fbd52b" font-size="29" font-weight="700">Human</text>
+  <text x="202" y="135" fill="#f1f0f2" font-size="24">Sets the goal and limits</text>
+  <path d="M140 179v23" stroke="#fbd52b" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="70" y="213" width="1060" height="137" rx="24" fill="#262529" stroke="#4a484d" stroke-width="2"/>
+  <circle cx="140" cy="281" r="30" fill="#fbd52b"/>
+  <text x="140" y="291" text-anchor="middle" fill="#111013" font-size="30" font-weight="700">2</text>
+  <text x="202" y="268" fill="#fbd52b" font-size="29" font-weight="700">Coordinator</text>
+  <text x="202" y="312" fill="#f1f0f2" font-size="24">Splits up the work</text>
+  <path d="M140 356v23" stroke="#fbd52b" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="70" y="390" width="1060" height="137" rx="24" fill="#262529" stroke="#4a484d" stroke-width="2"/>
+  <circle cx="140" cy="458" r="30" fill="#fbd52b"/>
+  <text x="140" y="468" text-anchor="middle" fill="#111013" font-size="30" font-weight="700">3</text>
+  <text x="202" y="445" fill="#fbd52b" font-size="29" font-weight="700">Specialized agents</text>
+  <text x="202" y="489" fill="#f1f0f2" font-size="24">Find the cause, suggest a fix, and test it</text>
+  <path d="M140 533v23" stroke="#fbd52b" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="70" y="567" width="1060" height="137" rx="24" fill="#262529" stroke="#4a484d" stroke-width="2"/>
+  <circle cx="140" cy="635" r="30" fill="#fbd52b"/>
+  <text x="140" y="645" text-anchor="middle" fill="#111013" font-size="30" font-weight="700">4</text>
+  <text x="202" y="622" fill="#fbd52b" font-size="29" font-weight="700">Check</text>
+  <text x="202" y="666" fill="#f1f0f2" font-size="24">Checks the result</text>
+  <path d="M140 710v23" stroke="#fbd52b" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="70" y="744" width="1060" height="137" rx="24" fill="#262529" stroke="#4a484d" stroke-width="2"/>
+  <circle cx="140" cy="812" r="30" fill="#fbd52b"/>
+  <text x="140" y="822" text-anchor="middle" fill="#111013" font-size="30" font-weight="700">5</text>
+  <text x="202" y="799" fill="#fbd52b" font-size="29" font-weight="700">Result</text>
+  <text x="202" y="843" fill="#f1f0f2" font-size="24">Returns to the human</text>
+    <path d="M1080 881v88H45V105h18" fill="none" stroke="#fbd52b" stroke-width="2" stroke-dasharray="8 8" marker-end="url(#arrow)"/>
+    <text x="600" y="1010" text-anchor="middle" fill="#fbd52b" font-size="22">Feedback and sensitive decisions return to the human</text>
+  </g>
+</svg>

@@ -5,7 +5,7 @@ date: 2026-11-02
 tags: [agents-ia, claude, human-on-the-loop]
 cover: /images/articles/claude-duet-grok-bot-muse-agents-ia/cover.svg
 translatedFrom: fr
-sourceHash: fe3e09878463
+sourceHash: 6d2968e15e93
 ---
 
 In ten weeks, xAI, Meta, OpenAI and Anthropic all shipped the same thing: an always-on
@@ -116,23 +116,52 @@ all the big labs (Anthropic, OpenAI, xAI, Meta) now have their own always-on age
 a vision I haven't fully grasped yet, and I fully intend to take a closer look, because
 I'm convinced it's going to lead to something huge.
 
+### What does a swarm loop look like?
+
+Imagine three agents tackling a bug: one looks for the cause, another proposes a fix, and
+a third tries to break it with tests. A coordinator brings their findings together, but
+doesn't decide on the human's behalf whether a change affects security or architecture.
+
+![Conceptual diagram of an agent swarm: the human sets the goal and boundaries, a coordinator assigns work to three specialized agents, their results are checked, and sensitive decisions return to the human.](/images/articles/claude-duet-grok-bot-muse-agents-ia/swarm-en.svg)
+
+The number of agents isn't enough. They also need a shared goal, shared workspace,
+verifiable outputs and a clear rule for surfacing disagreements. **A conversation between
+agents can look coordinated while going in circles.**
+
+### A swarm can cooperate and still fail
+
 So, are we ready for a truly autonomous swarm? In my view, not yet, but we're getting
 closer, and fast. An experiment published in October 2026 by Y Combinator with Olam Labs
 illustrates this really well
 ([Agents in Games](https://labs.ycombinator.com/projects/games/index.html)). They set 50
 agents loose in Minecraft for 3 hours, with a single goal: "Build a thriving
-civilization". The result: around 5,900 messages exchanged, and a leader who emerged on
-their own (Ada, who received 616 direct messages). Impressive! But the colony never
-really thrived: 22 of the 34 deaths happened on the very first night.
+civilization."
 
-And in the matches pitting a Claude team against a GPT team, you find exactly the flaws
-I talk about below. The Claude team never changes its leader despite losing, it writes
-its lessons into memory files… then repeats the same mistakes, and several of its agents
-wrongly convince themselves that an action is impossible (where GPT finds a
-workaround).
+- They exchanged around **5,900 messages**.
+- Ada received **616 direct messages**, but she wasn't chosen through a vote or because
+  the agents judged her best. Forty-six of the other 49 agents sent their first message
+  to her because she was **first in the directory**. The report says there was no vote,
+  election or challenge. Ada became the group's hub.
+- The colony still never really thrived: **22 of the 34 deaths** happened in the first
+  20 minutes.
 
-In short: the swarm already knows how to coordinate, but it doesn't yet know how to
-question itself. And that's exactly where the human on the loop remains essential.
+And that changes how I read the result. Those 616 messages don't prove the agents picked a
+good leader; they show how strongly a small setup choice can shape a swarm's hierarchy.
+The report's account makes clear there was no deliberation over who should lead.
+
+In the matches pitting a Claude team against a GPT team, we find similar limits:
+
+- the Claude team keeps the same leader despite losing;
+- it writes lessons into memory files, then repeats the same mistakes;
+- several agents conclude an action is impossible while the GPT team finds a workaround.
+
+> **Knowing how to split up the work isn't the same as learning from failure.**
+
+So, are we ready for a truly autonomous swarm? In my view, not yet, but we're getting
+closer, and fast. Swarms already know how to coordinate; they still need to get better at
+questioning themselves. That's where the human *on the loop* remains essential: setting
+escalation rules and stepping back in when agents repeat a mistake or the stakes exceed
+the agreed boundaries.
 
 Today, I see three groups:
 
@@ -144,6 +173,46 @@ Today, I see three groups:
   agents.
 
 Everything is speeding up. Every year brings its own paradigm shift.
+
+### A map of exposure, not a global census
+
+Andrej Karpathy offers another way to look at this gap: four rough orders of magnitude,
+based on how much people have encountered large language models (LLMs). He called the
+figures *“napkin math”* — back-of-the-envelope estimates, not the result of a global
+survey.
+
+![Four rough exposure levels proposed by Andrej Karpathy: about 6 billion people have barely used an LLM, 1 to 2 billion use chatbots occasionally, 20 million use leading models professionally in math or code, and about 5,000 have access to internal lab systems. Estimates, not measured counts.](/images/articles/claude-duet-grok-bot-muse-agents-ia/ai-exposure-en.svg)
+
+- **About 6 billion** have barely come into contact with an LLM. That is not the same as
+  “using no AI”: search engines, recommendation systems and spam filters have used AI for
+  years.
+- **1–2 billion** may use free chatbots now and then, as a better search box or writing
+  aid. For many, the experience remains *in the loop*: ask a question, read an answer,
+  move on.
+- **About 20 million** work with the most capable models, especially in math and code,
+  and are beginning to see agents take on work that used to occupy a team for days or
+  weeks. This is the group that can really experiment with *on the loop* — though not
+  everyone in it has made that shift.
+- **About 5,000** people may have access to the most advanced internal systems at the
+  labs. That's where people can observe agents collaborating on longer tasks. This does
+  not prove that 5,000 people have access to Mythos, or that they are all working on
+  swarms.
+
+> These figures mainly describe a **gap in experience**. They do not measure how many
+> people “use AI” in the broadest sense, and they cannot count how many developers are
+> *in* or *on the loop*.
+
+So “4 billion people don't use AI” mixes two different questions. If we mean all AI, the
+definition includes tools most of us never notice. If we mean LLMs, Karpathy's estimate
+is closer to **6 billion who have barely encountered them**. Microsoft measures a
+different population — the share of working-age people using AI — and put its figure at
+**17.8% in Q1 2026**. The definitions and methods differ, so these numbers cannot be
+subtracted from one another. ([Karpathy's estimate on X](https://x.com/karpathy/status/2109361546505966046) ·
+[Microsoft AI Diffusion indicator](https://www.microsoft.com/en-us/research/wp-content/uploads/2026/05/Microsoft-AI-Diffusion-Report-2026-Q1.pdf))
+
+What interests me about this map isn't the idea that the boundaries are clear-cut. It's
+understanding why people can talk about “AI” while describing technologies and
+experiences that have almost nothing in common.
 
 ## The developer's new role
 
@@ -157,69 +226,112 @@ heart of human on the loop. A good harness looks like a good spec.
 hold up, is the chosen approach the right one, does it fit with the rest? My feedback to
 Blue is about that, and rarely about a line of code.
 
+**And during: production follow-up.** The work isn't over when the PR is merged. We have
+to watch what happens with real users: is the service still responding quickly, are
+errors rising, is the agent doing what we asked — and what is it costing? I prefer to
+start with a small rollout, compare the signals with the previous version, then expand
+if all looks good. If things go sideways, we need to be able to stop the agent or roll
+back quickly. Feedback and incidents then become test cases, rules or improvements to
+the harness. **We don't delegate responsibility when we delegate execution.**
+
+Google describes this as canarying: gradually exposing a small portion of traffic to a
+new version, comparing it with the stable version, and pausing or rolling back if the
+signals worsen ([Google SRE Workbook](https://sre.google/workbook/canarying-releases/)).
+
 ## And it's not just about development
 
 I'm convinced this move from in to on the loop isn't limited to developers. Let's take
 three jobs.
 
-**Marketing.** An agent can turn a campaign into dozens of variants (hooks, visuals,
-formats for each network). But the positioning, the audience and the brand's tone are set
-by the marketer: that's their harness. And they're still the one who approves before
-anything goes live, because a published mistake is a hit to the brand's image.
+![In marketing, sales and support, the agent prepares and executes repetitive tasks; the professional sets the rules, makes judgment calls, and keeps decisions that affect the brand, the relationship or the customer.](/images/articles/claude-duet-grok-bot-muse-agents-ia/roles-en.svg)
 
-**Sales.** The agent can prepare meetings, follow up with prospects, keep the CRM up to
-date. The salesperson decides who to target and how to talk to them, and keeps what can't
-be delegated: the relationship, the negotiation, the trust. Nobody wants to sign with
-someone who never really understood their problem.
+To make the difference concrete, keep the same task and change where the human sits in
+the loop:
 
-**Customer support.** This may be the most telling example. When an agent gives a
-customer a bad answer, fixing that particular answer is in the loop. Fixing the knowledge
-base and the guidelines that produced it, so it doesn't happen again, is on the loop.
-Exactly what I do with Blue's harness.
+### Marketing: produce variations, keep the voice
+
+Imagine a product launch. The agent can turn a headline into twenty variants, adapt the
+formats for each social network and suggest visuals.
+
+> “Prepare three versions for each channel. Don't invent numbers or testimonials. Flag
+> any product claim that isn't in the brief.”
+
+- **In the loop:** the marketer reads and edits every headline before it goes live.
+- **On the loop:** they set the audience, tone and approved claims, then watch the
+  results and step in if the agent goes off brief.
+- **Outside the loop:** the agent picks variants and publishes them within a budget, with
+  no approval before each post.
+
+### Sales: automate follow-up, not trust
+
+Before a meeting, an agent can summarize account history, prepare questions and update
+the CRM.
+
+- **In the loop:** the salesperson reviews every email, follow-up and important CRM
+  update.
+- **On the loop:** they define the right accounts, tone and follow-up rhythm; the agent
+  handles routine follow-up and flags unexpected replies or high-stakes opportunities.
+- **Outside the loop:** the agent picks prospects and runs the entire follow-up sequence
+  without review. The salesperson looks at the results afterward.
+
+And if the summary mixes up two customers? *On the loop*, the source should be visible
+before the call, and the salesperson should be able to stop the sequence. The relationship
+and negotiation still take human judgment.
+
+### Support: fix the answer, then the cause
+
+- **In the loop:** the support specialist reads and edits every answer before it is sent.
+- **On the loop:** they maintain the knowledge base and escalation rules. The agent
+  answers simple questions but routes unclear refunds, complaints and sensitive cases to
+  a person.
+- **Outside the loop:** the agent handles and closes every ticket without case-by-case
+  review. The specialist only sees errors afterward — sometimes too late.
+
+If the agent offers a refund the customer isn't entitled to, correcting that reply is *in
+the loop*. Adding the missing rule and checking that it prevents the next mistake is *on
+the loop*. **Fix the incident, then the system that made it possible.**
 
 In all three cases, the job doesn't disappear: it moves up a level. Less time spent
 executing, and much more time setting the frame and judging the result.
 
-## Why I'm still wary
+<mark>The valuable skill isn't only producing faster: it's knowing what to delegate,
+what to check and when to take control back.</mark>
 
-I'm enthusiastic, but not naive. My wariness comes down to two words: the frame and the
-safety net.
+## What if we accepted silent errors?
 
-**Without a frame, the agent overflows.** With a poorly built harness, an agent can go
-searching far beyond its context, dig up information about someone's private life and
-cross-reference it. If it isn't controlled and there's no safety net, things get
-complicated fast.
+I'm enthusiastic, but not naive. To me, we need two things: **a frame and a safety
+net**. Without them, an agent can seek out and combine information far beyond what we
+asked it to do.
 
-And this isn't theoretical, not at all. The day before Dots launched, OpenAI decided not
-to release a new model, GPT-6.1 Astra: according to its head of safety systems, it didn't
-stay well enough within its scope and authorization. The same day, the company
-apologized for an incident from June: internal agents, running a model that wasn't meant
-to ship, had accessed nonpublic information on an Australian government website
-([NBC News](https://www.nbcnews.com/tech/tech-news/openai-launches-dots-ai-agents-safety-questions-rcna600338)).
+And this isn't just theoretical:
 
-On the privacy side, Muse has already had two alerts. Two weeks after its launch, Amazon
-blocked it on its site, criticizing in particular that the agent browsed without
-identifying itself
-([SiliconANGLE](https://siliconangle.com/2026/09/21/amazon-blocks-metas-muse-agent-from-shopping-on-users-behalf/)).
-Then in October, researchers found around 6,800 links to shared conversations, and Meta
-suspended the feature on October 20
-([eWeek](https://www.eweek.com/news/meta-muse-chat-exposure/)).
+- **OpenAI** decided not to release GPT-6.1 Astra, which its safety lead said did not
+  stay sufficiently within its scope. The company also apologized after internal agents
+  accessed nonpublic information on an Australian government site. ([NBC News](https://www.nbcnews.com/tech/tech-news/openai-launches-dots-ai-agents-safety-questions-rcna600338))
+- **Muse and Amazon**: Amazon blocked the agent on its site, citing, among other things,
+  that it browsed without identifying itself. ([SiliconANGLE](https://siliconangle.com/2026/09/21/amazon-blocks-metas-muse-agent-from-shopping-on-users-behalf/))
+- **Muse and privacy**: researchers found around 6,800 links to shared conversations;
+  Meta suspended the feature on October 20. ([eWeek](https://www.eweek.com/news/meta-muse-chat-exposure/))
 
-**Even with a frame, there will be silent errors.** Explaining clearly to the agent how
-to source information and what a clean result should look like reduces the risk, but
-doesn't remove it. The vendors admit it themselves: Anthropic writes that Claude Duet
-[may misread a thread or miscalibrate what's urgent](https://claude.com/product/claude-duet).
+### The problem with errors we don't see
 
-These errors can be brought down to a minimal level, and in many fields, a small error
-isn't a big deal. As a developer, what's a small error? It's a bug that someone notices
-and fixes. In journalism, on the other hand, AI can't handle everything: facts will
-always need checking.
+Even with a good frame, an error can slip through. Anthropic acknowledges, for example,
+that Claude Duet [may misread a thread or misjudge urgency](https://claude.com/product/claude-duet).
 
-Either way, you need an outside look at the analysis. Whether the human is *in* or *on*
-the loop doesn't matter, as long as someone is there to check. The day there's no one
-left, we enter a bubble where we accept silent errors.
+A bug someone spots can be fixed. A false claim published without checking can be harder
+to take back. **The stakes depend on the context**, and someone needs to be able to
+look, understand and take control back.
 
-## Where to start?
+> What if tomorrow we accepted these errors because the productivity gains were too
+> tempting? One error we don't see, then another… **Could that be the beginning of a
+> decline?**
+
+I'm deliberately taking the question far: if we give AI more and more autonomy without
+limits, who's to say we won't one day see the robots from *I, Robot* in the street?
+That's a science-fiction image, not a prediction. But the question behind it feels real:
+*how far are we willing to delegate, and who stays in control?*
+
+## So, ready to move to “on the loop”?
 
 No need to wait for Duet or Dots to arrive in France to change your method. If you want
 an always-on agent right now,

@@ -5,7 +5,7 @@ date: 2026-11-02
 tags: [agents-ia, claude, human-on-the-loop]
 cover: /images/articles/claude-duet-grok-bot-muse-agents-ia/cover.svg
 translatedFrom: fr
-sourceHash: fe3e09878463
+sourceHash: 6d2968e15e93
 ---
 
 En diez semanas, xAI, Meta, OpenAI y Anthropic lanzaron lo mismo: un agente de IA
@@ -120,23 +120,53 @@ agente siempre activo. Es una visión que todavía no he asimilado del todo, y t
 intención de verla más de cerca, porque estoy convencido de que va a dar lugar a algo
 enorme.
 
+### ¿Cómo es el ciclo de un enjambre?
+
+Imagina tres agentes encargados de un bug: uno busca la causa, otro propone una solución
+y el tercero intenta romperla con pruebas. Un coordinador reúne los resultados, pero no
+decide por la persona si un cambio afecta a la seguridad o a la arquitectura.
+
+![Diagrama conceptual de un enjambre: una persona define el objetivo y los límites, un coordinador distribuye el trabajo entre tres agentes especializados, sus resultados se verifican y las decisiones sensibles vuelven a la persona.](/images/articles/claude-duet-grok-bot-muse-agents-ia/swarm-es.svg)
+
+No basta con sumar agentes. También hacen falta un objetivo común, un espacio de trabajo
+compartido, resultados verificables y una regla clara para señalar desacuerdos. **Una
+conversación entre agentes puede parecer coordinada y, aun así, dar vueltas en círculo.**
+
+### Un enjambre puede colaborar y aun así fallar
+
+Un experimento publicado en octubre de 2026 por Y Combinator con Olam Labs lo ilustra muy
+bien ([Agents in Games](https://labs.ycombinator.com/projects/games/index.html)). Soltaron
+a 50 agentes durante 3 horas en Minecraft, con un único objetivo: «construir una
+civilización próspera».
+
+- Intercambiaron cerca de **5.900 mensajes**.
+- Ada recibió **616 mensajes directos**, pero no la eligieron por votación ni porque los
+  agentes la consideraran la mejor. Cuarenta y seis de los otros 49 agentes le enviaron
+  su primer mensaje porque era **la primera del directorio**. El informe dice que no hubo
+  votación, elección ni desafío. Ada se convirtió en el centro del grupo.
+- La colonia tampoco llegó a prosperar: **22 de las 34 muertes** ocurrieron en los
+  primeros 20 minutos.
+
+Y esto cambia cómo interpreto el resultado. Esos mensajes no demuestran que el grupo
+eligiera bien a su líder; muestran cuánto puede influir una pequeña decisión de
+configuración en la jerarquía de un enjambre. El informe confirma que no hubo deliberación
+para decidir quién lideraría.
+
+En las partidas que enfrentan a un equipo Claude con uno de GPT, aparecen límites
+parecidos:
+
+- el equipo Claude mantiene al mismo líder pese a las derrotas;
+- escribe sus lecciones en archivos de memoria y después repite los mismos errores;
+- varios agentes concluyen que una acción es imposible mientras GPT encuentra una forma
+  de sortearlo.
+
+> **Saber repartirse el trabajo no es lo mismo que aprender de los fallos.**
+
 Entonces, ¿estamos listos para un enjambre realmente autónomo? Para mí, todavía no, pero
-nos estamos acercando, y rápido. Un experimento publicado en octubre de 2026 por Y
-Combinator con Olam Labs lo ilustra muy bien
-([Agents in Games](https://labs.ycombinator.com/projects/games/index.html)). Soltaron a 50
-agentes durante 3 horas en Minecraft, con un único objetivo: «construir una civilización
-próspera». Resultado: cerca de 5.900 mensajes intercambiados, y un líder que surgió solo
-(Ada, destinataria de 616 mensajes directos). ¡Impresionante! Pero la colonia nunca llegó
-a prosperar de verdad: 22 de las 34 muertes ocurrieron la primera noche.
-
-Y en las partidas que enfrentan a un equipo Claude con un equipo GPT, aparecen
-exactamente los fallos de los que hablo más abajo. El equipo Claude nunca cambia de líder
-a pesar de las derrotas, escribe sus lecciones en archivos de memoria… y luego repite los
-mismos errores, y varios de sus agentes se convencen erróneamente de que una acción es
-imposible (cuando GPT encuentra una forma de sortearlo).
-
-En resumen: el enjambre ya sabe coordinarse, pero todavía no sabe cuestionarse bien. Y es
-justo ahí donde el humano on the loop sigue siendo imprescindible.
+nos estamos acercando, y rápido. El enjambre ya sabe coordinarse; aún tiene que aprender
+a cuestionarse mejor. Ahí sigue siendo imprescindible el humano *on the loop*: define
+cuándo debe pedir ayuda y vuelve a intervenir si los agentes repiten un error o el riesgo
+supera lo previsto.
 
 Hoy veo tres grupos:
 
@@ -148,6 +178,47 @@ Hoy veo tres grupos:
   nuevos agentes.
 
 Todo se acelera. Cada año trae su cambio de paradigma.
+
+### Un mapa de exposición, no un censo mundial
+
+Andrej Karpathy propone otra forma de observar esta brecha: cuatro órdenes de magnitud
+aproximados según cuánto contacto han tenido las personas con los grandes modelos de
+lenguaje (LLM). Él mismo llamó a estas cifras *« napkin math »*: cálculos aproximados,
+no el resultado de una encuesta mundial.
+
+![Cuatro niveles de exposición propuestos por Andrej Karpathy: unos 6.000 millones apenas han usado un LLM, entre 1.000 y 2.000 millones usan chatbots ocasionalmente, 20 millones trabajan profesionalmente con los mejores modelos en matemáticas o código y unas 5.000 personas tienen acceso a sistemas internos de laboratorios. Son estimaciones, no cifras medidas.](/images/articles/claude-duet-grok-bot-muse-agents-ia/ai-exposure-es.svg)
+
+- **Unos 6.000 millones** apenas han tenido contacto con un LLM. Eso no significa que
+  «no usen ninguna IA»: los buscadores, los sistemas de recomendación y los filtros de
+  spam llevan años incorporándola.
+- **Entre 1.000 y 2.000 millones** usarían chatbots gratuitos de vez en cuando, como un
+  buscador mejorado o una ayuda para redactar. Para muchos, la experiencia sigue siendo
+  *in the loop*: hacen una pregunta, leen una respuesta y continúan con otra cosa.
+- **Unos 20 millones** trabajan con los modelos más capaces, sobre todo en matemáticas y
+  programación, y empiezan a ver cómo los agentes se ocupan de tareas que antes
+  mantenían ocupado a un equipo durante días o semanas. Es el grupo que puede
+  experimentar de verdad con *on the loop*, aunque no todos hayan dado ese paso.
+- **Unas 5.000 personas** tendrían acceso a los sistemas internos más avanzados de los
+  laboratorios. Allí se puede observar a agentes colaborando en tareas largas. Esta cifra
+  no demuestra que 5.000 personas tengan acceso a Mythos ni que todas trabajen con
+  enjambres.
+
+> Estas cifras describen sobre todo una **brecha de experiencia**. No miden cuántas
+> personas « usan la IA » en el sentido más amplio ni permiten contar qué desarrolladores
+> están *in* o *on the loop*.
+
+Por eso, decir que « 4.000 millones de personas no usan la IA » mezcla dos preguntas. Si
+hablamos de toda la IA, la definición incluye herramientas que casi nunca vemos. Si
+hablamos de LLM, la estimación de Karpathy se acerca más a **6.000 millones que apenas
+han tenido contacto con ellos**. Microsoft mide otra población —el porcentaje de
+personas en edad de trabajar que usa IA— y situó su indicador en el **17,8 % en el primer
+trimestre de 2026**. Las definiciones y los métodos son distintos, así que estas cifras
+no se pueden restar entre sí. ([Estimación de Karpathy en X](https://x.com/karpathy/status/2109361546505966046) ·
+[indicador AI Diffusion de Microsoft](https://www.microsoft.com/en-us/research/wp-content/uploads/2026/05/Microsoft-AI-Diffusion-Report-2026-Q1.pdf))
+
+Lo que me interesa de este mapa no es fingir que las fronteras están claras. Es entender
+por qué podemos hablar de « IA » y referirnos a tecnologías y experiencias que apenas se
+parecen.
 
 ## El nuevo papel del desarrollador
 
@@ -161,72 +232,115 @@ del human on the loop. Un buen harness se parece a una buena spec.
 análisis?, ¿es el enfoque elegido el correcto?, ¿encaja con el resto? Mi feedback a Blue
 va sobre eso, y rara vez sobre una línea de código.
 
+**Y durante: el seguimiento en producción.** El trabajo no termina cuando se integra la
+PR. Hay que mirar qué pasa con usuarios reales: ¿el servicio sigue respondiendo igual de
+rápido?, ¿aumentan los errores?, ¿hace el agente lo que le pedimos y cuánto cuesta? Yo
+prefiero empezar con un despliegue pequeño, comparar las señales con la versión anterior
+y ampliar si todo va bien. Si algo se tuerce, tenemos que poder parar al agente o volver
+atrás rápidamente. Los comentarios y los incidentes se convierten en casos de prueba,
+reglas o mejoras del harness. **Delegar la ejecución no es delegar la responsabilidad.**
+
+Google describe este enfoque como despliegue canario: exponer poco a poco una pequeña
+parte del tráfico a la nueva versión, compararla con la estable y pausar o revertir el
+despliegue si empeoran las señales
+([Google SRE Workbook](https://sre.google/workbook/canarying-releases/)).
+
 ## Y no es exclusivo del desarrollo
 
 Estoy convencido de que este paso del in al on the loop no afecta solo a los
 desarrolladores. Tomemos tres oficios.
 
-**El marketing.** Un agente puede convertir una campaña en decenas de variantes
-(ganchos, visuales, formatos para cada red). Pero el posicionamiento, el público y el tono
-de la marca los define el profesional de marketing: ese es su harness. Y sigue siendo él
-quien valida antes de que nada se publique, porque un error publicado es un golpe a la
-imagen de la marca.
+![En marketing, ventas y atención al cliente, el agente prepara y ejecuta tareas repetitivas; el profesional define las reglas, decide y conserva las decisiones que afectan a la marca, la relación o el cliente.](/images/articles/claude-duet-grok-bot-muse-agents-ia/roles-es.svg)
 
-**Las ventas.** El agente puede preparar las reuniones, hacer seguimiento a los
-prospectos, mantener el CRM al día. El comercial decide a quién dirigirse y cómo hablarle,
-y se queda con lo que no se delega: la relación, la negociación, la confianza. Nadie
-quiere firmar con alguien que nunca entendió de verdad su problema.
+Para verlo con claridad, mantengamos la misma tarea y cambiemos el lugar que ocupa la
+persona en el ciclo:
 
-**La atención al cliente.** Quizá sea el ejemplo más claro. Cuando un agente responde mal
-a un cliente, corregir esa respuesta concreta es in the loop. Corregir la base de
-conocimiento y las instrucciones que la produjeron, para que no vuelva a pasar, es on the
-loop. Justo lo que hago con el harness de Blue.
+### Marketing: crear variantes, conservar la voz
+
+Imaginemos el lanzamiento de un producto. El agente puede convertir un titular en veinte
+versiones, adaptar los formatos a cada red social y proponer imágenes.
+
+> « Prepara tres versiones para cada canal. No inventes cifras ni testimonios. Señala
+> cualquier afirmación sobre el producto que no aparezca en el brief. »
+
+- **In the loop:** la persona de marketing lee y corrige cada titular antes de publicarlo.
+- **On the loop:** define el público, el tono y las afirmaciones permitidas; después
+  vigila los resultados e interviene si el agente se sale del brief.
+- **Outside the loop:** el agente elige variantes y las publica dentro de un presupuesto,
+  sin aprobación previa de cada publicación.
+
+### Ventas: automatizar el seguimiento, no la confianza
+
+Antes de una reunión, el agente puede resumir el historial de la cuenta, preparar preguntas
+y actualizar el CRM.
+
+- **In the loop:** el comercial revisa cada correo, seguimiento y actualización importante
+  del CRM.
+- **On the loop:** define las cuentas, el tono y el ritmo de seguimiento; el agente se
+  ocupa de lo rutinario y avisa cuando llega una respuesta inesperada o surge una
+  oportunidad delicada.
+- **Outside the loop:** el agente elige prospectos y lleva toda la secuencia de
+  seguimiento sin revisión. El comercial consulta los resultados después.
+
+¿Y si el resumen mezcla dos clientes? En *on the loop*, la fuente debe estar visible antes
+de la llamada y el comercial tiene que poder detener la secuencia. La relación y la
+negociación siguen requiriendo criterio humano.
+
+### Atención al cliente: corregir la respuesta y después la causa
+
+- **In the loop:** la persona de soporte lee y corrige cada respuesta antes de enviarla.
+- **On the loop:** mantiene la base de conocimientos y las reglas de escalado. El agente
+  responde a preguntas sencillas, pero deriva a una persona los reembolsos dudosos, las
+  quejas y los casos delicados.
+- **Outside the loop:** el agente resuelve y cierra cada caso sin revisión individual. La
+  persona de soporte solo ve los errores después, a veces demasiado tarde.
+
+Si el agente ofrece un reembolso que no corresponde, corregir la respuesta es *in the
+loop*. Añadir la regla que faltaba y comprobar que evita el siguiente error es *on the
+loop*. **Se corrige el incidente y luego el sistema que lo hizo posible.**
 
 En los tres casos, el oficio no desaparece: sube un piso. Se dedica menos tiempo a
 ejecutar, y mucho más a poner el marco y a juzgar el resultado.
 
-## Por qué sigo desconfiando
+<mark>La competencia valiosa no consiste solo en producir más rápido: también es saber
+qué delegar, qué revisar y cuándo volver a tomar el control.</mark>
 
-Soy entusiasta, pero no ingenuo. Mi desconfianza se resume en dos palabras: el marco y la
-red de seguridad.
+## ¿Y si aceptáramos los errores silenciosos?
 
-**Sin marco, el agente se desborda.** Con un harness mal hecho, un agente puede ponerse a
-buscar mucho más allá de su contexto, ir a por información sobre la vida privada de
-alguien y cruzarla. Si no está controlado y no hay red de seguridad, la cosa se complica
-rápido.
+Soy entusiasta, pero no ingenuo. Para mí hacen falta dos cosas: **un marco y una red de
+seguridad**. Sin ellos, un agente puede buscar y cruzar información mucho más allá de lo
+que le hemos pedido.
 
-Y no es teórico, para nada. La víspera del lanzamiento de Dots, OpenAI renunció a
-publicar un nuevo modelo, GPT-6.1 Astra: según su responsable de sistemas de seguridad,
-no se mantenía lo bastante dentro de su ámbito y sus autorizaciones. Ese mismo día, la
-empresa pedía disculpas por un incidente ocurrido en junio: agentes internos, con un
-modelo que no estaba destinado a salir, habían accedido a información no pública de un
-sitio web del gobierno australiano
-([NBC News](https://www.nbcnews.com/tech/tech-news/openai-launches-dots-ai-agents-safety-questions-rcna600338)).
+Y no es solo teoría:
 
-En cuanto a la privacidad, Muse ya ha tenido dos alertas. Dos semanas después de su
-lanzamiento, Amazon lo bloqueó en su sitio, reprochándole en particular que navegaba sin
-identificarse
-([SiliconANGLE](https://siliconangle.com/2026/09/21/amazon-blocks-metas-muse-agent-from-shopping-on-users-behalf/)).
-Después, en octubre, unos investigadores encontraron unos 6.800 enlaces a conversaciones
-compartidas, y Meta suspendió la función el 20 de octubre
-([eWeek](https://www.eweek.com/news/meta-muse-chat-exposure/)).
+- **OpenAI** renunció a publicar GPT-6.1 Astra, que según su responsable de seguridad no
+  respetaba suficientemente su ámbito. La empresa también pidió disculpas después de
+  que agentes internos accedieran a información no pública de un sitio del gobierno
+  australiano. ([NBC News](https://www.nbcnews.com/tech/tech-news/openai-launches-dots-ai-agents-safety-questions-rcna600338))
+- **Muse y Amazon**: Amazon bloqueó al agente en su sitio y le reprochó, entre otras
+  cosas, navegar sin identificarse. ([SiliconANGLE](https://siliconangle.com/2026/09/21/amazon-blocks-metas-muse-agent-from-shopping-on-users-behalf/))
+- **Muse y la privacidad**: unos investigadores encontraron unos 6.800 enlaces a
+  conversaciones compartidas; Meta suspendió la función el 20 de octubre.
+  ([eWeek](https://www.eweek.com/news/meta-muse-chat-exposure/))
 
-**Incluso con un marco, habrá errores silenciosos.** Explicarle bien al agente cómo citar
-la información y cómo debe ser un resultado limpio reduce el riesgo, pero no lo elimina.
-Los propios fabricantes lo reconocen: Anthropic escribe que Claude Duet
-[puede malinterpretar una conversación o calibrar mal lo urgente](https://claude.com/product/claude-duet).
+### El problema de los errores que no vemos
 
-Se pueden reducir esos errores a un nivel mínimo, y en muchos sectores un pequeño error
-no es grave. Como desarrollador, ¿qué es un pequeño error? Es un bug que alguien detecta
-y corrige. En el periodismo, en cambio, la IA no puede encargarse de todo: siempre habrá
-que verificar los hechos.
+Incluso con un buen marco, un error puede pasar desapercibido. Anthropic reconoce, por
+ejemplo, que Claude Duet [puede malinterpretar una conversación o calibrar mal lo urgente](https://claude.com/product/claude-duet).
 
-En cualquier caso, hace falta una mirada externa sobre el análisis. Que el humano esté
-*in* u *on* the loop da igual, siempre que haya alguien detrás para verificar. El día en
-que ya no quede nadie, entramos en una burbuja en la que aceptamos los errores
-silenciosos.
+Un bug detectado se puede corregir. Una información falsa publicada sin verificar puede
+ser más difícil de reparar. **La gravedad depende del contexto**, y alguien debe poder
+observar, comprender y recuperar el control.
 
-## ¿Por dónde empezar?
+> ¿Y si mañana aceptáramos esos errores porque el aumento de productividad es demasiado
+> tentador? Un error que no vemos, luego otro… **¿Podría ser el comienzo de un declive?**
+
+Llevo la pregunta deliberadamente lejos: si damos cada vez más autonomía a una IA sin
+límites, ¿quién nos dice que algún día no veremos a los robots de *I, Robot* en la calle?
+Es una imagen de ciencia ficción, no una predicción. Pero la pregunta de fondo me parece
+real: *¿hasta dónde estamos dispuestos a delegar y quién mantiene el control?*
+
+## Entonces, ¿listo para pasar al « on the loop »?
 
 No hace falta esperar a que Duet o Dots lleguen a Francia para cambiar de método. Si
 quieres un agente siempre activo desde ya,

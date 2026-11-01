@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title">
+  <title id="title">마케팅 / 영업 / 고객 지원</title>
+  <rect width="1200" height="700" rx="28" fill="#111013"/>
+  <g font-family="Arial,sans-serif">
+  <rect x="50" y="34" width="1100" height="190" rx="22" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+  <text x="82" y="77" fill="#fbd52b" font-size="29" font-weight="700">마케팅</text>
+  <text x="82" y="134" fill="#fbd52b" font-size="22" font-weight="700">에이전트</text>
+  <text x="240" y="134" fill="#fff" font-size="23">캠페인 문구의 여러 버전을 준비합니다</text>
+  <text x="82" y="184" fill="#fbd52b" font-size="22" font-weight="700">사람</text>
+  <text x="240" y="184" fill="#fff" font-size="23">어조와 허용할 내용을 정합니다</text>
+  <rect x="50" y="249" width="1100" height="190" rx="22" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+  <text x="82" y="292" fill="#fbd52b" font-size="29" font-weight="700">영업</text>
+  <text x="82" y="349" fill="#fbd52b" font-size="22" font-weight="700">에이전트</text>
+  <text x="240" y="349" fill="#fff" font-size="23">후속 연락을 준비합니다</text>
+  <text x="82" y="399" fill="#fbd52b" font-size="22" font-weight="700">사람</text>
+  <text x="240" y="399" fill="#fff" font-size="23">규칙을 정하고 민감한 대화를 맡습니다</text>
+  <rect x="50" y="464" width="1100" height="190" rx="22" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+  <text x="82" y="507" fill="#fbd52b" font-size="29" font-weight="700">고객 지원</text>
+  <text x="82" y="564" fill="#fbd52b" font-size="22" font-weight="700">에이전트</text>
+  <text x="240" y="564" fill="#fff" font-size="23">간단한 문의에 답합니다</text>
+  <text x="82" y="614" fill="#fbd52b" font-size="22" font-weight="700">사람</text>
+  <text x="240" y="614" fill="#fff" font-size="23">예외와 민감한 사례를 처리합니다</text>
+  </g>
+</svg>

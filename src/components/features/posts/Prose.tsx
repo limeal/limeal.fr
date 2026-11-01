@@ -26,6 +26,7 @@ const styles = {
     _hover: { color: "white" },
   },
   "& strong": { color: "white", fontWeight: "bold" },
+  "& mark": { bg: "#fbd52b", color: "#111013", px: "1", borderRadius: "sm", boxDecorationBreak: "clone" },
   "& ul, & ol": { pl: "6" },
   "& ul": { listStyleType: "disc" },
   "& ol": { listStyleType: "decimal" },

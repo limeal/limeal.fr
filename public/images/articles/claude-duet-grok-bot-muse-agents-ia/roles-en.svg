@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title">
+  <title id="title">Marketing / Sales / Support</title>
+  <rect width="1200" height="700" rx="28" fill="#111013"/>
+  <g font-family="Arial,sans-serif">
+  <rect x="50" y="34" width="1100" height="190" rx="22" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+  <text x="82" y="77" fill="#fbd52b" font-size="29" font-weight="700">Marketing</text>
+  <text x="82" y="134" fill="#fbd52b" font-size="22" font-weight="700">Agent</text>
+  <text x="240" y="134" fill="#fff" font-size="23">Prepares campaign variations</text>
+  <text x="82" y="184" fill="#fbd52b" font-size="22" font-weight="700">Human</text>
+  <text x="240" y="184" fill="#fff" font-size="23">Sets the tone and approved claims</text>
+  <rect x="50" y="249" width="1100" height="190" rx="22" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+  <text x="82" y="292" fill="#fbd52b" font-size="29" font-weight="700">Sales</text>
+  <text x="82" y="349" fill="#fbd52b" font-size="22" font-weight="700">Agent</text>
+  <text x="240" y="349" fill="#fff" font-size="23">Prepares follow-ups</text>
+  <text x="82" y="399" fill="#fbd52b" font-size="22" font-weight="700">Human</text>
+  <text x="240" y="399" fill="#fff" font-size="23">Sets the rules and handles sensitive conversations</text>
+  <rect x="50" y="464" width="1100" height="190" rx="22" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+  <text x="82" y="507" fill="#fbd52b" font-size="29" font-weight="700">Support</text>
+  <text x="82" y="564" fill="#fbd52b" font-size="22" font-weight="700">Agent</text>
+  <text x="240" y="564" fill="#fff" font-size="23">Answers routine requests</text>
+  <text x="82" y="614" fill="#fbd52b" font-size="22" font-weight="700">Human</text>
+  <text x="240" y="614" fill="#fff" font-size="23">Handles exceptions and sensitive cases</text>
+  </g>
+</svg>

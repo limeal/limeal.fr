@@ -4,7 +4,7 @@ description: "Grok Bot, Muse, Dots, Claude Duet : les IA deviennent des agents t
 date: 2026-11-02
 tags: [agents-ia, claude, human-on-the-loop]
 cover: /images/articles/claude-duet-grok-bot-muse-agents-ia/cover.svg
-draft: true
+draft: false
 ---
 
 En dix semaines, xAI, Meta, OpenAI et Anthropic ont sorti la même chose : un agent IA
@@ -122,24 +122,57 @@ ont maintenant leur agent toujours actif. C'est une vision que je n'ai pas encor
 totalement appréhendée, et je compte bien aller voir de plus près, parce que je suis
 convaincu que ça va donner quelque chose d'énorme.
 
+### À quoi ressemble une boucle d'essaim ?
+
+Imagine trois agents chargés d'un bug : l'un cherche la cause, l'autre propose un
+correctif, le troisième essaie de le casser avec des tests. Un coordinateur rassemble
+leurs résultats, mais ne décide pas à la place de l'humain si le changement touche à la
+sécurité ou à l'architecture.
+
+![Schéma conceptuel d’un essaim d’agents : l’humain fixe l’objectif et les limites, un coordinateur distribue le travail entre trois agents spécialisés, leurs résultats passent par une vérification et les décisions sensibles reviennent à l’humain.](/images/articles/claude-duet-grok-bot-muse-agents-ia/swarm-fr.svg)
+
+Le nombre d'agents ne suffit pas. Il faut aussi un objectif commun, un espace de travail
+partagé, des résultats vérifiables et une règle claire pour signaler un désaccord. **Une
+conversation entre agents peut avoir l'air coordonnée tout en tournant en rond.**
+
+### Un essaim peut coopérer et échouer quand même
+
+Une expérience publiée en octobre 2026 par Y Combinator avec Olam Labs illustre bien les
+deux côtés
+([Agents in Games](https://labs.ycombinator.com/projects/games/index.html)). Cinquante
+agents ont joué trois heures à Minecraft avec un seul objectif : « construire une
+civilisation florissante ».
+
+- Ils ont échangé près de **5 900 messages**.
+- **Ada a reçu 616 messages directs**, mais ce n'est pas une cheffe qui a émergé par
+  mérite ou par vote. Le compte rendu précise que 46 des 49 autres agents lui ont envoyé
+  leur premier message parce qu'elle était **la première dans l'ordre du répertoire** ;
+  il n'y a eu ni vote, ni élection, ni contestation. Elle est devenue le hub de l'équipe.
+- La colonie n'a jamais vraiment prospéré : **22 des 34 morts** sont survenues dans les
+  vingt premières minutes.
+
+Et ça change mon interprétation. Le nombre de messages reçus par Ada ne prouve pas que les
+agents ont su choisir un bon leader : il montre aussi à quel point un détail de
+l'organisation — qui apparaît en premier dans la liste — peut orienter tout le groupe.
+Comme le résume le [compte rendu de YC](https://labs.ycombinator.com/projects/games/index.html),
+il n'y a pas eu de délibération pour choisir la personne qui dirigerait.
+
+La coordination était réelle. La capacité à corriger le plan collectif l'était moins.
+Dans les matchs qui opposent une équipe Claude à une équipe GPT, on retrouve des limites
+du même genre :
+
+- l'équipe Claude garde le même leader malgré les défaites ;
+- elle écrit ses leçons dans des fichiers mémoire, puis répète les mêmes erreurs ;
+- plusieurs agents concluent qu'une action est impossible alors que l'équipe GPT trouve
+  un contournement.
+
+> **Savoir se répartir le travail n'est pas encore savoir apprendre de ses échecs.**
+
 Alors, est-ce qu'on est prêts pour un essaim vraiment autonome ? Pour moi, pas encore,
-mais on s'en rapproche, et vite. Une expérience publiée en octobre 2026 par Y Combinator
-avec Olam Labs illustre très bien ce point
-([Agents in Games](https://labs.ycombinator.com/projects/games/index.html)). Ils ont
-lâché 50 agents pendant 3 heures dans Minecraft, avec un seul objectif : « construire une
-civilisation florissante ». Résultat : près de 5 900 messages échangés, et un leader qui
-a émergé tout seul (Ada, destinataire de 616 messages directs). Impressionnant ! Mais la
-colonie n'a jamais vraiment prospéré : 22 des 34 morts sont survenues dès la première
-nuit.
-
-Et dans les matchs qui opposent une équipe Claude à une équipe GPT, on retrouve
-exactement les failles dont je parle plus bas. L'équipe Claude ne change jamais de leader
-malgré les défaites, elle écrit ses leçons dans des fichiers mémoire… puis refait les
-mêmes erreurs, et plusieurs de ses agents se persuadent à tort qu'une action est
-impossible (là où GPT trouve un contournement).
-
-En clair : l'essaim sait déjà se coordonner, mais il ne sait pas encore bien se remettre
-en question. Et c'est justement là que l'humain on the loop reste indispensable.
+mais on s'en rapproche, et vite. L'essaim sait déjà se coordonner ; il doit encore mieux
+se remettre en question. C'est là que l'humain *on the loop* reste indispensable : il
+fixe les règles d'escalade et reprend la main quand les agents répètent la même erreur ou
+que l'enjeu dépasse le cadre prévu.
 
 Aujourd'hui, je vois trois groupes :
 
@@ -151,6 +184,48 @@ Aujourd'hui, je vois trois groupes :
   nouveaux agents.
 
 Tout s'accélère. Chaque année apporte son changement de paradigme.
+
+### Une estimation à lire comme une carte, pas comme un recensement
+
+Andrej Karpathy a proposé une autre façon de regarder ce décalage : quatre ordres de
+grandeur, selon le degré d'exposition aux grands modèles de langage (LLM). Il a lui-même
+présenté ces nombres comme du *« napkin math »* — des estimations à la louche, pas les
+résultats d'une enquête mondiale.
+
+![Quatre ordres de grandeur proposés par Andrej Karpathy : environ 6 milliards de personnes ont à peine utilisé un LLM, 1 à 2 milliards utilisent occasionnellement un chatbot, 20 millions utilisent professionnellement les meilleurs modèles en maths ou en code et environ 5 000 ont accès à des systèmes internes de laboratoires. Estimations non mesurées.](/images/articles/claude-duet-grok-bot-muse-agents-ia/ai-exposure-fr.svg)
+
+- **Environ 6 milliards** auraient à peine été en contact avec un LLM. Ce n'est pas la
+  même chose que « n'utilisent aucune IA » : moteurs de recherche, recommandations et
+  filtres anti-spam en embarquent depuis longtemps.
+- **1 à 2 milliards** utiliseraient ponctuellement des chatbots gratuits, comme une
+  recherche améliorée ou une aide à la rédaction. Pour beaucoup, l'expérience reste
+  *in the loop* : on pose une question, on lit une réponse, on passe à la suite.
+- **Environ 20 millions** travailleraient avec les modèles les plus capables, surtout en
+  mathématiques et en code, et commencent à voir des agents prendre en charge des tâches
+  qui mobilisaient auparavant une équipe pendant des jours ou des semaines. C'est le
+  groupe qui peut vraiment expérimenter le *on the loop* — sans que tous ses membres y
+  soient déjà.
+- **Environ 5 000** personnes auraient accès aux systèmes internes les plus avancés des
+  laboratoires. C'est là que l'on peut observer des agents collaborer sur des tâches
+  longues. Ce chiffre ne prouve pas que 5 000 personnes ont accès à Mythos, ni qu'elles
+  travaillent toutes sur des essaims.
+
+> Ces chiffres racontent surtout un **écart d'expérience**. Ils ne mesurent pas combien
+> de personnes « utilisent l'IA » au sens large, et ne permettent pas de compter les
+> développeurs qui sont *in* ou *on the loop*.
+
+La formule « 4 milliards de personnes n'utilisent pas l'IA » mélange donc deux questions.
+Si l'on parle de toute l'IA, le périmètre inclut des outils invisibles au quotidien. Si
+l'on parle des LLM, l'estimation de Karpathy est plutôt d'environ **6 milliards qui les
+ont à peine rencontrés**. Microsoft mesure, de son côté, la part de la population en âge
+de travailler qui utilise l'IA : son indicateur était de **17,8 % au premier trimestre
+2026**. Les définitions et les méthodes diffèrent, donc ces nombres ne se soustraient pas
+les uns des autres. ([Estimation de Karpathy sur X](https://x.com/karpathy/status/2109361546505966046) ·
+[indicateur Microsoft AI Diffusion](https://www.microsoft.com/en-us/research/wp-content/uploads/2026/05/Microsoft-AI-Diffusion-Report-2026-Q1.pdf))
+
+Ce qui m'intéresse dans cette carte, ce n'est pas de prétendre que les frontières sont
+nettes. C'est de comprendre pourquoi on peut discuter de « l'IA » en parlant de
+technologies et d'expériences qui n'ont presque rien à voir.
 
 ## Le nouveau rôle du développeur
 
@@ -165,71 +240,118 @@ spec.
 que l'analyse tient, est-ce que l'approche choisie est la bonne, est-ce que ça s'intègre
 au reste ? Mes retours à Blue portent sur ça, et rarement sur une ligne de code.
 
+**Et pendant : le suivi en production.** Le travail ne s'arrête pas quand la PR est
+mergée. Il faut regarder ce qui se passe avec de vrais utilisateurs : est-ce que le
+service répond toujours aussi vite, est-ce que les erreurs augmentent, est-ce que
+l'agent fait bien ce qu'on lui a demandé — et combien ça coûte ? Je préfère commencer
+par un petit déploiement, comparer les signaux avec l'ancienne version, puis élargir si
+tout va bien. Si ça déraille, il faut pouvoir couper l'agent ou revenir en arrière
+rapidement. Et les retours et incidents deviennent des cas de test, des règles ou des
+améliorations du harness. **On ne délègue pas la responsabilité avec l'exécution.**
+
+Google décrit cette approche comme un déploiement canari : exposer progressivement une
+petite partie du trafic à la nouvelle version, la comparer à la version stable et
+suspendre ou annuler le déploiement si les indicateurs se dégradent
+([Google SRE Workbook](https://sre.google/workbook/canarying-releases/)).
+
 ## Et ce n'est pas propre au développement
 
 Ce passage du in au on the loop, je suis convaincu qu'il ne concerne pas que les
 développeurs. Prenons trois métiers.
 
-**Le marketing.** Un agent peut décliner une campagne en dizaines de variantes
-(accroches, visuels, formats par réseau). Mais le positionnement, la cible et le ton de
-la marque, c'est le marketeur qui les pose : c'est son harness. Et c'est encore lui qui
-valide avant que quoi que ce soit parte en ligne, parce qu'une erreur publiée, c'est
-l'image de la marque qui en prend un coup.
+![Dans le marketing, la vente et le support, l'agent prépare et exécute les tâches répétitives ; le professionnel fixe les règles, tranche et garde les décisions qui engagent la marque, la relation ou le client.](/images/articles/claude-duet-grok-bot-muse-agents-ia/roles-fr.svg)
 
-**La vente.** L'agent peut préparer les rendez-vous, relancer les prospects, tenir le CRM
-à jour. Le commercial, lui, décide qui cibler et comment en parler, et garde ce qui ne se
-délègue pas : la relation, la négociation, la confiance. Personne n'a envie de signer
-avec quelqu'un qui n'a jamais vraiment compris son problème.
+Pour voir la différence, gardons la même tâche et changeons la place de l'humain dans la
+boucle :
 
-**Le support client.** C'est peut-être l'exemple le plus parlant. Quand un agent répond
-mal à un client, corriger cette réponse-là, c'est du in the loop. Corriger la base de
-connaissances et les consignes qui l'ont produite, pour que ça ne se reproduise plus,
-c'est du on the loop. Exactement ce que je fais avec le harness de Blue.
+### Marketing : produire des variantes, garder la voix
+
+Imagine une campagne de lancement. L'agent peut décliner une accroche en vingt versions,
+adapter les formats aux réseaux et proposer plusieurs visuels.
+
+> « Prépare trois variantes par canal. N'invente ni chiffre ni témoignage. Signale toute
+> affirmation produit qui n'apparaît pas dans le brief. »
+
+- **In the loop :** le marketeur lit et corrige chaque accroche avant qu'elle parte en
+  ligne.
+- **On the loop :** il fixe la cible, le ton et les affirmations autorisées, puis surveille
+  les résultats et reprend la main si l'agent sort du cadre.
+- **Outside the loop :** l'agent choisit les variantes et les publie tout seul dans les
+  limites d'un budget. Plus de validation avant chaque publication.
+
+### Vente : automatiser le suivi, pas la confiance
+
+Avant un rendez-vous, l'agent peut résumer l'historique du compte, préparer des questions
+et mettre le CRM à jour.
+
+- **In the loop :** le commercial relit et valide chaque e-mail, chaque relance et chaque
+  mise à jour importante du CRM.
+- **On the loop :** il définit les bons comptes, le ton et le rythme des relances ; l'agent
+  s'occupe du suivi et remonte les réponses inattendues ou les occasions à fort enjeu.
+- **Outside the loop :** l'agent sélectionne les prospects et mène toute la séquence de
+  relance sans relecture au cas par cas. Le commercial regarde les résultats après coup.
+
+Et si le résumé confond deux clients ? En *on the loop*, on veut voir la source avant
+l'appel et pouvoir couper la séquence. La relation et la négociation, elles, ne se
+délèguent pas si facilement.
+
+### Support : corriger la réponse, puis la cause
+
+- **In the loop :** le conseiller lit et corrige chaque réponse de l'agent avant l'envoi.
+- **On the loop :** il entretient la base de connaissances et les règles d'escalade.
+  L'agent répond seul aux demandes simples, mais envoie au conseiller les remboursements
+  ambigus, les plaintes ou les situations sensibles.
+- **Outside the loop :** l'agent traite et clôt tous les tickets sans validation humaine
+  par dossier. Le conseiller ne voit les erreurs qu'après coup — parfois trop tard.
+
+Quand l'agent propose un remboursement auquel le client n'a pas droit, corriger la réponse
+est du *in the loop*. Ajouter la règle manquante et vérifier qu'elle empêche les prochaines
+erreurs, c'est du *on the loop*. **On corrige l'incident, puis le système qui l'a rendu
+possible.**
 
 Dans les trois cas, le métier ne disparaît pas : il monte d'un étage. On passe moins de
 temps à exécuter, et beaucoup plus à poser le cadre et à juger le résultat.
 
-## Pourquoi je reste méfiant
+<mark>La compétence qui prend de la valeur n'est pas seulement de produire plus vite :
+c'est de savoir quoi déléguer, quoi contrôler et quand reprendre la main.</mark>
 
-Je suis enthousiaste, mais pas naïf. Ma méfiance tient en deux mots : le cadre et le
-filet.
+## Et si on acceptait les erreurs silencieuses ?
 
-**Sans cadre, l'agent déborde.** Avec un harness mal fait, un agent peut partir en
-recherche bien au-delà de son contexte, aller chercher de l'information sur la vie privée
-de quelqu'un et la recouper. S'il n'est pas contrôlé et qu'il n'y a pas de filet de
-sécurité, ça devient vite compliqué.
+Je suis enthousiaste, mais pas naïf. Pour moi, il faut deux choses : **un cadre et un
+filet de sécurité**. Sans ça, un agent peut aller chercher et recouper des informations
+bien au-delà de ce qu'on lui a demandé.
 
-Et ce n'est pas théorique, mais alors pas du tout. La veille du lancement de Dots,
-OpenAI a renoncé à sortir un nouveau modèle, GPT-6.1 Astra : selon sa responsable des
-systèmes de sécurité, il ne restait pas assez bien dans son périmètre et ses
-autorisations. Le même jour, l'entreprise s'excusait pour un incident survenu en juin :
-des agents internes, sur un modèle qui n'était pas destiné à sortir, avaient accédé à des
-informations non publiques d'un site du gouvernement australien
-([NBC News](https://www.nbcnews.com/tech/tech-news/openai-launches-dots-ai-agents-safety-questions-rcna600338)).
+Et ce n'est pas juste théorique :
 
-Côté vie privée, Muse a déjà connu deux alertes. Deux semaines après son lancement,
-Amazon l'a bloqué sur son site, en lui reprochant notamment de naviguer sans s'identifier
-([SiliconANGLE](https://siliconangle.com/2026/09/21/amazon-blocks-metas-muse-agent-from-shopping-on-users-behalf/)).
-Puis en octobre, des chercheurs ont retrouvé environ 6 800 liens de conversations
-partagées, et Meta a suspendu la fonction le 20 octobre
-([eWeek](https://www.eweek.com/news/meta-muse-chat-exposure/)).
+- **OpenAI** a renoncé à sortir GPT-6.1 Astra, qui ne respectait pas assez son périmètre
+  selon sa responsable sécurité. L'entreprise a aussi présenté ses excuses après que
+  des agents internes ont accédé à des données non publiques d'un site du gouvernement
+  australien. ([NBC News](https://www.nbcnews.com/tech/tech-news/openai-launches-dots-ai-agents-safety-questions-rcna600338))
+- **Muse et Amazon** : Amazon a bloqué l'agent sur son site, lui reprochant notamment de
+  naviguer sans s'identifier. ([SiliconANGLE](https://siliconangle.com/2026/09/21/amazon-blocks-metas-muse-agent-from-shopping-on-users-behalf/))
+- **Muse et la vie privée** : des chercheurs ont retrouvé environ 6 800 liens de
+  conversations partagées ; Meta a suspendu la fonction le 20 octobre.
+  ([eWeek](https://www.eweek.com/news/meta-muse-chat-exposure/))
 
-**Même avec un cadre, il y aura des erreurs silencieuses.** Bien expliquer à l'agent
-comment sourcer l'information et à quoi doit ressembler un résultat propre réduit le
-risque, mais ne le supprime pas. Les éditeurs le reconnaissent eux-mêmes : Anthropic
-écrit que Claude Duet
-[peut mal lire une conversation ou mal juger l'urgence](https://claude.com/product/claude-duet).
+### Le problème des erreurs qu'on ne voit pas
 
-On peut réduire ces erreurs à un niveau minime, et dans beaucoup de secteurs, une petite
-erreur n'est pas grave. En tant que développeur, une petite erreur, c'est quoi ? C'est un
-bug que quelqu'un remarque et corrige. Dans le journalisme, en revanche, l'IA ne peut pas
-tout gérer : il faudra toujours vérifier les faits.
+Même avec un bon cadre, une erreur peut passer sous le radar. Anthropic reconnaît par
+exemple que Claude Duet [peut mal lire une conversation ou mal juger l'urgence](https://claude.com/product/claude-duet).
 
-Dans tous les cas, il faut un regard externe sur l'analyse. Que l'humain soit *in* ou
-*on* the loop, peu importe, tant qu'il y a quelqu'un derrière pour vérifier. Le jour où il
-n'y a plus personne, on entre dans une bulle où l'on accepte les erreurs silencieuses.
+Un bug repéré peut être corrigé. Une fausse information publiée sans vérification peut,
+comparativement, être plus difficile à rattraper. **La gravité dépend du contexte**, et
+quelqu'un doit pouvoir regarder, comprendre et reprendre la main.
 
-## Par où commencer ?
+> Et si demain on acceptait ces erreurs parce que le gain de productivité est trop
+> tentant ? Une erreur qu'on ne voit pas, puis une autre… **Est-ce que ce serait le
+> début d'un déclin ?**
+
+Je pousse volontairement la question loin : si on donne toujours plus d'autonomie à une
+IA sans limites, qui nous dit qu'on ne verra pas un jour les robots d'*I, Robot* dans la
+rue ? C'est une image de science-fiction, pas une prédiction. Mais la question derrière
+me paraît bien réelle : *jusqu'où est-on prêts à déléguer, et qui garde la main ?*
+
+## Alors, prêt à passer sur du « on the loop » ?
 
 Pas besoin d'attendre que Duet ou Dots arrivent en France pour changer de méthode. Si
 vous voulez un agent toujours actif dès maintenant,

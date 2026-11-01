@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">Agent swarm workflow</title>
+  <desc id="desc">A person sets a goal and constraints, a coordinator distributes work to three agents, their output is checked, and a feedback loop returns important decisions to the person.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#77747d"/></marker>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#fff" opacity=".08"/></pattern>
+  </defs>
+  <rect width="1200" height="560" rx="28" fill="#111013"/>
+  <rect width="1200" height="560" rx="28" fill="url(#dots)"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="62" y="168" width="204" height="170" rx="24" fill="#262529" stroke="#fbd52b" stroke-width="2"/>
+    <circle cx="145" cy="223" r="17" fill="#fbd52b" stroke="none"/>
+    <path d="M113 292c2-29 15-45 32-45s30 16 32 45" fill="#fbd52b" stroke="none"/>
+    <path d="M198 207h35m-35 18h27m-27 18h32" stroke="#aaa8ae" stroke-width="5"/>
+    <path d="M273 253h72" stroke="#77747d" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="358" y="168" width="208" height="170" rx="24" fill="#262529"/>
+    <circle cx="462" cy="224" r="31" stroke="#fbd52b" stroke-width="4"/>
+    <circle cx="462" cy="224" r="8" fill="#fbd52b" stroke="none"/>
+    <path d="M462 188v-14m0 100v-14m-36-36h-14m100 0h-14m-61-25-10-10m70 70-10-10m0-50 10-10m-70 70 10-10" stroke="#fbd52b" stroke-width="4"/>
+    <path d="M574 253h46M620 183v140m0-140h38m-38 70h38m-38 70h38" stroke="#77747d" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <g>
+      <circle cx="704" cy="183" r="45" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+      <circle cx="697" cy="176" r="12" stroke="#fbd52b" stroke-width="4"/><path d="m706 185 11 11" stroke="#fbd52b" stroke-width="4"/>
+      <circle cx="704" cy="253" r="45" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+      <path d="m688 239 16 14-16 14m32-28-16 14 16 14" stroke="#fbd52b" stroke-width="4"/>
+      <circle cx="704" cy="323" r="45" fill="#242326" stroke="#4a484d" stroke-width="2"/>
+      <path d="m683 323 14 14 28-31" stroke="#fbd52b" stroke-width="5"/>
+    </g>
+    <path d="M758 253h82" stroke="#77747d" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="852" y="168" width="150" height="170" rx="24" fill="#262529"/>
+    <path d="m890 247 23 23 49-56" stroke="#fbd52b" stroke-width="8"/>
+    <path d="M1010 253h76" stroke="#77747d" stroke-width="3" marker-end="url(#arrow)"/>
+    <rect x="1095" y="168" width="48" height="170" rx="20" fill="#262529" stroke="#fbd52b" stroke-width="2"/>
+    <circle cx="1119" cy="223" r="8" fill="#fbd52b" stroke="none"/>
+    <path d="M1105 284c1-19 7-29 14-29s13 10 14 29" fill="#fbd52b" stroke="none"/>
+
+    <path d="M1118 354v76H157v-76" stroke="#fbd52b" stroke-width="2" stroke-dasharray="8 8" marker-end="url(#arrow)"/>
+    <rect x="344" y="442" width="586" height="58" rx="18" fill="#262529" stroke="#4b494f" stroke-width="2"/>
+    <circle cx="390" cy="471" r="10" fill="#fbd52b" stroke="none"/>
+    <path d="M414 471h80m24 0h80m24 0h80m24 0h80" stroke="#77747d" stroke-width="4" stroke-dasharray="3 10"/>
+    <path d="m833 471 10 10 19-21" stroke="#fbd52b" stroke-width="4"/>
+  </g>
+</svg>

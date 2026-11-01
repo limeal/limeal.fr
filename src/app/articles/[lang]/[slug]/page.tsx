@@ -27,6 +27,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   if (!post) return {};
 
   const url = `${CANONICAL_ORIGIN}${postPath(post.lang, post.slug)}`;
+  const shareImage = `${url}/opengraph-image`;
   const langs = await getPostLangs(post.slug);
   const original = langs.find((l) => l === post.translatedFrom) ?? post.lang;
 
@@ -55,7 +56,12 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       authors: [AUTHOR],
       tags: post.tags,
     },
-    twitter: { card: "summary", title: post.title, description: post.description },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: [{ url: shareImage, alt: post.title }],
+    },
   };
 }
 
