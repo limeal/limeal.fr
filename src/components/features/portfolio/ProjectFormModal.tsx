@@ -8,7 +8,7 @@ import { LuCamera, LuGlobe, LuLock } from "react-icons/lu";
 
 import Project, { ProjectDetails } from "@/interfaces/project";
 import { uploadFile } from "@/firebase/storage";
-import { saveProject } from "@/firebase/store/project";
+import { useSaveProject } from "@/hooks/queries/portfolio";
 import { useLangContext } from "@/contexts/LangContext";
 import Modal from "@/components/ui/Modal";
 import FormField, { fieldStyles } from "@/components/ui/FormField";
@@ -112,13 +112,11 @@ const ProjectFormModal = ({
   project,
   vaultCode,
   onClose,
-  refresh,
 }: {
   project?: Project;
   // Admin's vault code, where the private details are stored
   vaultCode: string | null;
   onClose: () => void;
-  refresh: () => void;
 }) => {
   const editing = !!project;
   const details = project?.details;
@@ -143,6 +141,7 @@ const ProjectFormModal = ({
   const [capturing, setCapturing] = useState(false);
 
   const { getTranslation } = useLangContext();
+  const save = useSaveProject();
 
   const isPro = kind === "pro";
   // Pro links and images are only stored once the vault exists
@@ -208,11 +207,10 @@ const ProjectFormModal = ({
         ? { company, name: realName, external_link: extLink, github, thumbnail: { ref: imageRef } }
         : null;
 
-      await saveProject(publicCard, privateDetails, vaultCode);
+      await save.mutateAsync({ project: publicCard, details: privateDetails, vaultCode });
 
       toast.success(getTranslation("portfolio--add-success"));
       onClose();
-      refresh();
     } catch (error: any) {
       toast.error(getTranslation("portfolio--add-error"));
     }

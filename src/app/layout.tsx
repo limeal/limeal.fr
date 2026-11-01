@@ -49,6 +49,13 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className={`${satoshi.variable} dark`} suppressHydrationWarning>
+      <head>
+        {/* Chakra's cascade layers, declared before any style. The first mention
+            of a layer fixes its priority: if Emotion injects a component style
+            (layer "recipes") ahead of Chakra's global sheet, the reset layer
+            would win over the recipes (e.g. Container margins/padding lost). */}
+        <style>{"@layer reset, base, tokens, recipes;"}</style>
+      </head>
       <body>
         <Providers brand={brand}>{children}</Providers>
         <Analytics />

@@ -1,21 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import moment from "moment";
-import { getDownloadURL, ref } from "firebase/storage";
 import { Box, chakra, Container, Flex, Heading, HStack, IconButton, Input, Stack, Text } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { LuArrowLeft, LuArrowRight, LuCalendar, LuMapPin, LuRefreshCcw, LuTrash2 } from "react-icons/lu";
 
-import Article from "@/interfaces/article";
 import Comment from "@/interfaces/comment";
 import Like from "@/interfaces/like";
-import { storage } from "@/firebase/firebase";
-import { getArticlesFromParam } from "@/firebase/store/article";
-import { addComment, deleteComment, getCommentsFromParam } from "@/firebase/store/comment";
-import { addLike, deleteLike, getLikesFromEntity } from "@/firebase/store/like";
+import {
+  useAddComment,
+  useArticle,
+  useArticleImages,
+  useArticleLikes,
+  useComments,
+  useDeleteComment,
+  useToggleLike,
+} from "@/hooks/queries/blog";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLangContext } from "@/contexts/LangContext";
 import { getCurrentTimeInLetter } from "@/utils/time";
@@ -57,11 +60,6 @@ const LikeButton = ({ liked, count, onClick }: { liked: boolean; count?: number;
 );
 
 const ArticleView = ({ slug }: { slug: string }) => {
-  const [article, setArticle] = useState<Article | null>(null);
-  const [error, setError] = useState(false);
-  const [images, setImages] = useState<string[]>([]);
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [likes, setLikes] = useState<Like[]>([]);
   const [comment, setComment] = useState<string>("");
   const [currentImage, setCurrentImage] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -71,83 +69,48 @@ const ArticleView = ({ slug }: { slug: string }) => {
   const { lang } = useLangContext();
   const isAdmin = useIsAdmin();
 
-  useEffect(() => {
-    getArticlesFromParam("slug", slug)
-      .then((articles: Article[]) => setArticle(articles ? articles[0] : null))
-      .catch(() => setError(true));
-  }, [slug]);
+  const { data: article, isError: error, isPending } = useArticle(slug);
+  const { data: images = [] } = useArticleImages(article);
+  const { data: comments = [], refetch: refetchComments } = useComments(article?.id);
+  const { data: likes = [] } = useArticleLikes(article?.id);
 
-  const refreshComments = (isClick?: boolean) => {
-    getCommentsFromParam("article_ref", article?.id || "").then((comments: Comment[]) => {
-      setComments(comments);
-      if (isClick) toast.success("Commentaires rafraîchis !");
-    });
-  };
-
-  const refreshLikes = () => {
-    getLikesFromEntity({ type: "article", ref: article?.id || "" }).then(setLikes);
-  };
-
-
-
-  // Comments, likes and image URLs of the loaded article
-  useEffect(() => {
-    if (!article) return;
-    let stale = false;
-    const ifCurrent = <T,>(apply: (value: T) => void) => (value: T) => {
-      if (!stale) apply(value);
-    };
-
-    getCommentsFromParam("article_ref", article.id || "").then(ifCurrent(setComments));
-    getLikesFromEntity({ type: "article", ref: article.id || "" }).then(ifCurrent(setLikes));
-    Promise.all(article.images.map((image) => getDownloadURL(ref(storage, image.ref)).catch(() => null))).then(
-      ifCurrent((urls) => setImages(urls.filter((url): url is string => !!url)))
-    );
-
-    return () => {
-      stale = true;
-    };
-  }, [article]);
+  const postComment = useAddComment();
+  const removeComment = useDeleteComment();
+  const toggleLikeMutation = useToggleLike(article?.id ?? "");
 
   const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
-    addComment({
-      article_ref: article?.id || "",
-      author_id: user?.uid || "",
-      content: comment || "",
-      created_at: moment().format("YYYY-MM-DD"),
-    })
-      .then(() => {
-        toast.success("Commentaire ajouté !");
-        setComment("");
-        refreshComments(false);
-      })
-      .catch(() => toast.error("Erreur lors de l'ajout du commentaire !"));
+    postComment.mutate(
+      {
+        article_ref: article?.id || "",
+        author_id: user?.uid || "",
+        content: comment || "",
+        created_at: moment().format("YYYY-MM-DD"),
+      },
+      {
+        onSuccess: () => {
+          toast.success("Commentaire ajouté !");
+          setComment("");
+        },
+        onError: () => toast.error("Erreur lors de l'ajout du commentaire !"),
+      }
+    );
   };
 
-  const toggleLike = (existing: Like | undefined, like: Like, label: string, onDone: () => void) => {
-    if (existing) {
-      deleteLike(existing).then(() => {
-        toast.success(`${label} unliké !`);
-        onDone();
-      });
-      return;
-    }
-    addLike(like).then(() => {
-      toast.success(`${label} liké !`);
-      onDone();
-    });
-  };
+  const toggleLike = (existing: Like | undefined, like: Like, label: string) =>
+    toggleLikeMutation.mutate(
+      { existing, like },
+      { onSuccess: () => toast.success(`${label} ${existing ? "unliké" : "liké"} !`) }
+    );
 
   const handleLike = (e: React.MouseEvent) => {
     e.preventDefault();
     toggleLike(
       likes.find((like) => like.author_id === user?.uid),
       { entity_type: "article", entity_ref: article?.id || "", author_id: user?.uid || "" },
-      "Article",
-      refreshLikes
+      "Article"
     );
   };
 
@@ -156,22 +119,18 @@ const ArticleView = ({ slug }: { slug: string }) => {
     toggleLike(
       comment.likes?.find((like) => like.author_id === user?.uid),
       { entity_type: "comment", entity_ref: comment.id || "", author_id: user?.uid || "" },
-      "Commentaire",
-      () => refreshComments(false)
+      "Commentaire"
     );
   };
 
-  const handleCommentDelete = (comment: Comment) => {
-    deleteComment(comment)
-      .then(() => {
-        toast.success("Commentaire supprimé !");
-        refreshComments(false);
-      })
-      .catch(() => toast.error("Erreur lors de la suppression du commentaire !"));
-  };
+  const handleCommentDelete = (comment: Comment) =>
+    removeComment.mutate(comment, {
+      onSuccess: () => toast.success("Commentaire supprimé !"),
+      onError: () => toast.error("Erreur lors de la suppression du commentaire !"),
+    });
 
-  if (error) return <Text p="10">Error</Text>;
-  if (article == null) return <Loader />;
+  if (isPending) return <Loader />;
+  if (error || !article) return <Text p="10">Error</Text>;
 
   const translation = getTranslated(article, lang);
   const lastImage = article.images.length - 1;
@@ -254,7 +213,7 @@ const ArticleView = ({ slug }: { slug: string }) => {
           <Heading as="h2" fontSize="2xl" fontWeight="black">
             Commentaires
           </Heading>
-          <IconButton aria-label="Refresh" variant="plain" color="muted" _hover={{ color: "lime" }} onClick={() => refreshComments(true)}>
+          <IconButton aria-label="Refresh" variant="plain" color="muted" _hover={{ color: "lime" }} onClick={() => refetchComments().then(() => toast.success("Commentaires rafraîchis !"))}>
             <LuRefreshCcw />
           </IconButton>
         </HStack>

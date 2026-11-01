@@ -2,12 +2,11 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 
-import { ensureVaultMarker, getVaultCode } from "@/firebase/store/project";
+import { useQueryClient } from "@tanstack/react-query";
+
 import {
   AccessRequest,
   completeAccessLink,
-  getAccessSettings,
-  getMyRequest,
   isAccessLink,
   logAccessEvent,
   logTraffic,
@@ -17,6 +16,8 @@ import { signOut } from "@/firebase/authentication";
 import { useAuthContext } from "@/contexts/AuthContext";
 import { useLangContext } from "@/contexts/LangContext";
 import useIsAdmin from "@/hooks/useIsAdmin";
+import { queryKeys } from "@/hooks/queries/keys";
+import { useAccessSettings, useMyAccessRequest, useVaultCode } from "@/hooks/queries/access";
 import { toast } from "@/components/ui/Toaster";
 
 const VISIT_LOGGED_KEY = "visit-logged";
@@ -118,22 +119,28 @@ export const RecruiterAccessProvider = ({ children }: { children: React.ReactNod
   const [channel] = useState(detectChannel);
   // Back from an access e-mail: not ready until the sign-in link is processed
   const [ready, setReady] = useState(() => !isAccessLink(window.location.href));
-  const [channelBlocked, setChannelBlocked] = useState(false);
 
   const { user } = useAuthContext();
   const isAdmin = useIsAdmin();
   const { getTranslation } = useLangContext();
+  const queryClient = useQueryClient();
 
-  // Fetched values are tagged with what they belong to, and only used while it
-  // still matches: no state needs resetting when the user or access changes
-  const [fetchedRequest, setFetchedRequest] = useState<{ uid: string; value: AccessRequest | null } | null>(null);
-  const [fetchedCode, setFetchedCode] = useState<{ for: "admin" | "recruiter"; code: string | null } | null>(null);
+  // Signed-in visitor: are they a recruiter, and approved?
+  const request = useMyAccessRequest(user, !isAdmin).data ?? null;
+  const approved = !isAdmin && request?.status === "approved";
 
-  const request = user && !isAdmin && fetchedRequest?.uid === user.uid ? fetchedRequest.value : null;
-  const approved = request?.status === "approved";
-  const adminCode = isAdmin && fetchedCode?.for === "admin" ? fetchedCode.code : null;
-  const recruiterCode = approved && fetchedCode?.for === "recruiter" ? fetchedCode.code : null;
-  const setAdminCode = useCallback((code: string) => setFetchedCode({ for: "admin", code }), []);
+  // The vault code: rules let the admin and approved recruiters read it
+  const adminCode = useVaultCode("admin", user?.uid, isAdmin).data ?? null;
+  const recruiterCode = useVaultCode("recruiter", user?.uid, approved).data ?? null;
+  const setAdminCode = useCallback(
+    (code: string) => {
+      if (user) queryClient.setQueryData(queryKeys.vaultCode("admin", user.uid), code);
+    },
+    [queryClient, user]
+  );
+
+  const settings = useAccessSettings(!!channel).data;
+  const channelBlocked = !!channel && !!settings?.blocked.includes(channel);
 
   const requestAccess = useCallback(
     async (details: { email: string; name: string; company: string }) => {
@@ -165,14 +172,13 @@ export const RecruiterAccessProvider = ({ children }: { children: React.ReactNod
     const fromUrl = urlChannel(url);
     // Remember this visit's channel for a later access request
     if (channel) safe(() => sessionStorage.setItem(CHANNEL_KEY, channel), undefined);
-    if (channel) getAccessSettings().then(({ blocked }) => setChannelBlocked(blocked.includes(channel)));
 
     if (!isAccessLink(window.location.href)) return;
 
     completeAccessLink(window.location.href, () => window.prompt(getTranslation("access--confirm-email")))
       .then((filed) => {
         if (!filed) return;
-        setFetchedRequest({ uid: filed.uid, value: filed });
+        queryClient.setQueryData(queryKeys.accessRequest(filed.uid), filed);
         toast.success(
           getTranslation(filed.status === "approved" ? "portfolio--access-granted" : "access--pending-title")
         );
@@ -190,12 +196,6 @@ export const RecruiterAccessProvider = ({ children }: { children: React.ReactNod
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Signed-in visitor: are they a recruiter, and approved?
-  useEffect(() => {
-    if (!user || isAdmin) return;
-    getMyRequest(user).then((value) => setFetchedRequest({ uid: user.uid, value }));
-  }, [user, isAdmin]);
-
   // One "visit" per session in the recruiter's journal
   useEffect(() => {
     if (!request) return;
@@ -204,18 +204,6 @@ export const RecruiterAccessProvider = ({ children }: { children: React.ReactNod
     safe(() => sessionStorage.setItem(key, "1"), undefined);
     logAccessEvent(request.uid, "visit");
   }, [request]);
-
-  // The vault code: rules let the admin and approved recruiters read it
-  useEffect(() => {
-    if (isAdmin) {
-      getVaultCode().then((code) => {
-        setFetchedCode({ for: "admin", code });
-        if (code) ensureVaultMarker(code).catch(() => undefined);
-      });
-    } else if (approved) {
-      getVaultCode().then((code) => setFetchedCode({ for: "recruiter", code }));
-    }
-  }, [isAdmin, approved]);
 
   return (
     <RecruiterAccessContext.Provider

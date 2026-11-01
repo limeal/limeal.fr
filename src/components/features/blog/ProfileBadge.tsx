@@ -9,7 +9,7 @@ import Profile from "@/interfaces/profile";
 import ProfileModal from "./ProfileModal";
 
 // Avatar + username of the signed-in reader; click to edit
-const ProfileBadge = ({ profile, setProfile }: { profile: Profile; setProfile: (profile: any) => void }) => {
+const ProfileBadge = ({ profile }: { profile: Profile }) => {
   const [editing, setEditing] = useState(false);
 
   if (!profile) return null;
@@ -17,7 +17,7 @@ const ProfileBadge = ({ profile, setProfile }: { profile: Profile; setProfile: (
   return (
     <>
       {editing && (
-        <ProfileModal mode="edit" profile={profile} setProfile={setProfile} onClose={() => setEditing(false)} />
+        <ProfileModal mode="edit" profile={profile} onClose={() => setEditing(false)} />
       )}
       <HStack
         as="button"

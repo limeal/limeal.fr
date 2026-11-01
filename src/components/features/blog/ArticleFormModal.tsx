@@ -8,6 +8,7 @@ import Article from "@/interfaces/article";
 import { uploadFile } from "@/firebase/storage";
 import { addArticle, updateArticle } from "@/firebase/store/article";
 import { useLangContext } from "@/contexts/LangContext";
+import { useInvalidateArticles } from "@/hooks/queries/blog";
 import { sendEmailNewArticle } from "@/utils/article";
 import Modal from "@/components/ui/Modal";
 import FormField, { fieldStyles } from "@/components/ui/FormField";
@@ -29,13 +30,13 @@ const ArticleFormModal = ({
   mode,
   article,
   onClose,
-  refresh,
 }: {
   mode: "create" | "edit";
   article?: Article | null;
   onClose: () => void;
-  refresh: () => void;
 }) => {
+  // Lists and article pages refetch after a save
+  const refresh = useInvalidateArticles();
   const { lang, langs } = useLangContext();
 
   // Per-language field of the edited article, as a Map lang → value

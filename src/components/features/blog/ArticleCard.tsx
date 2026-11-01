@@ -10,6 +10,7 @@ import { MdPublish, MdUnpublished } from "react-icons/md";
 import Article from "@/interfaces/article";
 import { deleteArticle, publishArticle } from "@/firebase/store/article";
 import { useLangContext } from "@/contexts/LangContext";
+import { useInvalidateArticles } from "@/hooks/queries/blog";
 import { sendEmailNewArticle } from "@/utils/article";
 import { getCurrentTimeInLetter } from "@/utils/time";
 import useIsAdmin from "@/hooks/useIsAdmin";
@@ -28,7 +29,8 @@ const actionStyle = {
   _hover: { color: "lime" },
 } as const;
 
-const ArticleCard = ({ article, refresh }: { article: Article; refresh: () => void }) => {
+const ArticleCard = ({ article }: { article: Article }) => {
+  const refresh = useInvalidateArticles();
   const [openEdit, setOpenEdit] = useState(false);
   const isAdmin = useIsAdmin();
   const { lang } = useLangContext();
@@ -65,7 +67,7 @@ const ArticleCard = ({ article, refresh }: { article: Article; refresh: () => vo
   return (
     <Card interactive h="full">
       {openEdit && (
-        <ArticleFormModal mode="edit" article={article} onClose={() => setOpenEdit(false)} refresh={refresh} />
+        <ArticleFormModal mode="edit" article={article} onClose={() => setOpenEdit(false)} />
       )}
       <Box position="relative" aspectRatio="588 / 400" overflow="hidden">
         <Box position="absolute" inset="0" transition="transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)" _groupHover={{ transform: "scale(1.05)" }}>

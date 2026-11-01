@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Article from "@/interfaces/article";
-import { getArticles } from "@/firebase/store/article";
+import { useArticles } from "@/hooks/queries/blog";
 import { useLangContext } from "@/contexts/LangContext";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import { toast } from "@/components/ui/Toaster";
@@ -12,44 +12,14 @@ import ArticleCard from "./ArticleCard";
 import ArticleFormModal from "./ArticleFormModal";
 import { getTranslated } from "./translation";
 
-// Drafts are only listed for the admin; newest first
-const sortVisible = (all: Article[], isAdmin: boolean) =>
-  (isAdmin ? all : all.filter((article) => article.published)).sort(
-    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  );
-
 const BlogSection = () => {
   const [country, setCountry] = useState<string>("");
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
 
   const isAdmin = useIsAdmin();
   const { lang, getTranslation } = useLangContext();
+  const { data: articles = [], isPending, refetch } = useArticles(isAdmin);
 
   const countryOf = (article: Article) => getTranslated(article, lang).place?.country;
-
-  const loadArticles = async () => {
-    setArticles(sortVisible(await getArticles(), isAdmin));
-    setLoading(false);
-  };
-
-  const refreshArticles = async (isClick: boolean) => {
-    if (isClick) setLoading(true);
-    await loadArticles();
-    if (isClick) toast.success("Blog refreshed !");
-  };
-
-  useEffect(() => {
-    let stale = false;
-    getArticles().then((all) => {
-      if (stale) return;
-      setArticles(sortVisible(all, isAdmin));
-      setLoading(false);
-    });
-    return () => {
-      stale = true;
-    };
-  }, [isAdmin]);
 
   // Derived from the articles so the filters follow the language switch
   const countries = [
@@ -65,15 +35,15 @@ const BlogSection = () => {
       filters={countries}
       selectedFilter={country}
       onFilterChange={setCountry}
-      loading={loading}
+      loading={isPending}
       items={country === "" ? articles : articles.filter((a) => countryOf(a) === country)}
       getKey={(article) => article.id ?? article.slug}
-      onRefresh={() => refreshArticles(true)}
+      onRefresh={() => refetch().then(() => toast.success("Blog refreshed !"))}
       renderItem={(article) => (
-        <ArticleCard article={article} refresh={() => refreshArticles(false)} />
+        <ArticleCard article={article} />
       )}
       renderAddModal={(close) => (
-        <ArticleFormModal mode="create" onClose={close} refresh={() => refreshArticles(false)} />
+        <ArticleFormModal mode="create" onClose={close} />
       )}
     />
   );
