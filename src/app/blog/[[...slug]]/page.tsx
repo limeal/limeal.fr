@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Error from "next/error";
 import { Container } from "@chakra-ui/react";
 
@@ -16,20 +16,21 @@ import ArticleView from "@/components/features/blog/ArticleView";
 import ProfileBadge from "@/components/features/blog/ProfileBadge";
 import ProfileModal from "@/components/features/blog/ProfileModal";
 
-const Page = ({
-  params,
-}: {
-  params: Record<string, string | string[]>;
-  searchParams: URLSearchParams;
-}) => {
+const Page = () => {
   const router = useRouter();
   const { user } = useAuthContext();
   const { isRecruiter } = useRecruiterAccess();
 
-  const [profileLoading, setProfileLoading] = useState<boolean>(true);
-  const [profile, setProfile] = useState<IProfile | any>(null);
+  // Profile of the signed-in user, tagged with whose it is so a user change
+  // reads as "loading" without resetting state in an effect
+  const [loaded, setLoaded] = useState<{ uid: string; profile: IProfile | null } | null>(null);
+  const profileLoading = !user || loaded?.uid !== user.uid;
+  const profile = profileLoading ? null : loaded?.profile ?? null;
+  const setProfile = (next: IProfile | null) => user && setLoaded({ uid: user.uid, profile: next });
 
-  const slug = params.slug ? params.slug[0] || "" : "";
+  // Optional catch-all: undefined on /blog, ["my-article"] on /blog/my-article
+  const { slug: slugParts } = useParams<{ slug?: string[] }>();
+  const slug = slugParts?.[0] ?? "";
 
   useEffect(() => {
     // Recruiter accounts only exist for the portfolio
@@ -38,10 +39,9 @@ const Page = ({
 
   useEffect(() => {
     if (!user) return;
-    setProfileLoading(true);
     getProfileFromId(user.uid)
-      .then(setProfile)
-      .finally(() => setProfileLoading(false));
+      .catch(() => null)
+      .then((next) => setLoaded({ uid: user.uid, profile: next }));
   }, [user]);
 
   if (!user) return <Error statusCode={401} title="Unauthorized. Redirecting..." />;

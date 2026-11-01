@@ -25,7 +25,16 @@ export const LangContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [lang, setLang] = React.useState<string>("en");
+  // Saved choice, read once. The server renders "en"; nothing it renders depends
+  // on the language (only the splash screen), so the client can differ.
+  const [lang, setLang] = React.useState<string>(() => {
+    if (typeof window === "undefined") return "en";
+    try {
+      return localStorage.getItem("lang") || "en";
+    } catch {
+      return "en";
+    }
+  });
 
   const updateLang = useCallback((lang: string) => {
     setLang(lang);
@@ -42,13 +51,6 @@ export const LangContextProvider = ({
     return '';
   }, [lang]);
 
-  React.useEffect(() => {
-    const savedLang = localStorage.getItem("lang");
-
-    if (savedLang) {
-      setLang(savedLang);
-    }
-  }, []);
 
   return (
     <LangContext.Provider value={{ langs: [

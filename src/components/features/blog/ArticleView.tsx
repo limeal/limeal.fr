@@ -88,23 +88,25 @@ const ArticleView = ({ slug }: { slug: string }) => {
     getLikesFromEntity({ type: "article", ref: article?.id || "" }).then(setLikes);
   };
 
-  const loadImages = async () => {
-    if (!article?.images) return;
 
-    const urls: string[] = [];
-    for (const image of article.images) {
-      try {
-        urls.push(await getDownloadURL(ref(storage, image.ref)));
-      } catch (err) {}
-    }
-    setImages(urls);
-  };
 
+  // Comments, likes and image URLs of the loaded article
   useEffect(() => {
-    refreshComments();
-    refreshLikes();
-    loadImages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!article) return;
+    let stale = false;
+    const ifCurrent = <T,>(apply: (value: T) => void) => (value: T) => {
+      if (!stale) apply(value);
+    };
+
+    getCommentsFromParam("article_ref", article.id || "").then(ifCurrent(setComments));
+    getLikesFromEntity({ type: "article", ref: article.id || "" }).then(ifCurrent(setLikes));
+    Promise.all(article.images.map((image) => getDownloadURL(ref(storage, image.ref)).catch(() => null))).then(
+      ifCurrent((urls) => setImages(urls.filter((url): url is string => !!url)))
+    );
+
+    return () => {
+      stale = true;
+    };
   }, [article]);
 
   const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {

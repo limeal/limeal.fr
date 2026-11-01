@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "@chakra-ui/react";
 
 import Profile from "@/interfaces/profile";
@@ -24,16 +24,12 @@ const ProfileModal = ({
   setProfile: (profile: any) => void;
   onClose: () => void;
 }) => {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(profile?.username ?? "");
   const [picture, setPicture] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   const { user } = useAuthContext();
   const { getTranslation } = useLangContext();
-
-  useEffect(() => {
-    if (profile) setUsername(profile.username);
-  }, [profile]);
 
   const picturePathFor = (id: string, file: File) => `profiles/${id}.${file.name.split(".").pop()}`;
 

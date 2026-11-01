@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import moment from "moment";
 import { Checkbox, Flex, Grid, Input, NativeSelect, Stack, Textarea } from "@chakra-ui/react";
 
@@ -36,43 +36,29 @@ const ArticleFormModal = ({
   onClose: () => void;
   refresh: () => void;
 }) => {
-  const [slug, setSlug] = useState("");
-  const [images, setImages] = useState<Array<File | string> | null>(null);
-  const [creationDate, setCreationDate] = useState(moment().format("YYYY-MM-DD"));
-  const [published, setPublished] = useState(false);
-
-  const [title, setTitle] = useState<Map<string, string>>(new Map());
-  const [lore, setLore] = useState<Map<string, string>>(new Map());
-  const [content, setContent] = useState<Map<string, string>>(new Map());
-  const [geo, setGeo] = useState<Map<string, string>>(new Map());
-
-  const [editLang, setEditLang] = useState("");
-  const [defaultLang, setDefaultLang] = useState("");
-  const [loading, setLoading] = useState(false);
-
   const { lang, langs } = useLangContext();
 
-  useEffect(() => {
-    setEditLang(lang);
-  }, [lang]);
+  // Per-language field of the edited article, as a Map lang → value
+  const initial = (pick: (l: string) => string | undefined) =>
+    new Map(
+      article ? langs.filter((l) => article.translations[l]).map((l) => [l, pick(l) || ""]) : []
+    );
 
-  useEffect(() => {
-    if (!article) return;
+  const [slug, setSlug] = useState(article?.slug ?? "");
+  const [images, setImages] = useState<Array<File | string> | null>(
+    article ? article.images.map((image) => image.url || "") : null
+  );
+  const [creationDate, setCreationDate] = useState(article?.created_at ?? moment().format("YYYY-MM-DD"));
+  const [published, setPublished] = useState(article?.published ?? false);
 
-    setSlug(article.slug);
-    setCreationDate(article.created_at);
-    setPublished(article.published);
-    setImages(article.images.map((image) => image.url || ""));
+  const [title, setTitle] = useState(() => initial((l) => article?.translations[l].title));
+  const [lore, setLore] = useState(() => initial((l) => article?.translations[l].lore));
+  const [content, setContent] = useState(() => initial((l) => article?.translations[l].content));
+  const [geo, setGeo] = useState(() => initial((l) => article?.translations[l].place?.address));
 
-    const fill = (pick: (l: string) => string | undefined) =>
-      new Map(langs.filter((l) => article.translations[l]).map((l) => [l, pick(l) || ""]));
-    setTitle(fill((l) => article.translations[l].title));
-    setLore(fill((l) => article.translations[l].lore));
-    setContent(fill((l) => article.translations[l].content));
-    setGeo(fill((l) => article.translations[l].place?.address));
-
-    setDefaultLang(article.defaultLanguage);
-  }, [article, langs]);
+  const [editLang, setEditLang] = useState(lang);
+  const [defaultLang, setDefaultLang] = useState(article?.defaultLanguage ?? "");
+  const [loading, setLoading] = useState(false);
 
   // Only the languages with a title, a lore and a content are saved
   const buildTranslations = () =>

@@ -4,7 +4,7 @@ const nextConfig = {
     // without overwriting its files
     distDir: process.env.NEXT_DIST_DIR || '.next',
     images: {
-        domains: ['firebasestorage.googleapis.com'],
+        remotePatterns: [{ protocol: 'https', hostname: 'firebasestorage.googleapis.com' }],
     },
     env: {
         // Only whether the key exists reaches the browser, never the key itself

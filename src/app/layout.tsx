@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
 
 // Depends on the domain: pauldev.fr must not mention the pseudonym anywhere
 export async function generateMetadata(): Promise<Metadata> {
-  const brand = brandFor(headers().get("host"));
+  const brand = brandFor((await headers()).get("host"));
 
   return {
     title: `${brand.name} — Software & Product Engineer`,
@@ -40,12 +40,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const brand = brandFor(headers().get("host"));
+  const brand = brandFor((await headers()).get("host"));
 
   return (
     <html lang="en" className={`${satoshi.variable} dark`} suppressHydrationWarning>

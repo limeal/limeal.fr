@@ -95,22 +95,45 @@ const referrerHost = () => {
 const referrerChannel = (host: string) =>
   Object.entries(REFERRER_CHANNELS).find(([domain]) => host === domain || host.endsWith(`.${domain}`))?.[1] ?? "";
 
+// Channel of this visit: ?ref= / utm_source, the referring site, or the one
+// remembered earlier in the session
+const detectChannel = () => {
+  const url = new URL(window.location.href);
+  return (
+    urlChannel(url) ||
+    referrerChannel(referrerHost()) ||
+    safe(() => sessionStorage.getItem(CHANNEL_KEY), null) ||
+    ""
+  );
+};
+
 const trafficSource = (url: URL) => {
   const host = referrerHost();
   return urlChannel(url) || referrerChannel(host) || host || "direct";
 };
 
 export const RecruiterAccessProvider = ({ children }: { children: React.ReactNode }) => {
-  const [request, setRequest] = useState<AccessRequest | null>(null);
-  const [adminCode, setAdminCode] = useState<string | null>(null);
-  const [recruiterCode, setRecruiterCode] = useState<string | null>(null);
-  const [ready, setReady] = useState(false);
-  const [channel, setChannel] = useState("");
+  // This provider only renders in the browser (under the auth splash screen),
+  // so the URL and storage can be read while initialising state
+  const [channel] = useState(detectChannel);
+  // Back from an access e-mail: not ready until the sign-in link is processed
+  const [ready, setReady] = useState(() => !isAccessLink(window.location.href));
   const [channelBlocked, setChannelBlocked] = useState(false);
 
   const { user } = useAuthContext();
   const isAdmin = useIsAdmin();
   const { getTranslation } = useLangContext();
+
+  // Fetched values are tagged with what they belong to, and only used while it
+  // still matches: no state needs resetting when the user or access changes
+  const [fetchedRequest, setFetchedRequest] = useState<{ uid: string; value: AccessRequest | null } | null>(null);
+  const [fetchedCode, setFetchedCode] = useState<{ for: "admin" | "recruiter"; code: string | null } | null>(null);
+
+  const request = user && !isAdmin && fetchedRequest?.uid === user.uid ? fetchedRequest.value : null;
+  const approved = request?.status === "approved";
+  const adminCode = isAdmin && fetchedCode?.for === "admin" ? fetchedCode.code : null;
+  const recruiterCode = approved && fetchedCode?.for === "recruiter" ? fetchedCode.code : null;
+  const setAdminCode = useCallback((code: string) => setFetchedCode({ for: "admin", code }), []);
 
   const requestAccess = useCallback(
     async (details: { email: string; name: string; company: string }) => {
@@ -140,21 +163,16 @@ export const RecruiterAccessProvider = ({ children }: { children: React.ReactNod
     if (firstVisitOfSession && !isAdmin) logTraffic(trafficSource(url));
 
     const fromUrl = urlChannel(url);
-    const detected = fromUrl || referrerChannel(referrerHost());
-    if (detected) safe(() => sessionStorage.setItem(CHANNEL_KEY, detected), undefined);
-    const current = detected || safe(() => sessionStorage.getItem(CHANNEL_KEY), null) || "";
-    setChannel(current);
-    if (current) getAccessSettings().then(({ blocked }) => setChannelBlocked(blocked.includes(current)));
+    // Remember this visit's channel for a later access request
+    if (channel) safe(() => sessionStorage.setItem(CHANNEL_KEY, channel), undefined);
+    if (channel) getAccessSettings().then(({ blocked }) => setChannelBlocked(blocked.includes(channel)));
 
-    if (!isAccessLink(window.location.href)) {
-      setReady(true);
-      return;
-    }
+    if (!isAccessLink(window.location.href)) return;
 
     completeAccessLink(window.location.href, () => window.prompt(getTranslation("access--confirm-email")))
       .then((filed) => {
         if (!filed) return;
-        setRequest(filed);
+        setFetchedRequest({ uid: filed.uid, value: filed });
         toast.success(
           getTranslation(filed.status === "approved" ? "portfolio--access-granted" : "access--pending-title")
         );
@@ -174,11 +192,8 @@ export const RecruiterAccessProvider = ({ children }: { children: React.ReactNod
 
   // Signed-in visitor: are they a recruiter, and approved?
   useEffect(() => {
-    if (!user || isAdmin) {
-      setRequest(null);
-      return;
-    }
-    getMyRequest(user).then(setRequest);
+    if (!user || isAdmin) return;
+    getMyRequest(user).then((value) => setFetchedRequest({ uid: user.uid, value }));
   }, [user, isAdmin]);
 
   // One "visit" per session in the recruiter's journal
@@ -194,15 +209,13 @@ export const RecruiterAccessProvider = ({ children }: { children: React.ReactNod
   useEffect(() => {
     if (isAdmin) {
       getVaultCode().then((code) => {
-        setAdminCode(code);
+        setFetchedCode({ for: "admin", code });
         if (code) ensureVaultMarker(code).catch(() => undefined);
       });
-      return;
+    } else if (approved) {
+      getVaultCode().then((code) => setFetchedCode({ for: "recruiter", code }));
     }
-    setAdminCode(null);
-    if (request?.status === "approved") getVaultCode().then(setRecruiterCode);
-    else setRecruiterCode(null);
-  }, [isAdmin, request]);
+  }, [isAdmin, approved]);
 
   return (
     <RecruiterAccessContext.Provider

@@ -12,6 +12,12 @@ import ArticleCard from "./ArticleCard";
 import ArticleFormModal from "./ArticleFormModal";
 import { getTranslated } from "./translation";
 
+// Drafts are only listed for the admin; newest first
+const sortVisible = (all: Article[], isAdmin: boolean) =>
+  (isAdmin ? all : all.filter((article) => article.published)).sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+
 const BlogSection = () => {
   const [country, setCountry] = useState<string>("");
   const [articles, setArticles] = useState<Article[]>([]);
@@ -22,25 +28,28 @@ const BlogSection = () => {
 
   const countryOf = (article: Article) => getTranslated(article, lang).place?.country;
 
-  const refreshArticles = async (isClick: boolean) => {
-    setLoading(true);
-    const all = await getArticles();
-    const visible = isAdmin ? all : all.filter((article: Article) => article.published);
-
-    setArticles(
-      visible.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-    );
-
-    if (isClick) {
-      toast.success("Blog refreshed !");
-    }
+  const loadArticles = async () => {
+    setArticles(sortVisible(await getArticles(), isAdmin));
     setLoading(false);
   };
 
+  const refreshArticles = async (isClick: boolean) => {
+    if (isClick) setLoading(true);
+    await loadArticles();
+    if (isClick) toast.success("Blog refreshed !");
+  };
+
   useEffect(() => {
-    refreshArticles(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    let stale = false;
+    getArticles().then((all) => {
+      if (stale) return;
+      setArticles(sortVisible(all, isAdmin));
+      setLoading(false);
+    });
+    return () => {
+      stale = true;
+    };
+  }, [isAdmin]);
 
   // Derived from the articles so the filters follow the language switch
   const countries = [

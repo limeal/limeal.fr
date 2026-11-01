@@ -36,19 +36,32 @@ const Portfolio = () => {
   const { request, adminCode, setAdminCode, vaultCode, ready, leave } = useRecruiterAccess();
   const { getTranslation } = useLangContext();
 
-  const refreshProjects = async (isClick: boolean) => {
-    setLoading(true);
-    setProjects((await getProjects(vaultCode)).sort(byMostRecent));
-
-    if (isClick) {
-      toast.success(getTranslation("portfolio--refresh-success"));
-    }
+  // State is only set once the data is there: the first load shows the
+  // initial spinner, later ones swap the cards in place
+  const loadProjects = async () => {
+    const list = await getProjects(vaultCode);
+    setProjects(list.sort(byMostRecent));
     setLoading(false);
   };
 
+  const refreshProjects = async (isClick: boolean) => {
+    if (isClick) setLoading(true);
+    await loadProjects();
+    if (isClick) toast.success(getTranslation("portfolio--refresh-success"));
+  };
+
   useEffect(() => {
-    if (ready) refreshProjects(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!ready) return;
+    // Ignore a response that arrives after the access changed again
+    let stale = false;
+    getProjects(vaultCode).then((list) => {
+      if (stale) return;
+      setProjects(list.sort(byMostRecent));
+      setLoading(false);
+    });
+    return () => {
+      stale = true;
+    };
   }, [ready, vaultCode]);
 
   const categories = [...new Set(projects.map((project) => project.category))];
